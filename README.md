@@ -88,12 +88,15 @@ Continuous Compliance: Use the checker as a "Canary" in your CI/CD pipeline to a
 STIG Viewer Compatibility: The generated files are 100% compatible with the DISA STIG Viewer tool, allowing security teams to review findings, add comments, and sign off on compliance packages.
 
 Workflow:
-The intention is to run the included roles as part of an Ansible Automation Platform `Job-Template` or `Workflow` 
+This repo is best suited to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
 * evaluate.yml
 
-However, it can be ran directly as a playbook for basic functionality.
+However, with modification these same roles could launch similar to below:
 
-Run the Checker: ansible-playbook example-site.yml --tags evaluate
+Run the Evaluation: 
+~~~
+ansible-playbook example-site.yml --tags evaluate
+~~~
 
 Retrieve Results: Files are saved to your defined cklb_path (e.g., /tmp/inventory_hostname.cklb).
 
@@ -159,8 +162,8 @@ STIG-CISCO-IOS-XE-L2S/
 ## Usage
 perform a full check-and-fix for a switch:
 
-The intention is to run these roles as part of an Ansible Automation Platform `Job-Template` or `Workflow` 
-However, it can be ran directly as a playbook for basic functionality.
+This repo is best suited to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
+However, with modification these same roles work similar to below:
 
 ```bash
 ansible-playbook example-site.yml -i inventory.ini --tags discover,evaluate
