@@ -136,8 +136,8 @@ STIG-CISCO-IOS-XE-L2S/
 ├── group_vars/         # Credentials and connection settings
 └── example-site.yml    # Main playbook to run the roles from ansible-playbook
 └── discover.yml        # Main playbook to run the discover role from Ansible Automation Platform
-└── evaluate.yml        # Main playbook to run the discover role from Ansible Automation Platform
-└── remediate.yml        # Main playbook to run the discover role from Ansible Automation Platform
+└── evaluate.yml        # Main playbook to run the evaluate role from Ansible Automation Platform
+└── remediate.yml       # Main playbook to run the remediate role from Ansible Automation Platform
 
 
 ```
