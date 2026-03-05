@@ -88,9 +88,11 @@ STIG Viewer Compatibility: The generated files are 100% compatible with the DISA
 
 Workflow:
 The intention is to run the included roles as part of an Ansible Automation Platform `Job-Template` or `Workflow` 
+* evaluate.yml
+
 However, it can be ran directly as a playbook for basic functionality.
 
-Run the Checker: ansible-playbook example-example-site.yml --tags evaluate
+Run the Checker: ansible-playbook example-site.yml --tags evaluate
 
 Retrieve Results: Files are saved to your defined cklb_path (e.g., /tmp/inventory_hostname.cklb).
 
