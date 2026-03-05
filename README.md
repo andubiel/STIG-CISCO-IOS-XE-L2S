@@ -64,8 +64,8 @@ The **Remediate** role is the "Fix-it" engine. It takes the findings from the Ev
 
 ## Stig Viewer
 
-🔍 The STIG Checker: From Audit to Evidence **Optional**
-The STIG Checker functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKLB) files as evidence to the Authorizing Official (AO).
+🔍 The STIG Viewer: From Audit to Evidence **Optional**
+The STIG Viewer functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKLB) files as evidence to the Authorizing Official (AO).
 
 How it works:
 Automated Inspection: The tool logs into each switch and executes show commands to inspect specific STIG rules (e.g., verifying if VTP is disabled or BPDU Guard is active).
