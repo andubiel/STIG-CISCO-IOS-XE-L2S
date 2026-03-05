@@ -1,0 +1,16 @@
+---
+- hosts: stig_switches
+  become: true
+  gather_facts: false
+  vars:
+      is_container: false
+  vars_files:
+    vars/main.yml
+
+  tasks:
+  - name: Run Compliance Roles
+    ansible.builtin.include_role:
+      name: "roles/remediate"
+
+ 
+        
