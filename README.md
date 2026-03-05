@@ -12,8 +12,7 @@ This repository provides an Ansible-based framework to automate the security har
 * [1. Discover](https://www.google.com/search?q=%231-discover)
 * [2. Evaluate](https://www.google.com/search?q=%232-evaluate)
 * [3. Remediate](https://www.google.com/search?q=%233-remediate)
-
-
+* [STIG Viewer](https://www.google.com/search?q=%23requirements)
 * [Repository Structure](https://www.google.com/search?q=%23repository-structure)
 * [Requirements](https://www.google.com/search?q=%23requirements)
 
