@@ -93,11 +93,11 @@ This repo is best suited to run the STIG roles as part of an Ansible Automation 
 
 However, with modification these same roles could launch similar to below:
 
-Run the Evaluation: 
-~~~
-ansible-playbook example-site.yml --tags evaluate
-~~~
+Run the Evaluation:
+```bash
+ansible-playbook example-site.yml -i inventory.ini --tags evaluate
 
+``` 
 Retrieve Results: Files are saved to your defined cklb_path (e.g., /tmp/inventory_hostname.cklb).
 
 Review: Open the generated file in STIG Viewer to see a rule-by-rule breakdown of your switch’s security posture.
