@@ -1,0 +1,22 @@
+---
+- name: Include CAT 1 discover
+  import_tasks: cat1.yml
+  when: iosl2sstig_cat1_discover
+  tags:
+      - CAT1
+      - high
+
+- name: Include CAT 2 discover
+  import_tasks: cat2.yml
+  when: iosl2sstig_cat2_discover
+  tags:
+      - CAT2
+      - medium
+
+- name: Include CAT 3 discover
+  import_tasks: cat3.yml
+  when: iosl2sstig_cat3_discover
+  tags:
+      - CAT3
+      - low
+

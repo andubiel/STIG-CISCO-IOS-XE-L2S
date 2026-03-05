@@ -1,0 +1,82 @@
+---
+  - name: |
+     'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+      Set Status'
+    ansible.builtin.set_fact:
+     status: not_a_finding
+    listen: "cat1_cisc_l2_000020_Access_Pass"
+
+  - name: |
+     'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+      Set Status'
+    ansible.builtin.set_fact:
+     status: open
+    listen: "cat1_cisc_l2_000020_Access_Fail" 
+
+  - name: |
+     'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015 
+      Findings
+    ansible.builtin.debug:
+      msg: 
+       - "FAILURE:"
+       - '+++after + line indicates missing configuration'
+       - "{{ access_diff_result.diff_text }}"
+    register: findings
+    listen: "cat1_cisc_l2_000020_Access_Fail"
+
+  - name: |
+     'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+      Create Directory for CKLB files
+    ansible.builtin.file:
+      path: "{{ cklb_path }}"
+      state: directory
+      owner: "{{ cklb_user }}"
+      group: "{{ cklb_user }}"
+    run_once: true
+    delegate_to: "{{ cklb_server }}"
+    listen:
+    - "cat1_cisc_l2_000020_Access_Fail"
+    - "cat1_cisc_l2_000020_Access_Pass"
+    vars:
+      ansible_connection: ssh
+      ansible_user: "{{ cklb_user }}"
+      ansible_password: "{{ cklb_password }}"
+      ansible_become_pass: "{{ cklb_become_pass }}"
+      become: true
+
+  - name:  |
+       'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+        Remove existing CKLB file to ensure fresh overwrite
+    ansible.builtin.file:
+      path: "{{ cklb_path }}/{{ inventory_hostname }}.cklb"
+      state: absent
+    delegate_to: "{{ cklb_server }}"
+    listen: 
+    - "cat1_cisc_l2_000020_Access_Fail"
+    - "cat1_cisc_l2_000020_Access_Pass"
+    vars:
+      ansible_user: "{{ cklb_user }}"
+      ansible_password: "{{ cklb_password }}"
+      ansible_become_pass: "{{ cklb_become_pass }}"
+      become: true
+      
+  
+  - name: |
+       'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+        Create CKLB file
+    ansible.builtin.template:
+      src: templates/stig_viewer.j2
+      dest: "{{ cklb_path }}/{{ inventory_hostname }}.cklb"
+      owner: "{{ cklb_user }}"
+      group: "{{ cklb_user }}"
+    delegate_to: "{{ cklb_server }}"
+    listen: 
+    - "cat1_cisc_l2_000020_Access_Fail"
+    - "cat1_cisc_l2_000020_Access_Pass"
+    vars:
+      ansible_user: "{{ cklb_user }}"
+      ansible_password: "{{ cklb_password }}"
+      ansible_become_pass: "{{ cklb_become_pass }}"
+      become: true
+      
+

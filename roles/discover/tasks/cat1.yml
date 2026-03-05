@@ -1,0 +1,17 @@
+---
+- name: 'Role: Discover | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015'
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop: 
+   - cat1_access_ports.yml
+  when:
+      - SV_220649r863283
+  tags:
+      - CISC-L2-000020
+      - SV-220649r863283
+      - CAT1
+      - CCI-000778
+      - SRG-NET-000148-L2S-000015
+      - SV-220649r863283_rule
+      - V-220649
+
+ 
