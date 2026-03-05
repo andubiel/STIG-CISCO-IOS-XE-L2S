@@ -1,0 +1,52 @@
+{% for vlan_id in iosstig_user_vlans %}
+vlan {{ vlan_id }}
+ name USER_VLAN_{{ vlan_id }}
+ state active
+{% endfor %}
+
+{% for vlan_id in iosstig_voice_vlans %}
+vlan {{ vlan_id }}
+ name VOICE_VLAN_{{ vlan_id }}
+ state active
+{% endfor %}
+
+
+aaa group server radius {{ iosstig_radius_group_name }}
+
+ server name {{ iosstig_radius_server_one_name }}
+
+ server name  {{ iosstig_radius_server_two_name }}
+
+radius server "{{ iosstig_radius_server_one_name }}"
+ address ipv4 {{ iosstig_radius_server_one_ip }}
+ key {{ iosstig_radius_server_one_key }}
+ timeout 2
+ retransmit 1
+
+radius server "{{ iosstig_radius_server_two_name }}"
+ address ipv4 {{ iosstig_radius_server_two_ip }}
+ key {{ iosstig_radius_server_one_key }}
+ timeout 2
+ retransmit 1
+
+{% for port in iosstig_access_ports %}
+interface {{ port.name }}
+ switchport mode {{ port.mode }}
+ switchport access vlan {{ port.access.vlan }}
+ {# Authentication & 802.1x #}
+ authentication port-control auto
+ dot1x pae authenticator
+{% endfor %}
+!
+{% for port in iosstig_voice_ports %}
+interface {{ port.name }}
+ switchport mode {{ port.mode }}
+ switchport access vlan {{ port.access.vlan }}
+ switchport voice vlan {{ port.voice.vlan }}
+ {# Authentication & 802.1x #}
+ authentication port-control auto
+ dot1x pae authenticator
+{% endfor %}
+!
+
+

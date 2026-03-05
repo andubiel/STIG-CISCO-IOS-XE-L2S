@@ -1,0 +1,11 @@
+{% for port in iosstig_voice_ports %}
+interface {{ port.name }}
+switchport access vlan {{ port.access.vlan }}
+switchport mode access
+switchport voice vlan {{ port.voice.vlan }}
+authentication host-mode multi-domain
+authentication port-control auto
+dot1x pae authenticator
+spanning-tree portfast
+end
+{% endfor %}

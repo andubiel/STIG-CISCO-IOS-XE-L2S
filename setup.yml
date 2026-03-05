@@ -1,0 +1,12 @@
+---
+- name: Setup Switches
+  hosts: stig_switches
+  become: true
+  gather_facts: false
+    
+  tasks:
+
+  - name: Setup test switch
+    cisco.ios.ios_config:
+      src: setup.j2
+

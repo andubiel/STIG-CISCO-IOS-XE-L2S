@@ -1,0 +1,252 @@
+---
+#GLOBAL VARIABLES
+#These variables can be overwritten at the host_vars level 
+#Discover
+iosl2sstig_cat1_discover: true
+iosl2sstig_cat2_discover: false
+iosl2sstig_cat3_discover: false
+#Evaluate
+iosl2sstig_cat1_evaluate: true
+iosl2sstig_cat2_evaluate: false
+iosl2sstig_cat3_evaluate: false
+#Remediate
+iosl2sstig_cat1_remediate: true
+iosl2sstig_cat2_remediate: false
+iosl2sstig_cat3_remediate: false
+
+#Comment for CKLB
+comment: 'Evaluating IOSXE STIG'
+
+#Server for CKLB files
+cklb_server: laptop
+
+#Path for CKLB folder
+cklb_path: /home/{{ cklb_user }}/cklb
+
+#CKLB User
+cklb_user: tdubiel
+
+# These variables correspond with the STIG IDs defined in the STIG and allows you to enable/disable specific rules.
+# PLEASE NOTE: These work in coordination with the cat1, cat2, cat3 group variables. You must enable an entire group
+# in order for the variables below to take effect.
+
+# CAT 1 rules
+SV_220649r863283: true #CISC-L2-000020 | 802.1x authentication 
+
+# CAT 2 rules
+SV-220650r539671: false #CISC-L2-000030 | VLAN Trunk Protocol 
+SV-220656r856278: false #CISC-L2-000100 | BPDU Guard
+SV-220657r856279: false #CISC-L2-000110 | (STP) loop guard
+SV-220658r856280: false #CISC-L2-000120 | (CAM)Content Addressable Memory table 
+SV-220659r928999: false #CISC-L2-000130 | DHCP snooping 
+SV-220660r929001: false #CISC-L2-000140 | IP Source Guard 
+SV-220661r929003: false #CISC-L2-000150 | Dynamic ARP
+SV-220664r539671: false #CISC-L2-000180 | Rapid STP 
+SV-220665r539671: false #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
+SV-220666r539671: false #CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
+SV-220667r991904: false #CISC-L2-000210 | unused VLAN
+SV-220668r991905: false #CISC-L2-000220 | default VLAN host
+SV-220669r991906: false #CISC-L2-000230 | default VLAN pruned
+SV-220670r991907: false #CISC-L2-000240 | default VLAN mgmt
+SV-220671r991908: false #CISC-L2-000250 | untrusted trunk ports
+SV-220670r991909: false #CISC-L2-000260 | trunk native VLAN
+SV-220651r1107171: false #CISC-L2-000040 | QOS
+
+# CAT 3 rules
+SV-220655r917683: false #CISC-L2-000090 | Root Guard
+SV-220662r648766: false #CISC-L2-000160 | Storm Control 
+SV-220663r929005: false #CISC-L2-000170 | IGMP or MLD Snooping
+SV-220673r991910: false #CISC-L2-000270 | Access Native Vlan
+
+# Cat 1
+
+# SV_220649r863283 | CISC-L2-000020 | 802.1x authentication
+# CISC-L2-000020 
+# Settings below set the RADIUS SERVER indivigual names, ip, and key. 
+iosstig_radius_server_one_name: "RADIUS_1"
+iosstig_radius_server_one_ip: "192.168.68.250"
+iosstig_radius_server_one_key: "key_here"
+iosstig_radius_server_two_name: "RADIUS_2"
+iosstig_radius_server_two_ip: "192.168.68.251"
+iosstig_radius_server_two_key: "key_here"
+#iosstig_radius_group_name is the group name for the Radius servers.
+iosstig_radius_group_name: "RADIUS_SERVERS"
+# iosstig_auth_hostmode is the setting for the host facing interfaces.
+# Note: Single-host is the default. Host-mode multi-domain (for VoIP phone plus PC) or 
+# multi-auth (multiple PCs connected to a hub) can be configured as alternatives.
+# Below Are All Valid Options
+#  multi-auth    Multiple Authentication Mode
+#  multi-domain  Multiple Domain Mode
+#  multi-host    Multiple Host Mode
+#  single-host   SINGLE HOST Mode
+iosstig_auth_hostmode: "single-host"
+
+# Cat 2
+
+#SV-220650r539671 | CISC-L2-000030 | VLAN Trunk Protocol 
+# CISC-L2-000030
+# iosstig_vtp_user_password is the password you will change for vtp password. 
+# CHANGE THE DEFAULT!!!!!!!!!!!!!!!
+# MAKE SURE TO VAULT PASSWORDS, PLAIN TEXT PASSWORDS ARE BAD.
+iosstig_vtp_user_password: changeme
+
+# SV-220656r856278 | CISC-L2-000100 | BPDU Guard
+# CISC-L2-000100
+# iosstig_bpdu_guard_global allows you set BPDU Guard globally on a layer 2 switch.
+# none <--- This bypasses control. 
+# enable <--- This will set global BPDU Guard
+iosstig_bpdu_guard_global: "enable"
+# iosstig_bpdu_guard_interface allows the user to set BPDU Guard on specific ports on the switch
+# NOTE: Enable BPDU Guard on all user-facing or untrusted access switch ports as shown in the 
+# Configuration example below:
+# none <--- This bypasses control allowing you to set the global. 
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_bpdu_guard_interfaces: "none"
+
+# SV-220657r856279 | CISC-L2-000110 | (STP) loop guard
+########## NEED TO DO ###########
+# SV-220658r856280 | CISC-L2-000120 | (CAM)Content Addressable Memory table 
+########## NEED TO DO ###########
+
+# CISC-L2-000140
+# This will set the STIG to Configure the switch to have IP Source Guard enabled on 
+# all user-facing or untrusted access switch ports.  You will choose what configuration 
+# you want first then put the assigned variable in iosstig_sourceguard_option. 
+#### NOTE ONLY TWO OPTIONS BELOW ####
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_sourceguard_option: "{{ iosstig_userfacing_ports }}"
+
+# SV_220649r863283 | CISC-L2-000020 | 802.1x authentication
+# CISC-L2-000020 
+# SV-220659r928999 | CISC-L2-000130 | DHCP snooping 
+# CISC-L2-000130
+# SV-220661r929003 | CISC-L2-000150 | Dynamic ARP
+# CISC-L2-000150
+# iosstig_user_vlans
+# iosstig_user_vlans is the list of vlans that are user facing.  
+# Per The STIG they are labled as user VLANs
+# Vlans are in a list separated by commas
+iosstig_user_vlans: [12]
+iosstig_voice_vlans: [20]
+
+# SV-220664r539671 | CISC-L2-000180 | Rapid STP 
+# CISC-L2-000180
+# iosstig_spanningtree_mode is the mode to set for spanning tree for vlans across switches. 
+# The Cisco switch must implement Rapid Spanning Tree Protocol (STP) or
+# Multiple Spanning-Tree Protocol (MSTP). The latter scales much better 
+# when there are many VLANs that span multiple switches with redundant links.
+# Only two options are available are as follows to be stig compliant.
+# rapid-pvst <--- Rapid Spanning Tree Protocol Per VLAN
+# mst <--- Multiple Spanning-Tree Protocol
+iosstig_spanningtree_mode: "rapid-pvst"
+# In cases where VLANs do not span multiple switches, it is a best practice to 
+# not implement STP.  In this case you will put those VLANs in the iosstig_spanningtree_remove_vlans
+# If there are VLANs that are not in STP and they need to be readded add them to the 
+# iosstig_spanningtree_add_vlans variable.  If you have nothing to adjust then make sure yo have none in the variables.
+# Here are some examples of the values excpeted in the range.
+# none <--- This bypasses add/remove of VLANs.   
+# 50 <--- Single Vlan 
+# 50,60  <--- Two Separate Vlans 
+# 50-60 <--- Vlans Range 50-60 
+# 2,10-15,50-60,75,300   <--- Vlans 2, 10-15, 50-60, 75, 300
+iosstig_spanningtree_remove_vlans: "none"
+iosstig_spanningtree_add_vlans: "none"
+
+# SV-220665r539671 | CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
+# CISC-L2-000190
+# iosstig_udld_global allows you set UDLD globally on a layer 2 switch.
+# Note: An alternative implementation when UDLD is not supported by connected device is to deploy a 
+# single member Link Aggregation Group (LAG) via IEEE 802.3ad Link Aggregation Control Protocol (LACP).
+# none <--- This bypasses control. 
+# enable <--- This will set global UDLD
+iosstig_udld_global: "enable"
+# iosstig_udld_interface allows the user to set UDLD on specific ports on the switch
+# none <--- This bypasses control. 
+iosstig_udld_interface: "none"
+
+# SV-220666r539671 | CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
+########## NEED TO DO ###########
+
+# SV-220667r991904 | CISC-L2-000210 | unused VLAN
+# CISC-L2-000210
+# iosstig_blackhole_vlan is a vlan that directs inactive ports to a vlan that is inactive.
+# A disabled port that is assigned to a user or management VLAN may become enabled by 
+# accident or by an attacker and as a result may gain access to that VLAN as a member.
+# iosstig_blackhole_vlan_name is the name assigned to the VLAN where you will be directing
+# inactive ports too.  The Blackhole interface ports are in discovery.
+iosstig_blackhole_vlan: "999"
+iosstig_blackhole_vlan_name: "BLACKHOLE"
+
+# SV-220668r991905 | CISC-L2-000220 | default VLAN host
+# CISC-L2-000220
+########## NEED TO DO ###########
+
+# SV-220669r991906 | CISC-L2-000230 | default VLAN pruned
+# CISC-L2-000230
+########## NEED TO DO ###########
+
+# SV-220670r991907 | CISC-L2-000240 | default VLAN mgmt
+# CISC-L2-000240
+# iosstig_mgmt_vlan is the new management vlan that replaces vlan1 as the main vlan that Cisco 
+# used for switch management.  
+# Provided in host_vars 
+#iosstig_mgmt_vlan: "22"
+# iosstig_mgmt_vlan_name is the name that will be assigned to the new management vlan. 
+iosstig_mgmt_vlan_name: "Management VLAN"
+# iosstig_mgmt_ipaddress is the management ip address. 
+iosstig_mgmt_ipaddress: "10.10.10.10"
+# iosstig_mgmt_ipaddress_subnet is the subnet for management ip address. 
+iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
+
+# SV-220671r991908 | CISC-L2-000250 | untrusted trunk ports
+# CISC-L2-000250
+# iosstig_setaccess_switchports sets mode access to either iosstig_userfacing_ports 
+# or iosstig_untrusted_ports. The Cisco switch must have all user-facing or untrusted
+# ports configured as access switch ports.
+#### NOTE ONLY TWO OPTIONS BELOW ####
+# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
+# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
+iosstig_setaccess_switchports: "{{ iosstig_userfacing_ports }}"
+
+# SV-220670r991909 | CISC-L2-000260 | trunk native VLAN
+# CISC-L2-000260
+# iosstig_native_vlan is the new native vlan for trunk links that you set in 
+# the global variable setting.  The STIG states the Cisco switch must have the native VLAN 
+# assigned to an ID other than the default VLAN for all 802.1q trunk links.  
+# iosstig_native_vlan_name is the description of your native vlan for trunk links
+# for documentation purposes. 
+# NOTE: The native VLAN ID must be the same on both ends of the trunk link; otherwise, 
+# traffic could accidentally leak between broadcast domains.
+iosstig_native_vlan: "33"
+iosstig_native_vlan_name: "NATIVE"
+
+# SV-220651r1107171 | CISC-L2-000040 | QOS
+# CISC-L2-000040
+########## NEED TO DO ###########
+
+# CAT 3
+
+# SV-220655r917683 | CISC-L2-000090 | Root Guard
+# CISC-L2-000090
+########## NEED TO DO ###########
+
+# SV-220662r648766 | CISC-L2-000160 | Storm Control
+# CISC-L2-000160 
+########## NEED TO DO ###########
+
+# SV-220663r929005 | CISC-L2-000170 | IGMP or MLD Snooping
+# CISC-L2-000170
+########## NEED TO DO ###########
+
+# SV-220673r991910 | CISC-L2-000270 | Access Native Vlan
+# CISC-L2-000270 
+########## NEED TO DO ###########
+
+# SV-220662r648766: false #CISC-L2-000160 | Storm Control 
+# CISC-L2-000160
+########## NEED TO DO ###########
+
+
+
