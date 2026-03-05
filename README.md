@@ -7,14 +7,14 @@ This repository provides an Ansible-based framework to automate the security har
 
 ## Table of Contents
 
-* [What is a STIG?](https://www.google.com/search?q=%23what-is-a-stig)
-* [Roles Overview](https://www.google.com/search?q=%23roles-overview)
-* [1. Discover](https://www.google.com/search?q=%231-discover)
-* [2. Evaluate](https://www.google.com/search?q=%232-evaluate)
-* [3. Remediate](https://www.google.com/search?q=%233-remediate)
-* [STIG Viewer](https://www.google.com/search?q=%23requirements)
-* [Repository Structure](https://www.google.com/search?q=%23repository-structure)
-* [Requirements](https://www.google.com/search?q=%23requirements)
+* [What is a STIG?](#what_is_stig)
+* [Roles Overview](#roles_overview)
+* [1. Discover](#1._discover)
+* [2. Evaluate](#2._evaluate)
+* [3. Remediate](#3._remediate)
+* [STIG Viewer](#stig_viewer)
+* [Repository Structure](repository_structure)
+* [Requirements](#requirements)
 
 ---
 
@@ -61,6 +61,8 @@ The **Remediate** role is the "Fix-it" engine. It takes the findings from the Ev
 * Disables unneeded services (HTTP, Telnet, CDP on untrusted ports).
 * Ensures secure VTY line access and AAA configurations.
 * More function in progress
+
+## Stig Viewer
 
 🔍 The STIG Checker: From Audit to Evidence **Optional**
 The STIG Checker functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKLB) files as evidence to the Authorizing Official (AO).
