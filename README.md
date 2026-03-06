@@ -7,14 +7,15 @@ This repository provides an Ansible-based framework to automate the security har
 
 ## Table of Contents
 
-* [What is a STIG?](#what_is_stig)
-* [Roles Overview](#roles_overview)
-* [1. Discover](#1._discover)
-* [2. Evaluate](#2._evaluate)
-* [3. Remediate](#3._remediate)
-* [STIG Viewer](#stig_viewer)
+* [What is a STIG?](what_is_stig)
+* [Roles Overview](roles_overview)
+* [1. Discover](1._discover)
+* [2. Evaluate](2._evaluate)
+* [3. Remediate](3._remediate)
+* [STIG Viewer](stig_viewer)
 * [Repository Structure](repository_structure)
-* [Requirements](#requirements)
+* [Requirements](requirements)
+* [AAP Screenshots](aap_sceenshots)
 
 ---
 
@@ -163,10 +164,14 @@ STIG-CISCO-IOS-XE-L2S/
 perform a full check-and-fix for a switch:
 
 This repo is best suited to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
-However, with modification these same roles work similar to below:
+However, with modification these same roles can run from the command line:
 
 ```bash
 ansible-playbook example-site.yml -i inventory.ini --tags discover,evaluate
 
 ```
+
+## AAP Screenshots
+########## NEED TO DO ###########
+
 
