@@ -7,15 +7,15 @@ This repository provides an Ansible-based framework to automate the security har
 
 ## Table of Contents
 
-* [What is a STIG?](what_is_stig)
-* [Roles Overview](roles_overview)
-* [1. Discover](1._discover)
-* [2. Evaluate](2._evaluate)
-* [3. Remediate](3._remediate)
-* [STIG Viewer](stig_viewer)
-* [Repository Structure](repository_structure)
-* [Requirements](requirements)
-* [AAP Screenshots](aap_sceenshots)
+* [What is a STIG?](#what-is-a-stig)
+* [Roles Overview](#roles-overview)
+* [1. Discover](#1-discover)
+* [2. Evaluate](#2-evaluate)
+* [3. Remediate](#3-remediate)
+* [STIG Viewer](#stig-viewer)
+* [Repository Structure](#repository-structure)
+* [Requirements](#requirements)
+* [AAP Screenshots](#aap-screenshots)
 
 ---
 
