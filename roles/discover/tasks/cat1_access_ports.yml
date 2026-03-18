@@ -4,7 +4,7 @@
     Retrieve a repository from a distant location and make it available to the local EE'
   ansible.scm.git_retrieve:
     origin:
-      url: "http://gitea:{{password}}@aap:3000/gitea/STIG-CISCO-IOS-XE-L2S.git"
+      url: "{{ git_url }}"
     parent_directory: /tmp
     branch:
         name: main
@@ -12,6 +12,7 @@
   run_once: true
   register: repository
   delegate_to: localhost
+  no_log: true
 
 - name: |
    'Role: Discover | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
@@ -93,6 +94,8 @@
     path: "{{ repository['path'] }}"
   run_once: true
   delegate_to: localhost
+
+
 
    
 

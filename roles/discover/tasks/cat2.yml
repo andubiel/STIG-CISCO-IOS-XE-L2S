@@ -1,18 +1,11 @@
 ---
-- name: "MEDIUM | CISC-L2-000010 | PATCH | The Cisco switch must be configured to disable non-essential capabilities."
-  ios_config:
-      lines: no {{ item }}
-  with_items:
-      - "{{ iosstig_non_essential_serv }}"
-  when:
-      - cisc_l2_000010
-  tags:
-      - CISC-L2-000010
-      - CAT2
-      - CCI-000381
-      - SRG-NET-000131-L2S-000014
-      - SV-220622r539671_rule
-      - V-220622
+
+
+
+
+
+
+
       
 - name: "MEDIUM | CISC-L2-000030 | PATCH | The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available."
   block:

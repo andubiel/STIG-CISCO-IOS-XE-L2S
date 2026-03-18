@@ -1,0 +1,35 @@
+---
+- name: |
+   'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Step: 3 | Verify that the radius servers have been defined
+    Render configuration for 802.1x authentication'
+  ansible.builtin.template:
+    src: templates/cat1/radius.j2
+    dest: "/tmp/{{ inventory_hostname }}_radius.cfg"
+  delegate_to: localhost
+  
+- name: |
+   'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Step: 3 | Verify that the radius servers have been defined
+    show run interface'
+  cisco.ios.ios_command:
+   commands:
+    - 'show run | s radius server'
+  register: auth8021x
+
+- name: |
+   'Role: Evaluate | Severity: High (High (Cat I)) | Group ID: V-220623 | Rule ID: SV-220623r863275 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Step: 3 | Verify that the radius servers have been defined
+    DIFF' 
+  ansible.utils.fact_diff: 
+      before: "{{ auth8021x.stdout[0] }}"
+      after: "{{ lookup('file', '/tmp/{{ inventory_hostname }}_radius.cfg') }}"
+  delegate_to: localhost
+  diff: true
+  register: radius_diff_result
+  changed_when: radius_diff_result.diff_text | regex_findall('^\\+[^+].*$', multiline=True) 
+  
+
+  
+
+ 

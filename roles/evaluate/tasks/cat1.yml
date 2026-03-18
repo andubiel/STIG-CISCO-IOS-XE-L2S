@@ -4,10 +4,10 @@
     Include Tasks'
   ansible.builtin.include_tasks: "{{ item }}"
   loop: 
-   - step1_cat1_8021x_access_interfaces.yml
-   - step1_cat1_8021x_voice_interfaces.yml
-   - step2_cat1_8021x_auth.yml
-   - step3_cat1_radius_server.yml
+   - cat1_step1_8021x_access_interfaces.yml
+   - cat1_step1_8021x_voice_interfaces.yml
+   - cat1_step2_8021x_auth.yml
+   - cat1_step3_radius_server.yml
   when:
       - SV_220649r863283
   tags:
@@ -15,6 +15,8 @@
       - SV-220649r863283
       - CAT1
       - SRG-NET-000148-L2S-000015
-      - V-220649
+      - SV-220623r863275
+      - SV-220623r539671_rule
+      - V-220623
 
  

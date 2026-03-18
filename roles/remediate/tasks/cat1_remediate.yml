@@ -4,5 +4,8 @@
     Tasks to remediate STIG configuration'
   cisco.ios.ios_config:
     src: templates/cat1/remediate.j2
+  when:
+      - SV_220649r863283_remediate
+
 
 
