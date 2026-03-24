@@ -1,0 +1,198 @@
+---
+# CAT1 STIG Viewer
+- name: |
+    'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Set Status'
+  ansible.builtin.set_fact:
+    SV_220649_status: not_a_finding
+  listen: 
+   - "cat1_cisc_l2_000020_access_Pass"
+   - "cat1_cisc_l2_000020_voice_Pass"
+  
+- name: |
+    'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Set Status'
+  ansible.builtin.set_fact:
+    SV_220649_status: open
+  listen: 
+  - "cat1_cisc_l2_000020_access_Fail" 
+  - "cat1_cisc_l2_000020_voice_Fail" 
+
+- name: |
+    'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015 
+    Access Findings
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE:"
+      - '+++after + line indicates missing configuration'
+      - "{{ access_diff_result.diff_text }}"
+  listen: "cat1_cisc_l2_000020_access_Fail"
+
+- name: |
+    'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015 
+    Voice Findings
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE:"
+      - '+++after + line indicates missing configuration'
+      - "{{ voice_diff_result.diff_text }}"
+  listen: "cat1_cisc_l2_000020_voice_Fail"
+
+- name: "Handler | Access Failures"
+  ansible.builtin.set_fact:
+    SV_220649_findings: |
+      {{ SV_220649_findings | default('') }}
+      =========================================
+      ACCESS PORT FAILURE (802.1X/MAB)
+      =========================================
+      {{ access_diff_result.diff_text | default('No configuration diff available.') }}
+  listen: "cat1_cisc_l2_000020_access_Fail"
+
+- name: "Handler | Voice Failures"
+  ansible.builtin.set_fact:
+    SV_220649_findings: |
+      {{ SV_220649_findings | default('') }}
+      =========================================
+      VOICE VLAN FAILURE (802.1X/MAB)
+      =========================================
+      {{ voice_diff_result.diff_text | default('No configuration diff available.') }}
+  listen: "cat1_cisc_l2_000020_voice_Fail"
+
+# CAT2 STIG Viewer
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+    SV_220650_status | '
+  ansible.builtin.set_fact:
+    SV_220650_status: not_a_finding
+  listen: "cat2_cisc_l2_000030_Pass"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+     SV_220650_status | '
+  ansible.builtin.set_fact:
+    SV_220650_status: open
+  listen: "cat2_cisc_l2_000030_Fail" 
+  
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+     SV_220650_findings |'
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE"
+      - "Need to add a VTP Password"
+      - "(config)#vtp password"
+  register: SV_220650_findings
+  listen: "cat2_cisc_l2_000030_Fail"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
+    SV_220656_status | '
+  ansible.builtin.set_fact:
+    SV_220656_status: not_a_finding
+  listen: 
+   - "cat2_cisc_l2_000100_access_Pass"
+   - "cat2_cisc_l2_000100_voice_Pass"
+
+- name: |
+     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
+     SV_220656_status | '
+  ansible.builtin.set_fact:
+    SV_220656_status: open
+  listen: 
+   - "cat2_cisc_l2_0000100_access_Fail" 
+   - "cat2_cisc_l2_0000100_voice_Fail" 
+  
+- name: |
+   'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
+     SV_220656_findings | Access'
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE:"
+      - '+++after + line indicates missing configuration'
+      - "{{ access_diff_result.diff_text }}"
+  listen: 
+   - "cat2_cisc_l2_0000100_access_Fail" 
+  
+- name: |
+   'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
+     SV_220656_findings | Voice'
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE:"
+      - '+++after + line indicates missing configuration'
+      - "{{ access_diff_result.diff_text }}"
+  listen: 
+   - "cat2_cisc_l2_0000100_voice_Fail" 
+
+- name: "Handler | Access Failures"
+  ansible.builtin.set_fact:
+    SV_220656_findings: |
+      {{ SV_220656_findings | default('') }}
+      =========================================
+      ACCESS PORT FAILURE (BPDU)
+      =========================================
+      {{ access_diff_result.diff_text | default('No configuration diff available.') }}
+  listen: "cat2_cisc_l2_000100_access_Fail"
+
+- name: "Handler | Voice Failures"
+  ansible.builtin.set_fact:
+    SV_220649_findings: |
+      {{ SV_220656_findings | default('') }}
+      =========================================
+      VOICE VLAN FAILURE (BPDU)
+      =========================================
+      {{ voice_diff_result.diff_text | default('No configuration diff available.') }}
+  listen: "cat2_cisc_l2_00010_voice_Fail"
+
+
+
+# All STIG Viewer   
+- name: "Collect current timestamp"
+  ansible.builtin.setup:
+    gather_subset:
+      - 'date_time'
+  delegate_to: localhost
+  run_once: true
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
+- name: "Role: Evaluate | Create Timestamped CKLB file"
+  ansible.builtin.template:
+    src: templates/stig_viewer.j2
+    dest: "{{ cklb_path }}/{{ inventory_hostname }}_{{ lookup('pipe', 'date +%d%b%y_%H%M') }}.cklb"
+    owner: "{{ cklb_user }}"
+    group: "{{ cklb_user }}"
+    mode: '0644'
+  delegate_to: "{{ cklb_server }}"
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+  vars:
+    ansible_user: "{{ cklb_user }}"
+    ansible_password: "{{ cklb_password }}"
+    ansible_become_pass: "{{ cklb_become_pass }}"
+    become: true  
+ 
+  
+

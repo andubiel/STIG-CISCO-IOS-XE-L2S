@@ -1,4 +1,16 @@
----     
+---
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 
+         | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019'
+  ansible.builtin.include_tasks: cat2_vtp_eval.yml
+  when:
+      - SV_220650r539671
+  tags:
+      - CISC-L2-000030
+      - CAT2
+      - SRG-NET-000168-L2S-000019
+      - SV-220624r539671
+      - V-220650
+      
 - name: "MEDIUM | CISC-L2-000040 | PATCH | The Cisco switch must manage excess bandwidth to limit the effects of packet-flooding types of denial-of-service (DoS) attacks."
   ios_config:
       lines: 

@@ -1,0 +1,15 @@
+!
+{% for port in iosstig_access_ports %}
+interface {{ port.name }}
+ {# bpduguard #}
+ spanning-tree bpduguard enable
+{% endfor %}
+!
+{% for port in iosstig_voice_ports %}
+interface {{ port.name }}
+ {# bpduguard #}
+ spanning-tree bpduguard enable
+{% endfor %}
+!
+
+

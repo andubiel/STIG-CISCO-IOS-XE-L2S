@@ -1,0 +1,5 @@
+{% for port in iosstig_voice_ports %}
+interface {{ port.name }}
+spanning-tree bpduguard enable
+end
+{% endfor %}

@@ -50,7 +50,8 @@ The **Evaluate** role performs a non-disruptive audit of the switches. It compar
 * **Key Functions:**
 * Uses `fact_diff` to highlight configuration drift.
 * Groups findings by STIG Category (CAT I, II, III).
-* **Reporting:** Generates `.cklb` files that can be imported into the **STIG Viewer** desktop application for formal auditing and submission.
+* **Optional Reporting:** Generates `.cklb` files that can be imported into the **STIG Viewer** desktop application for formal auditing and submission.
+* Creates host_vars for subsequent remediation.
 
 ### 3. Remediate
 
@@ -78,6 +79,13 @@ If the configuration matches: The status is set to Open (Manual review needed) o
 If the configuration is missing/wrong: The status is set to Open.
 
 CKLB Generation: The tool uses the stig_viewer.j2 template to generate a .cklb file for every switch in the inventory.
+* This functionality can be enabled in the `vars/main.yml` file.
+
+~~~
+#This section is to enable the roles to provide CKLB formatted file for STIG Viewer
+# To enable or disable this functionality
+stig_viewer: true
+~~~~
 
 Key Benefits of the Checker:
 Eliminates Human Error: No more manual "copy-pasting" from a terminal to a spreadsheet.

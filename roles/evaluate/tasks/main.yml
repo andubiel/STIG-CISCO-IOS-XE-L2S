@@ -1,4 +1,22 @@
 ---
+- name: |
+    'Role: Evaluate | 
+    Create Directory for CKLB files
+  ansible.builtin.file:
+    path: "{{ cklb_path }}"
+    state: directory
+    owner: "{{ cklb_user }}"
+    group: "{{ cklb_user }}"
+  run_once: true
+  delegate_to: "{{ cklb_server }}"
+  vars:
+    ansible_connection: ssh
+    ansible_user: "{{ cklb_user }}"
+    ansible_password: "{{ cklb_password }}"
+    ansible_become_pass: "{{ cklb_become_pass }}"
+    become: true
+  when: stig_viewer == true
+
 - name: Include CAT 1 evaluate
   import_tasks: cat1.yml
   when: iosl2sstig_cat1_evaluate

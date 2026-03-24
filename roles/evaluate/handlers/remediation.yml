@@ -1,0 +1,137 @@
+# All Remediation
+
+- name: "Role: Remediate | Handler retrieve repository"
+  ansible.scm.git_retrieve:
+    origin:
+      url: "{{ git_url }}"
+    parent_directory: /tmp
+    branch:
+        name: main
+        duplicate_detection: no  
+  register: repository
+  delegate_to: localhost
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
+
+- name: "Role: Remediate | Handler | Delete Remediation File"
+  ansible.builtin.file:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    state: absent
+  delegate_to: localhost
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
+
+# Cat1
+
+- name: "Handler | CAT1 | SV-220649 | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220649r863283_remediate: true"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: 
+   - "cat1_cisc_l2_000020_access_Fail"
+   - "cat1_cisc_l2_000020_voice_Fail"
+
+- name: "Handler | CAT1 | SV-220649 | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220649r863283_remediate: false"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: 
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Pass"
+
+  # Cat2
+
+- name: "Handler | CAT2 | SV-220650 | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220650r539671_remediate: true"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000030_Fail"
+
+- name: "Handler | CAT2 | SV-220650 | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220650r539671_remediate: false"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000030_Pass"
+
+- name: "Handler | CAT2 | SV-220656 | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220656r856278_remediate: true"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: 
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_voice_Fail"
+
+- name: "Handler | CAT2 | SV-220656 | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220656r856278_remediate: false"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: 
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
+
+
+ # All Remediation   
+- name: |
+      'Role: Remediate | Handler
+       Push repository'
+  ansible.scm.git_publish:
+    path: "{{ repository['path'] }}"
+  run_once: true
+  delegate_to: localhost
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
