@@ -1,0 +1,60 @@
+- name: >
+    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard'
+  ansible.builtin.template:
+    src: templates/cat2/bpdu_access_interfaces.j2
+    dest: "/tmp/{{ inventory_hostname }}_bpdu_access_interface.cfg"
+  delegate_to: localhost
+
+- name: >
+    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard
+     show run interface'
+  cisco.ios.ios_command:
+    commands:
+      - 'show run int {{ show_item.name }} | exclude Building configuration...|Current configuration'
+  loop: "{{ iosstig_access_ports }}"
+  loop_control:
+    loop_var: show_item
+  register: access_bpdu
+
+- name: >
+     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard
+     Create clean configuration string'
+  ansible.builtin.set_fact:
+    access_config: |
+      {% for result in access_bpdu.results %}
+      {% for line in result.stdout[0].splitlines() %}
+      {% if line.strip() and line.strip() != '!' %}{{ line.strip() }}
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+  delegate_to: localhost
+
+- name: >
+     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard
+     Trim final result'
+  ansible.builtin.set_fact:
+   combined_access_config: "{{ access_config | trim }}"
+  delegate_to: localhost
+
+- name: >
+     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard
+     DIFF'
+  ansible.utils.fact_diff:
+    before: "{{ combined_access_config }}"
+    after: "{{ lookup('file', '/tmp/{{ inventory_hostname }}_bpdu_access_interface.cfg') | trim }}"
+  delegate_to: localhost
+  diff: true
+  register: access_diff_result
+  changed_when: access_diff_result.diff_text | regex_findall('^\\+[^+].*$', multiline=True) 
+  notify: "cat2_cisc_l2_000100_access_Fail"
+
+- name: >
+    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Access BPDU Guard
+    Trigger handler if NO DIFF occurred'
+  debug:
+    msg: "No changes detected, notifying handler that Rule ID: SV-220656r856278 Passed"
+  # Trigger this only if the previous task did NOT change
+  when: not access_diff_result.changed
+  changed_when: true
+  notify: "cat2_cisc_l2_000100_access_Pass"
+

@@ -19,6 +19,8 @@
     - "cat1_cisc_l2_000020_voice_Pass"
     - "cat2_cisc_l2_000030_Fail"
     - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000040_Fail"
+    - "cat2_cisc_l2_000040_Pass"
     - "cat2_cisc_l2_000100_access_Fail"
     - "cat2_cisc_l2_000100_access_Pass"
     - "cat2_cisc_l2_000100_voice_Fail"
@@ -39,6 +41,8 @@
     - "cat1_cisc_l2_000020_voice_Pass"
     - "cat2_cisc_l2_000030_Fail"
     - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000040_Fail"
+    - "cat2_cisc_l2_000040_Pass"
     - "cat2_cisc_l2_000100_access_Fail"
     - "cat2_cisc_l2_000100_access_Pass"
     - "cat2_cisc_l2_000100_voice_Fail"
@@ -89,6 +93,24 @@
   delegate_to: localhost
   listen: "cat2_cisc_l2_000030_Pass"
 
+- name: "Handler | CAT2 | SV-220651 | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220651r1107171_remediate: true"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000040_Fail"
+
+- name: "Handler | CAT2 | SV-220651 | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220651r1107171_remediate: false"
+    create: yes
+    mode: '0644'
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000040_Pass"
+
 - name: "Handler | CAT2 | SV-220656 | Flag for Remediation"
   ansible.builtin.lineinfile:
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
@@ -130,6 +152,8 @@
     - "cat1_cisc_l2_000020_voice_Pass"
     - "cat2_cisc_l2_000030_Fail"
     - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000040_Fail"
+    - "cat2_cisc_l2_000040_Pass"
     - "cat2_cisc_l2_000100_access_Fail"
     - "cat2_cisc_l2_000100_access_Pass"
     - "cat2_cisc_l2_000100_voice_Fail"

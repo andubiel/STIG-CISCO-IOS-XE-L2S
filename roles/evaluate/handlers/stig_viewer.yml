@@ -99,8 +99,8 @@
   ansible.builtin.set_fact:
     SV_220656_status: open
   listen: 
-   - "cat2_cisc_l2_0000100_access_Fail" 
-   - "cat2_cisc_l2_0000100_voice_Fail" 
+   - "cat2_cisc_l2_000100_access_Fail" 
+   - "cat2_cisc_l2_000100_voice_Fail" 
   
 - name: |
    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
@@ -111,7 +111,7 @@
       - '+++after + line indicates missing configuration'
       - "{{ access_diff_result.diff_text }}"
   listen: 
-   - "cat2_cisc_l2_0000100_access_Fail" 
+   - "cat2_cisc_l2_000100_access_Fail" 
   
 - name: |
    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
@@ -120,9 +120,9 @@
     msg: 
       - "FAILURE:"
       - '+++after + line indicates missing configuration'
-      - "{{ access_diff_result.diff_text }}"
+      - "{{ voice_diff_result.diff_text }}"
   listen: 
-   - "cat2_cisc_l2_0000100_voice_Fail" 
+   - "cat2_cisc_l2_000100_voice_Fail" 
 
 - name: "Handler | Access Failures"
   ansible.builtin.set_fact:
@@ -142,7 +142,42 @@
       VOICE VLAN FAILURE (BPDU)
       =========================================
       {{ voice_diff_result.diff_text | default('No configuration diff available.') }}
-  listen: "cat2_cisc_l2_00010_voice_Fail"
+  listen: "cat2_cisc_l2_000100_voice_Fail"
+
+
+
+
+- name: |
+   'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
+    SV_220651_status | '
+  ansible.builtin.set_fact:
+    SV_220651_status: not_a_finding
+  listen: 
+   - "cat2_cisc_l2_000040_Pass"
+  
+- name: |
+      'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
+       SV_220651_status | '
+  ansible.builtin.set_fact:
+    SV_220651_status: open
+  listen: 
+   - "cat2_cisc_l2_000040_Fail" 
+   
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
+    SV_220651_status | '
+     SV_220651_findings | DOS'
+  ansible.builtin.debug:
+    msg: 
+      - "FAILURE:"
+      - '+++after + line indicates missing configuration'
+      - "{{ qos_diff_result.diff_text }}"
+  listen: 
+   - "cat2_cisc_l2_000040_Fail"
+ 
+
+
+
 
 
 

@@ -18,19 +18,19 @@
   when: stig_viewer == true
 
 - name: Include CAT 1 evaluate
-  import_tasks: cat1.yml
+  import_tasks: cat1/cat1.yml
   when: iosl2sstig_cat1_evaluate
   tags:
       - CAT1
 
 - name: Include CAT 2 evaluate
-  import_tasks: cat2.yml
+  import_tasks: cat2/cat2.yml
   when: iosl2sstig_cat2_evaluate
   tags:
       - CAT2
 
 - name: Include CAT 3 evaluate
-  import_tasks: cat3.yml
+  import_tasks: cat3/cat3.yml
   when: iosl2sstig_cat3_evaluate
   tags:
       - CAT3
