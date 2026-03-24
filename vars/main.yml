@@ -123,17 +123,6 @@ iosstig_vtp_user_password: changeme
 
 # SV-220656r856278 | CISC-L2-000100 | BPDU Guard
 # CISC-L2-000100
-# iosstig_bpdu_guard_global allows you set BPDU Guard globally on a layer 2 switch.
-# none <--- This bypasses control. 
-# enable <--- This will set global BPDU Guard
-iosstig_bpdu_guard_global: "enable"
-# iosstig_bpdu_guard_interface allows the user to set BPDU Guard on specific ports on the switch
-# NOTE: Enable BPDU Guard on all user-facing or untrusted access switch ports as shown in the 
-# Configuration example below:
-# none <--- This bypasses control allowing you to set the global. 
-# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
-# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
-iosstig_bpdu_guard_interfaces: "none"
 
 # SV-220657r856279 | CISC-L2-000110 | (STP) loop guard
 ########## NEED TO DO ###########
