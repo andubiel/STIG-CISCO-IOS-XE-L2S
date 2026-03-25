@@ -149,7 +149,7 @@ STIG-CISCO-IOS-XE-L2S/
 ## Requirements
 
 * **Ansible:** 2.10 or higher.
-* **Ansible Automation Platform 2.4 or higher
+* **Ansible Automation Platform:** 2.4 or higher
 * **Collections:** 
   * `cisco.ios`
   * `ansible.utils`
