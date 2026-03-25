@@ -97,16 +97,9 @@ Continuous Compliance: Use the checker as a "Canary" in your CI/CD pipeline to a
 STIG Viewer Compatibility: The generated files are 100% compatible with the DISA STIG Viewer tool, allowing security teams to review findings, add comments, and sign off on compliance packages.
 
 Workflow:
-This repo is best suited to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
-* evaluate.yml
+This repo is designed to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
+* `evaluate.yml`
 
-However, with modification these same roles could launch similar to below:
-
-Run the Evaluation:
-```bash
-ansible-playbook example-site.yml -i inventory.ini --tags evaluate
-
-``` 
 Retrieve Results: Files are saved to your defined cklb_path (e.g., /tmp/inventory_hostname.cklb).
 
 Review: Open the generated file in STIG Viewer to see a rule-by-rule breakdown of your switch’s security posture.
@@ -144,24 +137,22 @@ STIG-CISCO-IOS-XE-L2S/
 │   ├── stig_viewer.j2  # Template for generating CKLB audit files
 │   ├── cat1/           # High-severity rule templates
 │   └── cat2/           # Medium-severity rule templates
+|   └── cat3/           # Low-severity rule templates
 ├── vars/               # Global variables and STIG rule toggles
-├── group_vars/         # Credentials and connection settings
-└── example-site.yml    # Main playbook to run the roles from ansible-playbook
 └── discover.yml        # Main playbook to run the discover role from Ansible Automation Platform
 └── evaluate.yml        # Main playbook to run the evaluate role from Ansible Automation Platform
 └── remediate.yml       # Main playbook to run the remediate role from Ansible Automation Platform
 
-
 ```
-
 ---
 
 ## Requirements
 
 * **Ansible:** 2.10 or higher.
-* **Collections:** * `cisco.ios`
-* `ansible.utils`
-
+* **Ansible Automation Platform 2.4 or higher
+* **Collections:** 
+  * `cisco.ios`
+  * `ansible.utils`
 
 * **Connectivity:** SSH access to switches with Enable/Privileged EXEC rights.
 * **STIG Version:** Designed against the Cisco IOS-XE L2S STIG.
@@ -171,13 +162,7 @@ STIG-CISCO-IOS-XE-L2S/
 ## Usage
 perform a full check-and-fix for a switch:
 
-This repo is best suited to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
-However, with modification these same roles can run from the command line:
-
-```bash
-ansible-playbook example-site.yml -i inventory.ini --tags discover,evaluate
-
-```
+This repo is best designed to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
 
 ## AAP Screenshots
 ########## NEED TO DO ###########
