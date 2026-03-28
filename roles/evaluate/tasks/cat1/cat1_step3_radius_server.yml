@@ -28,18 +28,18 @@
   diff: true
   register: radius_diff_result
   changed_when: radius_diff_result.diff_text | regex_findall('^\\+[^+].*$', multiline=True) 
-  notify: "cat1_cisc_l2_000020_Fail"
+  notify: "cat1_cisc_l2_000020_radius_Fail"
 
 - name: >
    'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
     Step: 3 | Verify that the radius servers have been defined
-    Trigger handler if NO DIFF occurred'
+    Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No changes detected, notifying handler that Rule ID: SV-220649r863283 Passed"
   # Trigger this only if the previous task did NOT change
-  when: not auth_diff_result.changed
+  when: not radius_diff_result.changed
   changed_when: true
-  notify: "cat1_cisc_l2_000020_Pass"
+  notify: "cat1_cisc_l2_000020_radius_Pass"
   
 
   

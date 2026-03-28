@@ -1,12 +1,6 @@
+---
 - name: >
-    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS'
-  ansible.builtin.template:
-    src: templates/cat2/dos_access_interfaces.j2
-    dest: "/tmp/{{ inventory_hostname }}_bpdu_access_interface.cfg"
-  delegate_to: localhost
-
-- name: >
-   'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
+   'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS | Access
      show run interface'
   cisco.ios.ios_command:
     commands:
@@ -14,47 +8,39 @@
   loop: "{{ iosstig_access_ports }}"
   loop_control:
     loop_var: show_item
-  register: access_bpdu
+  register: access_dos
 
 - name: >
-     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
+     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS | Access
      Create clean configuration string'
   ansible.builtin.set_fact:
-    access_config: |
-      {% for result in access_bpdu.results %}
-      {% for line in result.stdout[0].splitlines() %}
-      {% if line.strip() and line.strip() != '!' %}{{ line.strip() }}
-      {% endif %}
-      {% endfor %}
-      {% endfor %}
+    missing_dos_interfaces: >-
+      {{ access_dos.results | 
+         selectattr('stdout', 'defined') | 
+         rejectattr('stdout.0', 'search', 'service-policy output QOS_POLICY_SWITCHPORT') | 
+         map(attribute='show_item.name') | list 
+         | unique }}
   delegate_to: localhost
-
-- name: >
-     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
-     Trim final result'
-  ansible.builtin.set_fact:
-   combined_access_config: "{{ access_config | trim }}"
-  delegate_to: localhost
-
-- name: >
-     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
-     DIFF'
-  ansible.utils.fact_diff:
-    before: "{{ combined_access_config }}"
-    after: "{{ lookup('file', '/tmp/{{ inventory_hostname }}_bpdu_access_interface.cfg') | trim }}"
-  delegate_to: localhost
-  diff: true
-  register: access_diff_result
-  changed_when: access_diff_result.diff_text | regex_findall('^\\+[^+].*$', multiline=True) 
+  changed_when: missing_dos_interfaces | length > 0
   notify: "cat2_cisc_l2_000040_access_Fail"
 
+- name: "STIG | Show findings | DOS | Access "
+  ansible.builtin.debug:
+    msg: "The following interfaces are non-compliant: {{ missing_dos_interfaces }}"
+  when: missing_dos_interfaces | length > 0
+  
+
 - name: >
-   'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
-    Trigger handler if NO DIFF occurred'
+   'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS | Access
+    Trigger handler'
   debug:
-    msg: "No changes detected, notifying handler that Rule ID: SV-20651r110717 Passed"
+    msg: "No compliance violation detected, notifying handler that Rule ID: SV-220651r1107171 Passed"
   # Trigger this only if the previous task did NOT change
-  when: not access_diff_result.changed
+  when: missing_dos_interfaces | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000040_access_Pass"
+
+  
+
+
 

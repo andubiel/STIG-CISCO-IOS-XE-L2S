@@ -1,0 +1,5 @@
+{% for port in iosstig_voice_ports %}
+interface {{ port.name }}
+ service-policy output QOS_POLICY_SWITCHPORT
+end
+{% endfor %}

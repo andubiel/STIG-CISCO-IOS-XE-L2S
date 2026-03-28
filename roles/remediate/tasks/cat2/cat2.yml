@@ -13,20 +13,26 @@
 
 - name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220651 
          | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS'
-  ansible.builtin.include_tasks: "{{ item }}"
-  loop: 
-  -  cat2_dos_remediate.yml
+  ansible.builtin.include_tasks: cat2_dos_remediate.yml
   when:
     - SV_220651r1107171
   tags:
     - CISC-L2-000040
     - CAT2
     - SRG-NET-000193-L2S-000020
-    - SV-220651r1107171_rule
     - V-220651
 
-
-
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Severity: Medium (Cat II) | Group ID: V-220656 
+          | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-00002 | BPDU'
+  ansible.builtin.include_tasks: cat2_bpdu_remediate.yml
+  when:
+    - SV_220656r856278
+  tags:
+    - CISC-L2-000100
+    - CAT2
+    - SSRG-NET-000362-L2S-00002
+    - SV-220651r1107171_rule
+    - V-220656 
 
 
 

@@ -4,11 +4,11 @@
 #Discover
 iosl2sstig_discover: true
 #Evaluate
-iosl2sstig_cat1_evaluate: true
+iosl2sstig_cat1_evaluate: false
 iosl2sstig_cat2_evaluate: true
 iosl2sstig_cat3_evaluate: false
 #Remediate
-iosl2sstig_cat1_remediate: true
+iosl2sstig_cat1_remediate: false
 iosl2sstig_cat2_remediate: true
 iosl2sstig_cat3_remediate: false
 
@@ -47,8 +47,8 @@ git_url: "http://gitea:{{password}}@aap:3000/gitea/STIG-CISCO-IOS-XE-L2S.git"
 SV_220649r863283: true #CISC-L2-000020 | 802.1x authentication 
 
 # CAT 2 rules
-SV_220650r539671: true #CISC-L2-000030 | VLAN Trunk Protocol 
-SV_220651r1107171: true #CISC-L2-000040 | DOS
+SV_220650r539671: false #CISC-L2-000030 | VLAN Trunk Protocol 
+SV_220651r1107171: false #CISC-L2-000040 | DOS
 SV_220656r856278: true #CISC-L2-000100 | BPDU Guard
 SV-220657r856279: false #CISC-L2-000110 | (STP) loop guard
 SV-220658r856280: false #CISC-L2-000120 | (CAM)Content Addressable Memory table 
@@ -120,25 +120,17 @@ iosstig_vtp_user_password: changeme
 #SV-SV-220651r1107171 | CISC-L2-000040 | DOS
 #CISC-L2-000040
 ios_qos_standard: |
-  class-map match-all C2_VOICE
-   match ip dscp 47
-  class-map match-all VOICE
-   match ip dscp ef
-  class-map match-all VIDEO
-   match ip dscp af41
-  class-map match-all PREFERRED_DATA
-   match ip dscp af33
   policy-map QOS_POLICY_SWITCHPORT
-   class C2_VOICE
-    priority level 1 10
-   class VOICE
-    priority level 2 15
-   class VIDEO
-    bandwidth percent 25
-   class PREFERRED_DATA
-    bandwidth percent 25
-   class class-default
-    bandwidth percent 25
+  class C2_VOICE
+   priority level 1 10
+  class VOICE
+   priority level 2 15
+  class VIDEO
+   bandwidth percent 25
+  class PREFERRED_DATA
+   bandwidth percent 25
+  class class-default
+   bandwidth percent 25
 
 # SV-220656r856278 | CISC-L2-000100 | BPDU Guard
 # CISC-L2-000100

@@ -1,12 +1,4 @@
-- name: >
-    'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-     Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
-     Render configuration for 802.1x voice interfaces'
-  ansible.builtin.template:
-    src: templates/cat1/voice_interfaces.j2
-    dest: "/tmp/{{ inventory_hostname }}_voice_interface.cfg"
-  delegate_to: localhost
-
+---
 - name: >
     'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
      Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
@@ -24,43 +16,39 @@
      Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
      Create clean configuration string'
   ansible.builtin.set_fact:
-    voice_config: |
-      {% for result in voice8021x.results %}
-      {% for line in result.stdout[0].splitlines() %}
-      {% if line.strip() and line.strip() != '!' %}{{ line.strip() }}
-      {% endif %}
-      {% endfor %}
-      {% endfor %}
-  delegate_to: localhost
-
-- name: >
-    'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-     Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
-     Trim final result'
-  ansible.builtin.set_fact:
-   combined_voice_config: "{{ voice_config | trim }}"
-  delegate_to: localhost
-
-- name: >
-    'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-     Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
-     DIFF'
-  ansible.utils.fact_diff:
-    before: "{{ combined_voice_config }}"
-    after: "{{ lookup('file', '/tmp/{{ inventory_hostname }}_voice_interface.cfg') | trim }}"
-  delegate_to: localhost
-  diff: true
-  register: voice_diff_result
-  changed_when: voice_diff_result.diff_text | regex_findall('^\\+[^+].*$', multiline=True) 
+    missing_8021x_voice: >-
+      {{ voice8021x.results | 
+         selectattr('stdout', 'defined') | 
+         rejectattr('stdout.0', 'search', 'authentication port-control auto') | 
+         map(attribute='show_item.name') | list 
+         + 
+         voice8021x.results | 
+         selectattr('stdout', 'defined') | 
+         rejectattr('stdout.0', 'search', 'dot1x pae authenticator') | 
+         map(attribute='show_item.name') | list 
+         +
+         voice8021x.results | 
+         selectattr('stdout', 'defined') | 
+         rejectattr('stdout.0', 'search', 'authentication host-mode multi-domain') | 
+         map(attribute='show_item.name') | list 
+         | unique }}
+  register: voice_result
+  changed_when: missing_8021x_voice | length > 0
   notify: "cat1_cisc_l2_000020_voice_Fail"
+
+- name: "STIG | Show findings | 8021x | Voice "
+  ansible.builtin.debug:
+    msg: "The following interfaces are non-compliant: {{ missing_8021x_voice }}"
+  when: missing_8021x_voice | length > 0
 
 - name: >
    'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-    Step: 1 | Verify that 802.1x authentication is configured on the VOICE switch ports
-    Trigger handler if NO DIFF occurred'
+    Step: 1 | Verify that 802.1x authentication is configured on the Voice switch ports
+    Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No changes detected, notifying handler that Rule ID: SV-220649r863283 Passed"
   # Trigger this only if the previous task did NOT change
-  when: not voice_diff_result.changed
+  when: not voice_result.changed
   changed_when: true
   notify: "cat1_cisc_l2_000020_voice_Pass"
+

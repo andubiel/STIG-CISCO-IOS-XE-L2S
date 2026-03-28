@@ -24,90 +24,71 @@
   loop:
    - iosstig_access_ports
    - iosstig_voice_ports
+   - iosstig_trunk_ports
 
-- name: |
-    'Role: Discover | 
-     Gather interfaces resources'
+- name: 'Role: Discover | Gather interfaces resources'
   cisco.ios.ios_facts:
     gather_subset:
       - "!all"
       - "!min"
     gather_network_resources:
-      - interfaces
       - l2_interfaces 
+  # This registers ansible_facts.network_resources.l2_interfaces
 
-- name: | 
-    'Role: Discover | 
-     Set Access Vlan Filter'
+- name: 'Role: Discover | Set L2 Port Filter'
   set_fact:
-    access_ports: "{{ ansible_facts.network_resources.l2_interfaces | selectattr('mode', 'defined' )}}"
-  delegate_to: localhost
-   
-- name: |
-    'Role: Discover | 
-     List the Access ports based on match'
-  ansible.builtin.debug:
-    msg:
-        - "host_name: {{ inventory_hostname }}"
-        - "{{ access_ports | selectattr('mode', 'equalto', 'access') | map(attribute='name') }}"
-  delegate_to: localhost
- 
-- name: |
-    'Role: Discover | 
-     Create host_vars directory'
-  ansible.builtin.file:
-   path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/"
-   state: directory
-  run_once: true
+    # We use | default([]) in case l2_interfaces wasn't gathered or is empty
+    all_l2_ports: "{{ ansible_facts.network_resources.l2_interfaces | default([]) }}"
   delegate_to: localhost
 
-- name: |
-    'Role: Discover | 
-     Copy using iosstig_access_ports content
+- name: 'Role: Discover | Write Access Ports File'
   ansible.builtin.copy:
     content: |
-     iosstig_access_ports:
-     {{ access_ports
-        | selectattr('mode', 'equalto', 'access')
-        | rejectattr('voice.vlan', 'defined')
-        | to_nice_yaml }}
+      ---
+      iosstig_access_ports:
+      {{ all_l2_ports 
+         | selectattr('mode', 'defined') 
+         | selectattr('mode', 'equalto', 'access') 
+         | rejectattr('voice', 'defined') 
+         | list | to_nice_yaml }}
     dest: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_access_ports.yaml"
   delegate_to: localhost
+  # Only run if we actually found access ports that aren't voice ports
+  when: all_l2_ports | selectattr('mode', 'defined') | selectattr('mode', 'equalto', 'access') | rejectattr('voice', 'defined') | list | length > 0
 
-- name: |
-    'Role: Discover | 
-     Copy using iosstig_voice_ports content'
+- name: 'Role: Discover | Write Voice Ports File'
   ansible.builtin.copy:
     content: |
-     iosstig_voice_ports:
-     {{ access_ports
-        | selectattr('voice.vlan', 'defined')
-        | to_nice_yaml }}
+      ---
+      iosstig_voice_ports:
+      {{ all_l2_ports 
+         | selectattr('voice', 'defined') 
+         | list | to_nice_yaml }}
     dest: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_voice_ports.yaml"
   delegate_to: localhost
-  when: access_ports | selectattr('voice.vlan', 'defined') | length > 0
+  # Only run if voice attributes exist on any port
+  when: all_l2_ports | selectattr('voice', 'defined') | list | length > 0
 
-- name: |
-    'Role: Discover | 
-     Copy using iosstig_trunk_ports content
+- name: 'Role: Discover | Write Trunk Ports File'
   ansible.builtin.copy:
     content: |
-     iosstig_trunk_ports:
-     {{ access_ports
-        | selectattr('mode', 'equalto', 'trunk')
-        | to_nice_yaml }}
+      ---
+      iosstig_trunk_ports:
+      {{ all_l2_ports 
+         | selectattr('mode', 'defined') 
+         | selectattr('mode', 'equalto', 'trunk') 
+         | list | to_nice_yaml }}
     dest: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_trunk_ports.yaml"
   delegate_to: localhost
+  # Only run if trunk ports exist
+  when: all_l2_ports | selectattr('mode', 'defined') | selectattr('mode', 'equalto', 'trunk') | list | length > 0
 
 - name: |
-   'Role: Discover | 
-    Publish the changes'
+   'Role: Discover | Publish the changes'
   ansible.scm.git_publish:
     path: "{{ repository['path'] }}"
   run_once: true
   delegate_to: localhost
-
-
 
    
 

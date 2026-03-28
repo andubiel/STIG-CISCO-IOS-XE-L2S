@@ -1,4 +1,33 @@
 ---
+- name: "Role: Evaluate | GIT Retrieve"
+  ansible.scm.git_retrieve:
+    origin:
+      url: "{{ git_url }}"
+    parent_directory: /tmp
+    branch:
+        name: main
+        duplicate_detection: no  
+  register: repository
+  delegate_to: localhost
+  run_once: true
+
+- name: "Role: Evaluate | Handler | Delete Files"
+  ansible.builtin.file:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_{{ item }}.yaml"
+    state: absent
+  delegate_to: localhost
+  loop:
+   - remediate
+   - scoped
+
+- name: |
+      'Role: Evaluate | Handler
+       Push repository'
+  ansible.scm.git_publish:
+    path: "{{ repository['path'] }}"
+  run_once: true
+  delegate_to: localhost
+
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 
          | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019 | VTP Password'
   ansible.builtin.include_tasks: cat2_vtp_eval.yml
@@ -15,7 +44,10 @@
          | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS'
   ansible.builtin.include_tasks: "{{ item }}"
   loop: 
-  -  cat2_dos.yml
+  -  cat2_dos_qos_eval.yml
+  -  cat2_dos_access_eval.yml
+  -  cat2_dos_voice_eval.yml
+  -  cat2_dos_trunk_eval.yml
   when:
     - SV_220651r1107171
   tags:

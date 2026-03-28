@@ -1,0 +1,35 @@
+---
+# All Remediation
+- name: |
+      'Role: Remediate | Handler
+       Push repository'
+  ansible.scm.git_publish:
+    path: "{{ repository['path'] }}"
+  run_once: true
+  delegate_to: localhost
+  listen: 
+    - "cat1_cisc_l2_000020_Fail"
+    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000040_Fail"
+    - "cat2_cisc_l2_000040_Pass"
+    - "cat2_cisc_l2_000040_access_Fail"
+    - "cat2_cisc_l2_000040_access_Pass"
+    - "cat2_cisc_l2_000040_voice_Fail"
+    - "cat2_cisc_l2_000040_voice_Pass"
+    - "cat2_cisc_l2_000040_trunk_Fail"
+    - "cat2_cisc_l2_000040_trunk_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+
+
+
+
+
