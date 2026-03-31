@@ -1,0 +1,5 @@
+{% for port in access_ipsg %}
+interface {{ port.name }}
+ ip verify source
+end
+{% endfor %}

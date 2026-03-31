@@ -1,4 +1,4 @@
-{% for port in iosstig_access_ports %}
+{% for port in access_bpdu %}
 interface {{ port.name }}
  spanning-tree bpduguard enable
 end

@@ -13,8 +13,8 @@
   delegate_to: localhost
   run_once: true
   listen: 
-    - "cat1_cisc_l2_000020_Fail"
-    - "cat1_cisc_l2_000020_Pass"
+    - "cat1_cisc_l2_000020_auth_Fail"
+    - "cat1_cisc_l2_000020_auth_Pass"
     - "cat1_cisc_l2_000020_access_Fail"
     - "cat1_cisc_l2_000020_access_Pass"
     - "cat1_cisc_l2_000020_voice_Fail"
@@ -33,3 +33,15 @@
     - "cat2_cisc_l2_000100_access_Pass"
     - "cat2_cisc_l2_000100_voice_Fail"
     - "cat2_cisc_l2_000100_voice_Pass"
+    - "cat2_cisc_l2_000110_Fail"
+    - "cat2_cisc_l2_000110_Pass"
+    - "cat2_cisc_l2_000120_access_Fail"
+    - "cat2_cisc_l2_000120_access_Pass"
+    - "cat2_cisc_l2_000120_voice_Fail"
+    - "cat2_cisc_l2_000120_voice_Pass"
+    - "cat2_cisc_l2_000130_Fail"
+    - "cat2_cisc_l2_000130_Pass"
+    - "cat2_cisc_l2_000140_access_Fail"
+    - "cat2_cisc_l2_000140_access_Pass"
+    - "cat2_cisc_l2_000140_voice_Fail"
+    - "cat2_cisc_l2_000140_voice_Pass"

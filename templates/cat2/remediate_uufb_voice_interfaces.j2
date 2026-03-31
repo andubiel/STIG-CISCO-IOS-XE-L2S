@@ -1,0 +1,4 @@
+{% for port in voice_uufb %}
+interface {{ port.name }}
+ switchport block unicast
+{% endfor %}

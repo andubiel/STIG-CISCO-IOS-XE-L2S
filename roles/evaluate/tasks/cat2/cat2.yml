@@ -1,33 +1,4 @@
 ---
-- name: "Role: Evaluate | GIT Retrieve"
-  ansible.scm.git_retrieve:
-    origin:
-      url: "{{ git_url }}"
-    parent_directory: /tmp
-    branch:
-        name: main
-        duplicate_detection: no  
-  register: repository
-  delegate_to: localhost
-  run_once: true
-
-- name: "Role: Evaluate | Handler | Delete Files"
-  ansible.builtin.file:
-    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_{{ item }}.yaml"
-    state: absent
-  delegate_to: localhost
-  loop:
-   - remediate
-   - scoped
-
-- name: |
-      'Role: Evaluate | Handler
-       Push repository'
-  ansible.scm.git_publish:
-    path: "{{ repository['path'] }}"
-  run_once: true
-  delegate_to: localhost
-
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 
          | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019 | VTP Password'
   ansible.builtin.include_tasks: cat2_vtp_eval.yml
@@ -72,4 +43,62 @@
       - SV-220656r856278_rule
       - V-220656
 
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220657
+         | Rule ID:SV-220657r856279 | STIG ID: CISC-L2-000110 | SRG ID: SRG-NET-000362-L2S-000023 | STP Loop Guard'
+  ansible.builtin.include_tasks: cat2_stp_loop_eval.yml
+  when: SV_220657r856279
+  tags:
+      - CISC-L2-000110
+      - CAT2
+      - SRG-NET-000362-L2S-000023
+      - SV_220657r856279
+ 
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220658 
+         | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024 | UUFB'
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop: 
+   -  cat2_uufb_access_eval.yml
+   -  cat2_uufb_voice_eval.yml
+  when:
+      - SV_220658r856280
+  tags:
+      - CISC-L2-000120
+      - CAT2
+      - SRG-NET-000362-L2S-000024
+      - SV_220658r856280
 
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
+         DHCP Snooping'
+  ansible.builtin.include_tasks: cat2_dhcp_snooping_eval.yml
+  when:
+      - SV_220659r928999
+  tags:
+      - CISC-L2-000130
+      - CAT2
+      - SRG-NET-000362-L2S-000025
+      - SV_220659r928999
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220660 | Rule ID:SV-220660r929001 | STIG ID: CISC-L2-000140 | SRG ID: SRG-NET-000362-L2S-000026 | 
+         Access | IP Source Guard'
+  ansible.builtin.include_tasks: "{{ item }}"
+  loop: 
+   -  cat2_ipsg_access_eval.yml
+   -  cat2_ipsg_voice_eval.yml
+  when:
+      - SV_220660r929001
+  tags:
+      - CISC-L2-000140
+      - CAT2
+      - SRG-NET-000362-L2S-000026
+      - SV_220660r929001
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220661 
+         | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 | DAI'
+  ansible.builtin.include_tasks: cat2_dai_eval.yml
+  when:
+      - SV_220661r929003
+  tags:
+      - CISC-L2-000150
+      - CAT2
+      - SRG-NET-000362-L2S-000027
+      - V-220661

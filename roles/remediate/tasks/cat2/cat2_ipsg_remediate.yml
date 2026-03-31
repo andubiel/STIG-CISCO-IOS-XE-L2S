@@ -1,0 +1,10 @@
+---
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220660 | Rule ID:SV-220660r929001 | STIG ID: CISC-L2-000140 | SRG ID: SRG-NET-000362-L2S-000026 | Access'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_ipsg_access_interfaces.j2'
+  when: SV_220660r929001_remediate_access == true
+
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220660 | Rule ID:SV-220660r929001 | STIG ID: CISC-L2-000140 | SRG ID: SRG-NET-000362-L2S-000026 | Voice'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_ipsg_voice_interfaces.j2'
+  when: SV_220660r929001_remediate_voice == true

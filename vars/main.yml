@@ -49,27 +49,37 @@ SV_220649r863283: true #CISC-L2-000020 | 802.1x authentication
 # CAT 2 rules
 SV_220650r539671: false #CISC-L2-000030 | VLAN Trunk Protocol 
 SV_220651r1107171: false #CISC-L2-000040 | DOS
-SV_220656r856278: true #CISC-L2-000100 | BPDU Guard
-SV-220657r856279: false #CISC-L2-000110 | (STP) loop guard
-SV-220658r856280: false #CISC-L2-000120 | (CAM)Content Addressable Memory table 
-SV-220659r928999: false #CISC-L2-000130 | DHCP snooping 
-SV-220660r929001: false #CISC-L2-000140 | IP Source Guard 
-SV-220661r929003: false #CISC-L2-000150 | Dynamic ARP
-SV-220664r539671: false #CISC-L2-000180 | Rapid STP 
-SV-220665r539671: false #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
-SV-220666r539671: false #CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
-SV-220667r991904: false #CISC-L2-000210 | unused VLAN
-SV-220668r991905: false #CISC-L2-000220 | default VLAN host
-SV-220669r991906: false #CISC-L2-000230 | default VLAN pruned
-SV-220670r991907: false #CISC-L2-000240 | default VLAN mgmt
-SV-220671r991908: false #CISC-L2-000250 | untrusted trunk ports
-SV-220670r991909: false #CISC-L2-000260 | trunk native VLAN
+SV_220656r856278: false #CISC-L2-000100 | BPDU Guard
+SV_220657r856279: false #CISC-L2-000110 | (STP) loop guard
+SV_220658r856280: false #CISC-L2-000120 | (UUFB) Unicast Flood Blocking
+SV_220659r928999: false #CISC-L2-000130 | DHCP snooping 
+SV_220660r929001: true #CISC-L2-000140 |  (IPSG) IP Source Guard 
+SV_220661r929003: false #CISC-L2-000150 | Dynamic ARP
+SV_220664r539671: false #CISC-L2-000180 | Rapid STP 
+SV_220665r539671: false #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
+SV_220666r539671: false #CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
+SV_220667r991904: false #CISC-L2-000210 | unused VLAN
+SV_220668r991905: false #CISC-L2-000220 | default VLAN host
+SV_220669r991906: false #CISC-L2-000230 | default VLAN pruned
+SV_220670r991907: false #CISC-L2-000240 | default VLAN mgmt
+SV_220671r991908: false #CISC-L2-000250 | untrusted trunk ports
+SV_220670r991909: false #CISC-L2-000260 | trunk native VLAN
 
 # CAT 3 rules
 SV-220655r917683: false #CISC-L2-000090 | Root Guard
 SV-220662r648766: false #CISC-L2-000160 | Storm Control 
 SV-220663r929005: false #CISC-L2-000170 | IGMP or MLD Snooping
 SV-220673r991910: false #CISC-L2-000270 | Access Native Vlan
+
+# Vlans
+# iosstig_user_vlans
+# iosstig_user_vlans is the list of vlans that are user facing.  
+# Per The STIG they are labeled as user VLANs
+# Server and Printer Vlans N/A
+# Vlans are in a list separated by commas
+iosstig_user_vlans: [12,13]
+iosstig_voice_vlans: [20,21]
+
 
 # Cat 1
 
@@ -132,35 +142,11 @@ ios_qos_standard: |
   class class-default
    bandwidth percent 25
 
-# SV-220656r856278 | CISC-L2-000100 | BPDU Guard
-# CISC-L2-000100
 
-# SV-220657r856279 | CISC-L2-000110 | (STP) loop guard
-########## NEED TO DO ###########
-# SV-220658r856280 | CISC-L2-000120 | (CAM)Content Addressable Memory table 
-########## NEED TO DO ###########
-
-# CISC-L2-000140
-# This will set the STIG to Configure the switch to have IP Source Guard enabled on 
-# all user-facing or untrusted access switch ports.  You will choose what configuration 
-# you want first then put the assigned variable in iosstig_sourceguard_option. 
-#### NOTE ONLY TWO OPTIONS BELOW ####
-# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
-# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
-iosstig_sourceguard_option: "{{ iosstig_userfacing_ports }}"
-
-# SV_220649r863283 | CISC-L2-000020 | 802.1x authentication
-# CISC-L2-000020 
-# SV-220659r928999 | CISC-L2-000130 | DHCP snooping 
 # CISC-L2-000130
 # SV-220661r929003 | CISC-L2-000150 | Dynamic ARP
 # CISC-L2-000150
-# iosstig_user_vlans
-# iosstig_user_vlans is the list of vlans that are user facing.  
-# Per The STIG they are labled as user VLANs
-# Vlans are in a list separated by commas
-iosstig_user_vlans: [12]
-iosstig_voice_vlans: [20]
+
 
 # SV-220664r539671 | CISC-L2-000180 | Rapid STP 
 # CISC-L2-000180
@@ -231,15 +217,7 @@ iosstig_mgmt_ipaddress: "10.10.10.10"
 # iosstig_mgmt_ipaddress_subnet is the subnet for management ip address. 
 iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
 
-# SV-220671r991908 | CISC-L2-000250 | untrusted trunk ports
-# CISC-L2-000250
-# iosstig_setaccess_switchports sets mode access to either iosstig_userfacing_ports 
-# or iosstig_untrusted_ports. The Cisco switch must have all user-facing or untrusted
-# ports configured as access switch ports.
-#### NOTE ONLY TWO OPTIONS BELOW ####
-# iosstig_userfacing_ports <--- Sets it on userfacing ports defined in global variables at top.
-# iosstig_untrusted_ports <--- Sets it on untrusted ports defined in global variables at top.
-iosstig_setaccess_switchports: "{{ iosstig_userfacing_ports }}"
+
 
 # SV-220670r991909 | CISC-L2-000260 | trunk native VLAN
 # CISC-L2-000260
@@ -253,15 +231,7 @@ iosstig_setaccess_switchports: "{{ iosstig_userfacing_ports }}"
 iosstig_native_vlan: "33"
 iosstig_native_vlan_name: "NATIVE"
 
-# SV-220651r1107171 | CISC-L2-000040 | QOS
-# CISC-L2-000040
-########## NEED TO DO ###########
 
-# CAT 3
-
-# SV-220655r917683 | CISC-L2-000090 | Root Guard
-# CISC-L2-000090
-########## NEED TO DO ###########
 
 # SV-220662r648766 | CISC-L2-000160 | Storm Control
 # CISC-L2-000160 

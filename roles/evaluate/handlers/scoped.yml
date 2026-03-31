@@ -90,3 +90,56 @@
       {% endfor %}
   delegate_to: localhost
   listen: "cat2_cisc_l2_000100_voice_Fail"
+
+- name: "Scoped | Add UUFB Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} UUFB ACCESS PORTS"
+    block: |
+      access_uufb:
+      {% for iface in missing_uufb_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_access_Fail"
+
+- name: "Scoped | Add UUFB Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} UUFB VOICE PORTS"
+    block: |
+      voice_uufb:
+      {% for iface in missing_uufb_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_voice_Fail"
+
+- name: "Scoped | Add IPSG Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} IPSG ACCESS PORTS"
+    block: |
+      access_ipsg:
+      {% for iface in missing_ipsg_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_access_Fail"
+
+- name: "Scoped | Add IPSG Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} IPSG VOICE PORTS"
+    block: |
+      voice_ipsg:
+      {% for iface in missing_ipsg_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_voice_Fail"
+

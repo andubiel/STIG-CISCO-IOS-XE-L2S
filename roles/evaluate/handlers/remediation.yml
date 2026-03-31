@@ -12,16 +12,6 @@
   listen: 
    - "cat1_cisc_l2_000020_auth_Fail"
 
-- name: "Handler | CAT1 | SV-220649 | Radius | Flag for Remediation"
-  ansible.builtin.lineinfile:
-    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
-    line: "SV_220649r863283_remediate_radius: true"
-    create: yes
-    mode: '0644'
-  delegate_to: localhost
-  listen: 
-   - "cat1_cisc_l2_000020_radius_Fail"
-
 - name: "Handler | CAT1 | SV-220649 | Access | Flag for Remediation"
   ansible.builtin.lineinfile:
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
@@ -51,17 +41,6 @@
   delegate_to: localhost
   listen: 
     - "cat1_cisc_l2_000020_auth_Pass"
-
-
-- name: "Handler | CAT1 | SV-220649 | Radius | Flag for Success"
-  ansible.builtin.lineinfile:
-    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
-    line: "SV_220649r863283_remediate_radius: false"
-    create: yes
-    mode: '0644'
-  delegate_to: localhost
-  listen: 
-    - "cat1_cisc_l2_000020_radius_Pass"
 
 - name: "Handler | CAT1 | SV-220649 | Access | Flag for Success"
   ansible.builtin.lineinfile:
@@ -235,3 +214,102 @@
   delegate_to: localhost
   listen: 
     - "cat2_cisc_l2_000100_voice_Pass"
+
+- name: "Handler | CAT2 | SV-220657 | STP Loop Guard | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220631r539671_remediate_loop: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000110_Fail"
+
+- name: "Handler | CAT2 | SV-220657 | STP Loop Guard | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220631r539671_remediate_loop: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000110_Pass"
+
+- name: "Handler | CAT2 | SV-220658 | UUFB | Access | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220658r856280_remediate_access: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_access_Fail"
+
+- name: "Handler | CAT2 | SV-220658 | UUFB | Voice | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220658r856280_remediate_voice: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_voice_Fail"
+
+- name: "Handler | CAT2 | SV-220658 | UUFB | Access | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220658r856280_remediate_access: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_access_Pass"
+
+- name: "Handler | CAT2 | SV-220658 | UUFB | Voice | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220658r856280_remediate_access: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_voice_Pass"
+
+- name: "Handler | CAT2 | SV-220659 | DHCP Snooping | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220659r928999_remediate_dhcp: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000130_Fail"
+
+- name: "Handler | CAT2 | SV-220659 | DHCP Snooping | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220659r928999_remediate_dhcp: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000130_Pass"
+
+- name: "Handler | CAT2 | SV-220660 | IP Source Guard | Access | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220660r929001_remediate_access: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_access_Fail"
+
+- name: "Handler | CAT2 | SV-220660 | IP Source Guard | Access | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220660r929001_remediate_access: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_access_Pass"
+
+- name: "Handler | CAT2 | SV-220660 | IP Source Guard | Voice | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220660r929001_remediate_voice: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_voice_Fail"
+
+- name: "Handler | CAT2 | SV-220660 | IP Source Guard | Voice | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220660r929001_remediate_voice: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_voice_Pass"
+
+
+

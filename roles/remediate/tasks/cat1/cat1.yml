@@ -14,4 +14,8 @@
       - SV-220649r863283_rule
       - V-220649
 
+- name: Save Cat1 Configs
+  cisco.ios.ios_config:
+    save_when: 'always'
+
  

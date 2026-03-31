@@ -1,0 +1,4 @@
+{% for port in access_uufb %}
+interface {{ port.name }}
+ switchport block unicast
+{% endfor %}

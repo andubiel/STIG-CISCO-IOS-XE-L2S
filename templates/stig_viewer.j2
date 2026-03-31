@@ -220,6 +220,210 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220656_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000022"
+                },
+                 {
+                    "group_id_src": "V-220657",
+                    "group_tree": [
+                        {
+                            "id": "V-220657",
+                            "title": "SRG-NET-000362-L2S-000023",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220657",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must have STP Loop Guard enabled.",
+                    "rule_id_src": "SV-220657r856279_rule",
+                    "rule_id": "SV-220657r856279",
+                    "rule_version": "CISC-L2-000110",
+                    "rule_title": "The Cisco switch must have STP Loop Guard enabled.",
+                    "fix_text": "Configure the switch to have STP Loop Guard enabled via the spanning-tree loopguard default global command.",
+                    "weight": "10.0",
+                    "check_content": "Review the switch configuration to verify that STP Loop Guard is enabled as shown in the configuration example below:\n\nhostname SW2\n…\n…\n…\nspanning-tree mode pvst\nspanning-tree loopguard default\n\nIf STP Loop Guard is not enabled, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "The Spanning Tree Protocol (STP) loop guard feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of BPDUs based on the port role. The designated port transmits BPDUs, and the non-designated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop guard feature makes additional checks. If BPDUs are not received on a non-designated port and loop guard is enabled, that port is moved into the STP loop-inconsistent blocking state.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110285",
+                        "V-101181"
+                    ],
+                    "ccis": [
+                        "CCI-002385"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "b6a78fc7-a445-45de-8dbc-ede33a238213",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220657_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220657_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000362-L2S-000023"
+                },
+                 {
+                    "group_id_src": "V-220658",
+                    "group_tree": [
+                        {
+                            "id": "V-220658",
+                            "title": "SRG-NET-000362-L2S-000024",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220658",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must have Unknown Unicast Flood Blocking (UUFB) enabled.",
+                    "rule_id_src": "SV-220658r856280_rule",
+                    "rule_id": "SV-220658r856280",
+                    "rule_version": "CISC-L2-000120",
+                    "rule_title": "The Cisco switch must have Unknown Unicast Flood Blocking (UUFB) enabled.",
+                    "fix_text": "Configure the switch to have Unknown Unicast Flood Blocking (UUFB) enabled as shown in the configuration example below:\n\nSW1(config)#int range g0/0 - 9\nSW1(config-if-range)#switchport block unicast",
+                    "weight": "10.0",
+                    "check_content": "Review the switch configuration to verify that UUFB is enabled on all access switch ports as shown in the configuration example below:\n\ninterface GigabitEthernet0/0\n switchport block unicast\n!\ninterface GigabitEthernet0/1\n switchport block unicast\n…\n…\n…\ninterface GigabitEthernet0/9 \n switchport block unicast\n\nIf any access switch ports do not have UUFB enabled, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "Access layer switches use the Content Addressable Memory (CAM) table to direct traffic to specific ports based on the VLAN number and the destination MAC address of the frame. When a router has an Address Resolution Protocol (ARP) entry for a destination host and forwards it to the access layer switch and there is no entry corresponding to the frame's destination MAC address in the incoming VLAN, the frame will be sent to all forwarding ports within the respective VLAN, which causes flooding. Large amounts of flooded traffic can saturate low-bandwidth links, causing network performance issues or complete connectivity outage to the connected devices. Unknown unicast flooding has been a nagging problem in networks that have asymmetric routing and default timers. To mitigate the risk of a connectivity outage, the Unknown Unicast Flood Blocking (UUFB) feature must be implemented on all access layer switches. The UUFB feature will block unknown unicast traffic flooding and only permit egress traffic with MAC addresses that are known to exit on the port.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110287",
+                        "V-101183"
+                    ],
+                    "ccis": [
+                        "CCI-002385"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "ee0c5dc0-0221-4ddc-9f14-3b0bfecba4d7",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220658_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220658_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000362-L2S-000024"
+                },
+                {
+                    "group_id_src": "V-220659",
+                    "group_tree": [
+                        {
+                            "id": "V-220659",
+                            "title": "SRG-NET-000362-L2S-000025",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220659",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources.",
+                    "rule_id_src": "SV-220659r928999_rule",
+                    "rule_id": "SV-220659r928999",
+                    "rule_version": "CISC-L2-000130",
+                    "rule_title": "The Cisco switch must have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources.",
+                    "fix_text": "Configure the switch to have DHCP snooping for all user VLANs to validate DHCP messages from untrusted sources as shown in the example below: \n\nSW2(config)#ip dhcp snooping\nSW2(config)#ip dhcp snooping vlan 2,4-8,11",
+                    "weight": "10.0",
+                    "check_content": "Review the switch configuration and verify that DHCP snooping is enabled on all user VLANs as shown in the example below:\n\nhostname SW2\n…\n…\n…\nip dhcp snooping vlan 2,4-8,11\nip dhcp snooping\n\nNote: Switchports assigned to a user VLAN would have drops in the area where the user community would reside; hence, the \"untrusted\" term is used. Server and printer VLANs would not be applicable.\n\nIf the switch does not have DHCP snooping enabled for all user VLANs to validate DHCP messages from untrusted sources, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "In an enterprise network, devices under administrative control are trusted sources. These devices include the switches, routers, and servers in the network. Host ports and unknown DHCP servers are considered untrusted sources. An unknown DHCP server on the network on an untrusted port is called a spurious DHCP server, any device (PC, Wireless Access Point) that is loaded with DHCP server enabled. The DHCP snooping feature determines whether traffic sources are trusted or untrusted. The potential exists for a spurious DHCP server to respond to DHCPDISCOVER messages before the real server has time to respond. DHCP snooping allows switches on the network to trust the port a DHCP server is connected to and not trust the other ports.\n\nThe DHCP snooping feature validates DHCP messages received from untrusted sources and filters out invalid messages as well as rate-limits DHCP traffic from trusted and untrusted sources. DHCP snooping feature builds and maintains a binding database, which contains information about untrusted hosts with leased IP addresses, and it utilizes the database to validate subsequent requests from untrusted hosts. Other security features, such as IP Source Guard and Dynamic Address Resolution Protocol (ARP) Inspection (DAI), also use information stored in the DHCP snooping binding database. Hence, it is imperative that the DHCP snooping feature is enabled on all VLANs.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110289",
+                        "V-101185"
+                    ],
+                    "ccis": [
+                        "CCI-002385"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "b0ed1ce1-f6ee-4b86-8064-9b29a11e2e76",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220659_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220659_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000362-L2S-000025"
+                },
+                   {
+                    "group_id_src": "V-220660",
+                    "group_tree": [
+                        {
+                            "id": "V-220660",
+                            "title": "SRG-NET-000362-L2S-000026",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220660",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must have IP Source Guard enabled on all user-facing or untrusted access switch ports.",
+                    "rule_id_src": "SV-220660r929001_rule",
+                    "rule_id": "SV-220660r929001",
+                    "rule_version": "CISC-L2-000140",
+                    "rule_title": "The Cisco switch must have IP Source Guard enabled on all user-facing or untrusted access switch ports.",
+                    "fix_text": "Configure the switch to have IP Source Guard enabled on all user-facing or untrusted access switch ports.\n\nSW2(config)#int range g0/0 - 9\nSW2(config-if-range)#ip verify source",
+                    "weight": "10.0",
+                    "check_content": "Review the switch configuration to verify that IP Source Guard is enabled on all user-facing or untrusted access switch ports as shown in the example below:\n\ninterface GigabitEthernet0/0\n ip verify source\n!\ninterface GigabitEthernet0/1\n ip verify source\n…\n…\n…\ninterface GigabitEthernet0/9 \n ip verify source\n\nNote: The IP Source Guard feature depends on the entries in the DHCP snooping database or static IP-MAC-VLAN configuration commands to verify IP-to-MAC address bindings.\n\nIf the switch does not have IP Source Guard enabled on all untrusted access switch ports, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "IP Source Guard provides source IP address filtering on a Layer 2 port to prevent a malicious host from impersonating a legitimate host by assuming the legitimate host's IP address. The feature uses dynamic DHCP snooping and static IP source binding to match IP addresses to hosts on untrusted Layer 2 access ports. Initially, all IP traffic on the protected port is blocked except for DHCP packets. After a client receives an IP address from the DHCP server, or after static IP source binding is configured by the administrator, all traffic with that IP source address is permitted from that client. Traffic from other hosts is denied. This filtering limits a host's ability to attack the network by claiming a neighbor host's IP address.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110291",
+                        "V-101187"
+                    ],
+                    "ccis": [
+                        "CCI-002385"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "bacf73fb-74a6-490a-ae9b-09ccdff6e7d3",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220660_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220660_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000362-L2S-000026"
                 }
             ]
         }

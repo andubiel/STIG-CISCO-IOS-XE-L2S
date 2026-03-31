@@ -17,6 +17,35 @@
     become: true
   when: stig_viewer == true
 
+- name: "Role: Evaluate | GIT Retrieve"
+  ansible.scm.git_retrieve:
+    origin:
+      url: "{{ git_url }}"
+    parent_directory: /tmp
+    branch:
+        name: main
+        duplicate_detection: no  
+  register: repository
+  delegate_to: localhost
+  run_once: true
+
+- name: "Role: Evaluate | Handler | Delete Files"
+  ansible.builtin.file:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_{{ item }}.yaml"
+    state: absent
+  delegate_to: localhost
+  loop:
+   - remediate
+   - scoped
+
+- name: |
+      'Role: Evaluate | Handler
+       Push repository'
+  ansible.scm.git_publish:
+    path: "{{ repository['path'] }}"
+  run_once: true
+  delegate_to: localhost
+
 - name: Include CAT 1 evaluate
   import_tasks: cat1/cat1.yml
   when: iosl2sstig_cat1_evaluate
