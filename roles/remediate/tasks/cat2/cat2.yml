@@ -87,7 +87,7 @@
 - name: >
     'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
      DAI'
-  ansible.builtin.include_tasks: cat2_dai_eval.yml
+  ansible.builtin.include_tasks: cat2_dai_remediate.yml
   when:
     - SV_220661r929003
   tags:

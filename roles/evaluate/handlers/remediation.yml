@@ -311,5 +311,21 @@
   delegate_to: localhost
   listen: "cat2_cisc_l2_000140_voice_Pass"
 
+- name: "Handler | CAT2 | SV-220661 | DAI | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220661r929003_remediate_dai: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000150_Fail"
+
+- name: "Handler | CAT2 | SV-220661 | DAI | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220661r929003_remediate_dai: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000150_Pass"
+
 
 

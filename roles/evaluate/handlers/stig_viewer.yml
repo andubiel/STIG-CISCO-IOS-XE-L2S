@@ -289,6 +289,33 @@
       {{ missing_ipsg_voice }}
   listen: "cat2_cisc_l2_000140_voice_Fail"
 
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
+     SV_220661_status | '
+  ansible.builtin.set_fact:
+    SV_220661_status: not_a_finding
+  listen: 
+   - "cat2_cisc_l2_000150_Pass"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
+     SV_220661_status | '
+  ansible.builtin.set_fact:
+    SV_220661_status: open
+  listen: 
+   - "cat2_cisc_l2_000150_Fail" 
+
+- name: "Handler | DAI Failures"
+  ansible.builtin.set_fact:
+    SV_220661_findings: |
+      {{ SV_220661_findings | default('') }}
+      =========================================
+      DAI CONFIGURATION FAILURE
+      =========================================
+      Missing: {{ missing_dai_commands }}
+  listen: "cat2_cisc_l2_000150_Fail"
+
 # All STIG Viewer   
 - name: "Collect current timestamp"
   ansible.builtin.setup:
@@ -331,6 +358,8 @@
     - "cat2_cisc_l2_000140_access_Pass"
     - "cat2_cisc_l2_000140_voice_Fail"
     - "cat2_cisc_l2_000140_voice_Pass"
+    - "cat2_cisc_l2_000150_Fail"
+    - "cat2_cisc_l2_000150_Pass"
 
 
 - name: "Role: Evaluate | Create Timestamped CKLB file"
@@ -376,6 +405,8 @@
     - "cat2_cisc_l2_000140_access_Pass"
     - "cat2_cisc_l2_000140_voice_Fail"
     - "cat2_cisc_l2_000140_voice_Pass"
+    - "cat2_cisc_l2_000150_Fail"
+    - "cat2_cisc_l2_000150_Pass"
 
   vars:
     ansible_user: "{{ cklb_user }}"

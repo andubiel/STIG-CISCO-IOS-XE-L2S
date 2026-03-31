@@ -424,6 +424,57 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220660_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000026"
+                },
+                 {
+                    "group_id_src": "V-220661",
+                    "group_tree": [
+                        {
+                            "id": "V-220661",
+                            "title": "SRG-NET-000362-L2S-000027",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220661",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.",
+                    "rule_id_src": "SV-220661r929003_rule",
+                    "rule_id": "SV-220661r929003",
+                    "rule_version": "CISC-L2-000150",
+                    "rule_title": "The Cisco switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.",
+                    "fix_text": "Configure the switch to have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs as shown in the example below:\n\nSW2(config)#ip arp inspection vlan 2,4-8,11",
+                    "weight": "10.0",
+                    "check_content": "Review the switch configuration to verify that Dynamic Address Resolution Protocol (ARP) Inspection (DAI) feature is enabled on all user VLANs. \n\nhostname SW2\n…\n…\n…\nip arp inspection vlan 2,4-8,11\n\nNote: DAI depends on the entries in the DHCP snooping binding database to verify IP-to-MAC address bindings in incoming ARP requests and ARP responses.\n\nIf DAI is not enabled on all user VLANs, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "DAI intercepts Address Resolution Protocol (ARP) requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110293",
+                        "V-101189"
+                    ],
+                    "ccis": [
+                        "CCI-002385"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "a5a6bbf5-660f-4125-a811-47c6cbf02c5a",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220661_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220661_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000362-L2S-000027"
                 }
             ]
         }

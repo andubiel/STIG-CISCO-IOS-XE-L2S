@@ -1,0 +1,7 @@
+---
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG-NET-000362-L2S-000027 |
+    DAI | Apply Fix'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_dai.j2'
+    save_when: always
+  when: SV_220661r929003_remediate_dai == true

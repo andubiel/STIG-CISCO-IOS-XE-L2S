@@ -53,8 +53,8 @@ SV_220656r856278: false #CISC-L2-000100 | BPDU Guard
 SV_220657r856279: false #CISC-L2-000110 | (STP) loop guard
 SV_220658r856280: false #CISC-L2-000120 | (UUFB) Unicast Flood Blocking
 SV_220659r928999: false #CISC-L2-000130 | DHCP snooping 
-SV_220660r929001: true #CISC-L2-000140 |  (IPSG) IP Source Guard 
-SV_220661r929003: false #CISC-L2-000150 | Dynamic ARP
+SV_220660r929001: false #CISC-L2-000140 |  (IPSG) IP Source Guard 
+SV_220661r929003: true #CISC-L2-000150 | Dynamic ARP
 SV_220664r539671: false #CISC-L2-000180 | Rapid STP 
 SV_220665r539671: false #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
 SV_220666r539671: false #CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
