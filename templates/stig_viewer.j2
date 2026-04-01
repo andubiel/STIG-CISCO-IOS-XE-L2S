@@ -170,7 +170,7 @@
                     "finding_details": {{ SV_220651_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000193-L2S-000020"
                 },
-                 {
+                {
                     "group_id_src": "V-220656",
                     "group_tree": [
                         {
@@ -220,7 +220,7 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220656_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000022"
-                },
+                 },
                  {
                     "group_id_src": "V-220657",
                     "group_tree": [
@@ -271,7 +271,7 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220657_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000023"
-                },
+                 },
                  {
                     "group_id_src": "V-220658",
                     "group_tree": [
@@ -373,7 +373,7 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220659_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000025"
-                },
+                   },
                    {
                     "group_id_src": "V-220660",
                     "group_tree": [
@@ -424,7 +424,7 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220660_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000026"
-                },
+                 },
                  {
                     "group_id_src": "V-220661",
                     "group_tree": [
@@ -475,9 +475,111 @@
                     "comments": "{{ comment }}",
                     "finding_details": {{ SV_220661_findings | default('') | to_json }},
                     "srg_id": "SRG-NET-000362-L2S-000027"
-                }
-            ]
+                 },
+                 {
+                    "group_id_src": "V-220664",
+                    "group_tree": [
+                        {
+                            "id": "V-220664",
+                            "title": "SRG-NET-000512-L2S-000003",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220664",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must implement Rapid STP where VLANs span multiple switches with redundant links.",
+                    "rule_id_src": "SV-220664r539671_rule",
+                    "rule_id": "SV-220664r539671",
+                    "rule_version": "CISC-L2-000180",
+                    "rule_title": "The Cisco switch must implement Rapid STP where VLANs span multiple switches with redundant links.",
+                    "fix_text": "Configure Rapid STP or MSTP to be implemented at the access and distribution layers where VLANs span multiple switches as shown in the examples below:\n\nSW2(config)#spanning-tree mode rapid-pvst\n\nor \n\nSW1(config)#spanning-tree mode mst",
+                    "weight": "10.0",
+                    "check_content": "In cases where VLANs do not span multiple switches, it is a best practice to not implement STP. Avoiding the use of STP will provide the most deterministic and highly available network topology. If STP is required, then review the switch configuration to verify that Rapid STP has been implemented. \n\nhostname SW2\n…\n…\n…\nspanning-tree mode rapid-pvst\n\nNote: Multiple STP (MSTP) can be configured as an alternate mode. MSTP which uses RSTP for rapid convergence and enables multiple VLANs to be grouped into and mapped to the same spanning-tree instance; thereby reducing the number of spanning-tree instances needed to support a large number of VLANs.\n\nIf either RSTP or MSTP has not been implemented where STP is required, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "Spanning Tree Protocol (STP) is implemented on bridges and switches to prevent layer 2 loops when a broadcast domain spans multiple bridges and switches and when redundant links are provisioned to provide high availability in case of link failures. Convergence time can be significantly reduced using Rapid STP (802.1w) instead of STP (802.1d), resulting in improved availability. Rapid STP should be deployed by implementing either Rapid Per-VLAN-Spanning-Tree (Rapid-PVST) or Multiple Spanning-Tree Protocol (MSTP), the latter scales much better when there are many VLANs.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110303",
+                        "V-101199"
+                    ],
+                    "ccis": [
+                        "CCI-000366"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "427a65f7-6811-4b11-bdfa-62094907c9e2",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220664_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220664_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000512-L2S-000003"
+                 },
+                 {
+                    "group_id_src": "V-220665",
+                    "group_tree": [
+                        {
+                            "id": "V-220665",
+                            "title": "SRG-NET-000512-L2S-000004",
+                            "description": "<GroupDescription></GroupDescription>"
+                        }
+                    ],
+                    "group_id": "V-220665",
+                    "severity": "medium",
+                    "group_title": "The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections.",
+                    "rule_id_src": "SV-220665r539671_rule",
+                    "rule_id": "SV-220665r539671",
+                    "rule_version": "CISC-L2-000190",
+                    "rule_title": "The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections.",
+                    "fix_text": "Configure the switch to enable Unidirectional Link Detection (UDLD) to protect against one-way connections.\n\nSW2(config)#udld enable\n\nor\n\nSW2(config)#int g0/1\nSW2(config-if)#udld port",
+                    "weight": "10.0",
+                    "check_content": "If any of the switch ports have fiber optic interconnections with neighbors, review the switch configuration to verify that UDLD is enabled globally or on a per-interface basis as shown in the examples below:\n\nhostname SW2\n…\n…\n…\nudld enable\n\nor\n\ninterface GigabitEthernet0/1\n udld port\n\nNote: An alternative implementation when UDLD is not supported by connected device is to deploy a single member Link Aggregation Group (LAG) via IEEE 802.3ad Link Aggregation Control Protocol (LACP).\n\nIf the switch has fiber optic interconnections with neighbors and UDLD is not enabled, this is a finding.",
+                    "check_content_ref": {
+                        "href": "Cisco_IOS_XE_Switch_L2S_STIG.xml",
+                        "name": "M"
+                    },
+                    "classification": "Unclassified",
+                    "discussion": "In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. UDLD is a layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectional between neighbors. Ports with UDLD enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.",
+                    "false_positives": "",
+                    "false_negatives": "",
+                    "documentable": "false",
+                    "security_override_guidance": "",
+                    "potential_impacts": "",
+                    "third_party_tools": "",
+                    "ia_controls": "",
+                    "responsibility": "",
+                    "mitigations": "",
+                    "mitigation_control": "",
+                    "legacy_ids": [
+                        "SV-110305",
+                        "V-101201"
+                    ],
+                    "ccis": [
+                        "CCI-000366"
+                    ],
+                    "reference_identifier": "4071",
+                    "uuid": "5a9549fa-a65e-4838-8ade-e3d0d1153ced",
+                    "stig_uuid": "97a8041f-5a00-4a10-8cbf-4f6c5dc4c480",
+                    "status": "{{ SV_220665_status | default ('not_reviewed') }}",
+                    "overrides": {},
+                    "comments": "{{ comment }}",
+                    "finding_details": {{ SV_220665_findings | default('') | to_json }},
+                    "srg_id": "SRG-NET-000512-L2S-000004"
         }
+      ]
+    }
     ],
     "active": false,
     "mode": 2,
@@ -497,3 +599,4 @@
         "classification": null
     }
 }
+

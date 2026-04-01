@@ -102,3 +102,24 @@
       - CAT2
       - SRG-NET-000362-L2S-000027
       - V-220661
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220664 
+         | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG ID: SRG-NET-000512-L2S-000003 | STP Mode'
+  ansible.builtin.include_tasks: cat2_stp_mode_eval.yml
+  when:
+      - SV_220664r539671
+  tags:
+      - CISC-L2-000180
+      - CAT2
+      - SRG-NET-000512-L2S-000003
+      - V-220664
+      
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 
+         | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG ID: SRG-NET-000512-L2S-000004 | UDLD'
+  ansible.builtin.include_tasks: cat2_udld_eval.yml
+  when:
+      - SV_220665r539671
+  tags:
+      - CISC-L2-000190
+      - CAT2
+      - V-220665

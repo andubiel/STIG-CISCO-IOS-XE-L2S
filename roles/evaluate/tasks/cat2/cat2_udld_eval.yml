@@ -1,0 +1,32 @@
+---
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
+    UDLD | show running-config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ^udld
+  register: udld_check
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
+    UDLD | Identify missing configuration'
+  ansible.builtin.set_fact:
+    # Logic: Pass if 'udld enable' or 'udld aggressive' is present globally
+    missing_udld_config: >-
+      {{ ['udld enable'] 
+         if (udld_check.stdout[0] is not search('udld enable')) 
+         else [] }}
+  delegate_to: localhost
+  changed_when: missing_udld_config | length > 0
+  notify: "cat2_cisc_l2_000190_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
+    UDLD | Identify missing configuration'
+  ansible.builtin.debug: 
+    msg: 'missing {{ missing_udld_config }}'
+  when: missing_udld_config | length > 0
+
+- name: 'Role: Evaluate | UDLD | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "Rule ID: SV-220665r539671 UDLD Passed"
+  when: missing_udld_config | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000190_Pass"

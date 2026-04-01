@@ -5,7 +5,6 @@
     show run interface'
   cisco.ios.ios_command:
    commands:
-    #- 'show run | s {{ iosstig_radius_group_name }}'
     - 'show run'
   register: auth8021x
 

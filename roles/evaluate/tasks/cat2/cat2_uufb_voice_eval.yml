@@ -36,4 +36,4 @@
   # Trigger this only if the previous task did NOT change
   when: missing_uufb_voice | length == 0
   changed_when: true
-  notify: "cat2_cisc_l2_000100_voice_Pass"
+  notify: "cat2_cisc_l2_000120_voice_Pass"

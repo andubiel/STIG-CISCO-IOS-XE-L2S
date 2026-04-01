@@ -4,38 +4,38 @@
 #Discover
 iosl2sstig_discover: true
 #Evaluate
-iosl2sstig_cat1_evaluate: false
+iosl2sstig_cat1_evaluate: true
 iosl2sstig_cat2_evaluate: true
 iosl2sstig_cat3_evaluate: false
 #Remediate
-iosl2sstig_cat1_remediate: false
+iosl2sstig_cat1_remediate: true
 iosl2sstig_cat2_remediate: true
 iosl2sstig_cat3_remediate: false
 
-#This section is to enable the roles to provide CKLB formatted file for STIG Viewer
+# This section is to enable the roles to provide CKLB formatted file for STIG Viewer
 # To enable or disable this functionality
 stig_viewer: true
 
-#Comment for CKLB
+# Comment for CKLB
 comment: 'Evaluating IOSXE STIG'
 
-#Server for CKLB files
+# Server for CKLB files
 cklb_server: laptop
 
-#Path for CKLB folder
+# Path for CKLB folder
 cklb_path: /home/{{ cklb_user }}/cklb
 
-#CKLB User
+# CKLB User
 cklb_user: tdubiel
 
-#The cklb_password is used to write the STIG Viewer check files
+# The cklb_password is used to write the STIG Viewer check files
 # Each file is saved with a timestamp 
-#cklb_password: changeme
+# cklb_password: changeme
 
-#Git Repo URL
-#The token/password should be defined in an Ansible VAULT or AAP credential
+# Git Repo URL
+# The token/password should be defined in an Ansible VAULT or AAP credential
 # password: changeme
-#token: 
+# token: 
 git_url: "http://gitea:{{password}}@aap:3000/gitea/STIG-CISCO-IOS-XE-L2S.git"
 
 
@@ -44,19 +44,19 @@ git_url: "http://gitea:{{password}}@aap:3000/gitea/STIG-CISCO-IOS-XE-L2S.git"
 # in order for the variables below to take effect.
 
 # CAT 1 rules
-SV_220649r863283: true #CISC-L2-000020 | 802.1x authentication 
+SV_220649r863283: false #CISC-L2-000020 | 802.1x authentication 
 
 # CAT 2 rules
-SV_220650r539671: false #CISC-L2-000030 | VLAN Trunk Protocol 
-SV_220651r1107171: false #CISC-L2-000040 | DOS
-SV_220656r856278: false #CISC-L2-000100 | BPDU Guard
-SV_220657r856279: false #CISC-L2-000110 | (STP) loop guard
-SV_220658r856280: false #CISC-L2-000120 | (UUFB) Unicast Flood Blocking
-SV_220659r928999: false #CISC-L2-000130 | DHCP snooping 
-SV_220660r929001: false #CISC-L2-000140 |  (IPSG) IP Source Guard 
+SV_220650r539671: true #CISC-L2-000030 | VLAN Trunk Protocol 
+SV_220651r1107171: true #CISC-L2-000040 | DOS
+SV_220656r856278: true #CISC-L2-000100 | BPDU Guard
+SV_220657r856279: true #CISC-L2-000110 | (STP) loop guard
+SV_220658r856280: true #CISC-L2-000120 | (UUFB) Unicast Flood Blocking
+SV_220659r928999: true #CISC-L2-000130 | DHCP snooping 
+SV_220660r929001: true #CISC-L2-000140 |  (IPSG) IP Source Guard 
 SV_220661r929003: true #CISC-L2-000150 | Dynamic ARP
-SV_220664r539671: false #CISC-L2-000180 | Rapid STP 
-SV_220665r539671: false #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
+SV_220664r539671: true #CISC-L2-000180 | Rapid STP 
+SV_220665r539671: true #CISC-L2-000190 | (UDLD )Unidirectional Link Detection 
 SV_220666r539671: false #CISC-L2-000200 | (DTP) Dynamic Trunk Protocol 
 SV_220667r991904: false #CISC-L2-000210 | unused VLAN
 SV_220668r991905: false #CISC-L2-000220 | default VLAN host
@@ -106,19 +106,19 @@ iosstig_auth_hostmode: "single-host"
 
 # Cat 2
 
-#SV-220650r539671 | CISC-L2-000030 | VLAN Trunk Protocol 
+# SV-220650r539671 | CISC-L2-000030 | VLAN Trunk Protocol 
 # CISC-L2-000030
 # iosstig_vtp_user_password is the password you will change for vtp password. 
 # CHANGE THE DEFAULT!!!!!!!!!!!!!!!
 # MAKE SURE TO VAULT OR CREATE AAP CREDENTIALS for PASSWORDS, PLAIN TEXT PASSWORDS ARE BAD.
 iosstig_vtp_user_password: changeme
 
-#EXAMPLE VAULT
-#~/code/$ ansible-vault encrypt_string 'changeme' --name 'iosstig_vtp_user_password'
-#New Vault password: 
-#Confirm New Vault password: 
-#Encryption successful
-#iosstig_vtp_user_password: !vault |
+# EXAMPLE VAULT
+# ~/code/$ ansible-vault encrypt_string 'changeme' --name 'iosstig_vtp_user_password'
+# New Vault password: 
+# Confirm New Vault password: 
+# Encryption successful
+# iosstig_vtp_user_password: !vault |
 #          $ANSIBLE_VAULT;1.1;AES256
 #
 #         62313730656235363962653931393230303338303033313735323032373462336630363961396639
@@ -127,8 +127,8 @@ iosstig_vtp_user_password: changeme
 #         3533653235623935370a623766626238666664326562343665313032356537383231636462626135
 #         6433
 
-#SV-SV-220651r1107171 | CISC-L2-000040 | DOS
-#CISC-L2-000040
+# SV-SV-220651r1107171 | CISC-L2-000040 | DOS
+# CISC-L2-000040
 ios_qos_standard: |
   policy-map QOS_POLICY_SWITCHPORT
   class C2_VOICE
@@ -141,6 +141,18 @@ ios_qos_standard: |
    bandwidth percent 25
   class class-default
    bandwidth percent 25
+
+# CISC-L2-000180
+# SV_220664r539671 | CISC-L2-000180 | Rapid STP 
+# This rule may need to be set to false - and N/A to findings based on the following
+# In cases where VLANs do not span multiple switches, it is a best practice to not implement STP. 
+# Avoiding the use of STP will provide the most deterministic and highly available network topology. 
+# If STP is required, then review the switch configuration to verify that Rapid STP has been implemented. 
+
+# CISC-L2-000160 Storm Control Variables
+# STIG range: 10,000,000 - 1,000,000,000 (10M to 1G)
+iosstig_storm_control_unicast_level: "bps 62000000"
+iosstig_storm_control_broadcast_level: "bps 20000000"
 
 
 # CISC-L2-000130

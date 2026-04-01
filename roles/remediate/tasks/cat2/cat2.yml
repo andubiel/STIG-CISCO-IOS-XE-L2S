@@ -96,6 +96,16 @@
     - SRG-NET-000362-L2S-000027
     - V-220661
 
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220665 
+         | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG ID: SRG-NET-000512-L2S-000004 | UDLD'
+  ansible.builtin.include_tasks: cat2_udld_remediate.yml
+  when:
+      - SV_220665r539671
+  tags:
+      - CISC-L2-000190
+      - CAT2
+      - V-220665
+
 - name: Save Cat2 Configs
   cisco.ios.ios_config:
     save_when: 'always'

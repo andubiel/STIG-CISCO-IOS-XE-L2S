@@ -2,7 +2,7 @@
 # CAT1 STIG Viewer
 - name: |
     'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-    Set Status'
+    | 8021x Auth | Set Status'
   ansible.builtin.set_fact:
     SV_220649_status: not_a_finding
   listen: 
@@ -12,7 +12,7 @@
   
 - name: |
     'Role: STIG-Viewer | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
-    Set Status'
+    | 8021x Auth | Set Status'
   ansible.builtin.set_fact:
     SV_220649_status: open
   listen: 
@@ -20,7 +20,7 @@
   - "cat1_cisc_l2_000020_access_Fail" 
   - "cat1_cisc_l2_000020_voice_Fail" 
 
-- name: "Handler | Access Failures"
+- name: "Handler | Auth Failures"
   ansible.builtin.set_fact:
     SV_220649_findings: |
       =========================================
@@ -52,14 +52,14 @@
 # CAT2 STIG Viewer
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
-    SV_220650_status | '
+    | VTP Password | SV_220650_status | '
   ansible.builtin.set_fact:
     SV_220650_status: not_a_finding
   listen: "cat2_cisc_l2_000030_Pass"
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
-     SV_220650_status | '
+     | VTP Password | SV_220650_status | '
   ansible.builtin.set_fact:
     SV_220650_status: open
   listen: "cat2_cisc_l2_000030_Fail" 
@@ -75,7 +75,7 @@
 
 - name: |
       'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
-       SV_220651_status | '
+       | DOS | SV_220651_status | '
   ansible.builtin.set_fact:
     SV_220651_status: not_a_finding
   listen: 
@@ -86,7 +86,7 @@
   
 - name: |
       'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
-       SV_220651_status | '
+       | DOS | SV_220651_status | '
   ansible.builtin.set_fact:
     SV_220651_status: open
   listen: 
@@ -130,14 +130,14 @@
     SV_220649_findings: |
       {{ SV_220651_findings | default('') }}
       =========================================
-      VOICE TRUNK FAILURE (DOS)
+      TRUNK FAILURE (DOS)
       =========================================
       {{ missing_dos_interfaces }}
   listen: "cat2_cisc_l2_000040_trunk_Fail" 
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
-    SV_220656_status | '
+    | BPDU |SV_220656_status | '
   ansible.builtin.set_fact:
     SV_220656_status: not_a_finding
   listen: 
@@ -146,7 +146,7 @@
 
 - name: |
      'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID: SV-220656r856278  | STIG ID: CISC-L2-000100 | SRG ID: SRG ID: SRG-NET-000362-L2S-000022
-     SV_220656_status | '
+     | BPDU | SV_220656_status | '
   ansible.builtin.set_fact:
     SV_220656_status: open
   listen: 
@@ -175,7 +175,6 @@
 
 - name: 'Role: STIG-Viewer | CAT II | SV-220657 | STP Loop Guard | Set Fail Status'
   ansible.builtin.set_fact:
-    ansible.builtin.set_fact:
     SV_220657_status: not_a_finding
   listen: "cat2_cisc_l2_000110_Pass"
 
@@ -190,7 +189,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024
-     SV_220658_status | '
+     | UUFB | SV_220658_status | '
   ansible.builtin.set_fact:
     SV_220658_status: not_a_finding
   listen: 
@@ -199,7 +198,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024
-     SV_220658_status | '
+     | UUFB | SV_220658_status | '
   ansible.builtin.set_fact:
     SV_220658_status: open
   listen: 
@@ -228,7 +227,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025
-     SV_220659_status | '
+     | DHCP Snooping | SV_220659_status | '
   ansible.builtin.set_fact:
     SV_220659_status: not_a_finding
     SV_220659_findings: "DHCP Snooping is enabled globally and for user VLANs: {{ iosstig_user_vlans }}."
@@ -236,7 +235,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025
-     SV_220659_status | '
+     | DHCP Snooping  |SV_220659_status | '
   ansible.builtin.set_fact:
     SV_220659_status: open
   listen: "cat2_cisc_l2_000130_Fail"
@@ -262,7 +261,7 @@
 
 - name: |
         'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220660 | Rule ID:SV-220660r929001 | STIG ID: CISC-L2-000140 | SRG ID: SRG-NET-000362-L2S-000026 | Access | IP Source Guard
-        SV_220658_status'
+        | IPSG | SV_220658_status'
   ansible.builtin.set_fact:
     SV_220660_status: open
   listen: 
@@ -292,7 +291,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
-     SV_220661_status | '
+     | DAI | SV_220661_status | '
   ansible.builtin.set_fact:
     SV_220661_status: not_a_finding
   listen: 
@@ -300,7 +299,7 @@
 
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
-     SV_220661_status | '
+     | DAI | SV_220661_status | '
   ansible.builtin.set_fact:
     SV_220661_status: open
   listen: 
@@ -315,6 +314,57 @@
       =========================================
       Missing: {{ missing_dai_commands }}
   listen: "cat2_cisc_l2_000150_Fail"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220664 | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG-NET-000512-L2S-000003 |
+    | STP Mode |  SV_220664_status | '
+  ansible.builtin.set_fact:
+    SV_220664_status: not_a_finding
+    SV_220664_findings: "Rapid STP or MSTP is correctly implemented."
+  listen: "cat2_cisc_l2_000180_Pass"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220664 | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG-NET-000512-L2S-000003 |
+     S| STP Mode | V_220664_status | '
+  ansible.builtin.set_fact:
+    SV_220664_status: open
+  listen: "cat2_cisc_l2_000180_Fail"
+
+- name: "Handler | STP Mode Failures"
+  ansible.builtin.set_fact:
+    SV_220664_findings: |
+      {{ SV_220664_findings | default('') }}
+      =========================================
+      STP MODE FAILURE
+      =========================================
+      The switch is not running Rapid-PVST or MST. 
+      Current config: {{ stp_mode_check.stdout[0] | default('Legacy STP (PVST+)') }}
+  listen: "cat2_cisc_l2_000180_Fail"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
+     | UDLD |  SV_220665_status | '
+  ansible.builtin.set_fact:
+    SV_220665_status: not_a_finding
+    SV_220665_findings: "UDLD is enabled globally to protect fiber interconnections."
+  listen: "cat2_cisc_l2_000190_Pass"
+
+- name: |
+    'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
+     | UDLD | SV_220665_status | '
+  ansible.builtin.set_fact:
+    SV_220665_status: open
+  listen: "cat2_cisc_l2_000190_Fail"
+
+- name: "Handler | UDLD Failures"
+  ansible.builtin.set_fact:
+    SV_220665_findings: |
+      {{ SV_220665_findings | default('') }}
+      =========================================
+      UDLD FAILURE
+      =========================================
+      UDLD is not enabled globally. Fiber links may be at risk of unidirectional loops.
+  listen: "cat2_cisc_l2_000190_Fail"
 
 # All STIG Viewer   
 - name: "Collect current timestamp"
@@ -360,6 +410,10 @@
     - "cat2_cisc_l2_000140_voice_Pass"
     - "cat2_cisc_l2_000150_Fail"
     - "cat2_cisc_l2_000150_Pass"
+    - "cat2_cisc_l2_000180_Fail"
+    - "cat2_cisc_l2_000180_Pass"
+    - "cat2_cisc_l2_000190_Fail"
+    - "cat2_cisc_l2_000190_Pass"
 
 
 - name: "Role: Evaluate | Create Timestamped CKLB file"
@@ -407,6 +461,10 @@
     - "cat2_cisc_l2_000140_voice_Pass"
     - "cat2_cisc_l2_000150_Fail"
     - "cat2_cisc_l2_000150_Pass"
+    - "cat2_cisc_l2_000180_Fail"
+    - "cat2_cisc_l2_000180_Pass"
+    - "cat2_cisc_l2_000190_Fail"
+    - "cat2_cisc_l2_000190_Pass"
 
   vars:
     ansible_user: "{{ cklb_user }}"

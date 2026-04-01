@@ -20,7 +20,9 @@
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG-NET-000362-L2S-000027 |
     DAI | Display missing configuration'
   ansible.builtin.debug:
-    msg: "{{ missing_dai_commands }}"
+    msg: "missing: {{ missing_dai_commands }}"
+  when: missing_dai_commands | length > 0
+  delegate_to: localhost
 
 - name: 'Role: Evaluate | DAI | Trigger Pass'
   ansible.builtin.debug:

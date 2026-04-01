@@ -19,7 +19,7 @@
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
     DHCP Snooping | Display missing configuration'
   ansible.builtin.debug:
-    msg: "{{ missing_dhcp_snoop_commands }}"
+    msg: "missing: {{ missing_dhcp_snoop_commands }}"
 
 - name: 'Role: Evaluate | DHCP Snooping | Trigger Pass'
   ansible.builtin.debug:

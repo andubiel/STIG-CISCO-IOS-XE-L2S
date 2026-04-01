@@ -1,10 +1,12 @@
 ---
-- name: 'Role: Remediate | Access | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024'
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024
+         | UUFB Access'
   cisco.ios.ios_config:
     src: 'templates/cat2/remediate_uufb_access_interfaces.j2'
   when: SV_220658r856280_remediate_access == true
 
-- name: 'Role: Remediate | Voice | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024'
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID: SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024
+         | UUFB Voice'
   cisco.ios.ios_config:
     src: 'templates/cat2/remediate_uufb_voice_interfaces.j2'
   when: SV_220658r856280_remediate_voice == true

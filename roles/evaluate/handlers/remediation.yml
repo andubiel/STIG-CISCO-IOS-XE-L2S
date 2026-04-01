@@ -258,7 +258,7 @@
 - name: "Handler | CAT2 | SV-220658 | UUFB | Voice | Flag for Success"
   ansible.builtin.lineinfile:
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
-    line: "SV_220658r856280_remediate_access: false"
+    line: "SV_220658r856280_remediate_voice: false"
     create: yes
   delegate_to: localhost
   listen: "cat2_cisc_l2_000120_voice_Pass"
@@ -326,6 +326,38 @@
     create: yes
   delegate_to: localhost
   listen: "cat2_cisc_l2_000150_Pass"
+
+- name: "Handler | CAT2 | SV-220664 | STP Mode | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220664r539671_remediate_mode: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000180_Fail"
+
+- name: "Handler | CAT2 | SV-220664 | STP Mode | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220664r539671_remediate_mode: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000180_Pass"
+
+- name: "Handler | CAT2 | SV-220665 | UDLD | Flag for Remediation"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220665r539671_remediate_udld: true"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000190_Fail"
+
+- name: "Handler | CAT2 | SV-220665 | UDLD | Flag for Success"
+  ansible.builtin.lineinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
+    line: "SV_220665r539671_remediate_udld: false"
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000190_Pass"
 
 
 

@@ -11,6 +11,7 @@
         duplicate_detection: no  
   register: repository
   delegate_to: localhost
+  no_log: true
   run_once: true
   listen: 
     - "cat1_cisc_l2_000020_auth_Fail"
@@ -47,3 +48,7 @@
     - "cat2_cisc_l2_000140_voice_Pass"
     - "cat2_cisc_l2_000150_Fail"
     - "cat2_cisc_l2_000150_Pass"
+    - "cat2_cisc_l2_000180_Fail"
+    - "cat2_cisc_l2_000180_Pass"
+    - "cat2_cisc_l2_000190_Fail"
+    - "cat2_cisc_l2_000190_Pass"
