@@ -1,8 +1,0 @@
-{% for port in iosstig_access_ports %}
-interface {{ port.name }}
-switchport access vlan {{ port.access.vlan }}
-switchport mode access
-authentication port-control auto
-dot1x pae authenticator
-end
-{% endfor %}
