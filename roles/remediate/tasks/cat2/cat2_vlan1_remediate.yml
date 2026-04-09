@@ -1,0 +1,6 @@
+---
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220668 | Rule ID: SV-220668r991905 | STIG ID: CISC-L2-000220 | SRG-NET-000512-L2S-000008
+        | VLAN 1'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_vlan1.j2'
+  when: SV_220668r991905_remediate_vlan1 == true

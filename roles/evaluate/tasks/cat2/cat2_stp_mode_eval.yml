@@ -1,0 +1,33 @@
+---
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220664 | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG-NET-000512-L2S-000003 |
+    STP Mode | show running-config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include spanning-tree mode
+  register: stp_mode_check
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220664 | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG-NET-000512-L2S-000003 |
+    STP Mode | Identify missing configuration'
+  ansible.builtin.set_fact:
+    # Logic: Check if the output contains either 'rapid-pvst' or 'mst'
+    # If neither is found, the list will contain the 'missing' requirement.
+    missing_stp_mode: >-
+      {{ ['spanning-tree mode rapid-pvst'] 
+         if (stp_mode_check.stdout[0] is not search('spanning-tree mode rapid-pvst') and 
+             stp_mode_check.stdout[0] is not search('spanning-tree mode mst')) 
+         else [] }}
+  delegate_to: localhost
+  changed_when: missing_stp_mode | length > 0
+  notify: "cat2_cisc_l2_000180_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220664 | Rule ID: SV-220664r539671 | STIG ID: CISC-L2-000180 | SRG-NET-000512-L2S-000003 |
+    STP Mode |'
+  ansible.builtin.debug:
+    msg: "missing: {{ missing_stp_mode }}"  
+
+- name: 'Role: Eval uate | STP Mode | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "Rule ID: SV-220664r539671 Passed for STP mode"
+  when: missing_stp_mode | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000180_Pass"

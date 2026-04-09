@@ -1,0 +1,8 @@
+---
+- name: >
+     'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+     | VTP Password'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_vtp.j2'
+  no_log: true
+  when: SV_220650r539671_remediate_vtp == true

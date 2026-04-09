@@ -1,0 +1,6 @@
+# CISC-L2-000150 - Dynamic ARP Inspection (DAI) Remediation
+{% if iosstig_user_vlans is iterable and iosstig_user_vlans is not string %}
+ip arp inspection vlan {{ iosstig_user_vlans | join(',') }}
+{% else %}
+ip arp inspection vlan {{ iosstig_user_vlans }}
+{% endif %}

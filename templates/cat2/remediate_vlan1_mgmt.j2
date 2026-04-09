@@ -1,0 +1,10 @@
+! Rule ID: SV-220670r991907 - Move Management from Vlan 1
+interface Vlan{{ iosstig_mgmt_vlan_name }}
+ description {{ iosstig_mgmt_vlan_name }}
+ ip address {{ iosstig_mgmt_ipaddress }} {{ iosstig_mgmt_ipaddress_subnet }}
+ no shutdown
+
+interface Vlan1
+ description UNUSED_DEFAULT_VLAN
+ no ip address
+ shutdown

@@ -1,0 +1,5 @@
+---
+- name: 'Role: Remediate | Blackhole VLAN | SV-220667'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_blackhole.j2'
+  when: SV_220667r991904_remediate_blackhole == true

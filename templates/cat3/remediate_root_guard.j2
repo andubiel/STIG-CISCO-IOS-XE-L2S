@@ -1,0 +1,5 @@
+! Rule ID: SV-220655r917683 - STP Root Guard Remediation
+{% for port in root_guard_violators %}
+interface {{ port.name }}
+ spanning-tree guard root
+{% endfor %}

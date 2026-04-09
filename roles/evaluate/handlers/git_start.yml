@@ -1,0 +1,71 @@
+---
+# All Remediation
+
+- name: "Role: Remediate | Handler retrieve repository"
+  ansible.scm.git_retrieve:
+    origin:
+      url: "{{ git_url }}"
+    parent_directory: /tmp
+    branch:
+        name: main
+        duplicate_detection: no  
+  register: repository
+  delegate_to: localhost
+  no_log: true
+  run_once: true
+  listen: 
+    - "cat1_cisc_l2_000020_auth_Fail"
+    - "cat1_cisc_l2_000020_auth_Pass"
+    - "cat1_cisc_l2_000020_access_Fail"
+    - "cat1_cisc_l2_000020_access_Pass"
+    - "cat1_cisc_l2_000020_voice_Fail"
+    - "cat1_cisc_l2_000020_voice_Pass"
+    - "cat2_cisc_l2_000030_Fail"
+    - "cat2_cisc_l2_000030_Pass"
+    - "cat2_cisc_l2_000040_Fail"
+    - "cat2_cisc_l2_000040_Pass"
+    - "cat2_cisc_l2_000040_access_Fail"
+    - "cat2_cisc_l2_000040_access_Pass"
+    - "cat2_cisc_l2_000040_voice_Fail"
+    - "cat2_cisc_l2_000040_voice_Pass"
+    - "cat2_cisc_l2_000040_trunk_Fail"
+    - "cat2_cisc_l2_000040_trunk_Pass"
+    - "cat2_cisc_l2_000100_access_Fail"
+    - "cat2_cisc_l2_000100_access_Pass"
+    - "cat2_cisc_l2_000100_voice_Fail"
+    - "cat2_cisc_l2_000100_voice_Pass"
+    - "cat2_cisc_l2_000110_Fail"
+    - "cat2_cisc_l2_000110_Pass"
+    - "cat2_cisc_l2_000120_access_Fail"
+    - "cat2_cisc_l2_000120_access_Pass"
+    - "cat2_cisc_l2_000120_voice_Fail"
+    - "cat2_cisc_l2_000120_voice_Pass"
+    - "cat2_cisc_l2_000130_Fail"
+    - "cat2_cisc_l2_000130_Pass"
+    - "cat2_cisc_l2_000140_access_Fail"
+    - "cat2_cisc_l2_000140_access_Pass"
+    - "cat2_cisc_l2_000140_voice_Fail"
+    - "cat2_cisc_l2_000140_voice_Pass"
+    - "cat2_cisc_l2_000150_Fail"
+    - "cat2_cisc_l2_000150_Pass"
+    - "cat2_cisc_l2_000180_Fail"
+    - "cat2_cisc_l2_000180_Pass"
+    - "cat2_cisc_l2_000190_Fail"
+    - "cat2_cisc_l2_000190_Pass"
+    - "cat2_cisc_l2_000200_Fail"
+    - "cat2_cisc_l2_000200_Pass"
+    - "cat2_cisc_l2_000210_Fail"
+    - "cat2_cisc_l2_000210_Pass"
+    - "cat2_cisc_l2_000220_Fail"
+    - "cat2_cisc_l2_000220_Pass"
+    - "cat2_cisc_l2_000230_Fail"
+    - "cat2_cisc_l2_000230_Pass"
+    - "cat2_cisc_l2_000240_Fail"
+    - "cat2_cisc_l2_000240_Pass"
+    - "cat2_cisc_l2_000250_Fail"
+    - "cat2_cisc_l2_000250_Pass"
+    - "cat2_cisc_l2_000260_Fail"
+    - "cat2_cisc_l2_000260_Pass"
+    - "cat3_cisc_l2_000090_Fail"
+    - "cat3_cisc_l2_000090_Pass"
+

@@ -1,0 +1,16 @@
+---
+
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 |
+         Root Guard | Apply spanning-tree guard root'
+  ansible.builtin.include_tasks: cat3_root_guard_remediate.yml
+  when: SV_220655r917683
+  tags:
+      - SV_220655r917683
+      - CISC-L2-000090
+      - CAT2
+      - V-220655
+
+- name: Save Cat3 Configs
+  cisco.ios.ios_config:
+    save_when: 'always'
+    

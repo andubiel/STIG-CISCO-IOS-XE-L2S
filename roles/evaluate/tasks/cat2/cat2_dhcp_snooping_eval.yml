@@ -1,0 +1,41 @@
+---
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
+    DHCP Snooping | show running-config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ip dhcp snooping
+  register: dhcp_snoop_check
+
+- name: 'Role: Evaluate | DHCP Snooping | Identify missing configuration'
+  ansible.builtin.set_fact:
+    missing_dhcp_snoop_commands: >-
+      {%- set vlan_str = iosstig_user_vlans | join(',') -%}
+      {%- set vlan_range = iosstig_user_vlans[0] ~ '-' ~ iosstig_user_vlans[-1] -%}
+      {%- set running_config = dhcp_snoop_check.stdout[0] -%}
+      {%- set missing = [] -%}
+      
+      {%- if 'ip dhcp snooping' not in running_config -%}
+        {%- set _ = missing.append('ip dhcp snooping') -%}
+      {%- endif -%}
+      
+      {%- if ('ip dhcp snooping vlan ' ~ vlan_str) not in running_config and 
+             ('ip dhcp snooping vlan ' ~ vlan_range) not in running_config -%}
+        {%- set _ = missing.append('ip dhcp snooping vlan ' ~ vlan_str) -%}
+      {%- endif -%}
+      
+      {{ missing }}
+  delegate_to: localhost
+  changed_when: missing_dhcp_snoop_commands | length > 0
+  notify: "cat2_cisc_l2_000130_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
+    DHCP Snooping | Display missing configuration'
+  ansible.builtin.debug:
+    msg: "missing: {{ missing_dhcp_snoop_commands }}"
+
+- name: 'Role: Evaluate | DHCP Snooping | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "Rule ID: SV-220659r928999 | DHCP Snooping | Passed"
+  when: missing_dhcp_snoop_commands | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000130_Pass"
