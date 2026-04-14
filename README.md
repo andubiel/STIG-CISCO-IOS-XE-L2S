@@ -2,7 +2,7 @@
 # STIG-CISCO-IOS-XE-L2S
 Automated STIG Compliance for Cisco IOS-XE Layer 2 Switches.
 
-Status: 🛠️ In Development - Functional for CAT II and CAT III Evaluation/Remediation.
+Status: 🛠️ Functional for CAT I CAT II and CAT III Discovery/Evaluation/Remediation.
 
 This repository provides an Ansible-based framework to automate the security hardening of Cisco IOS-XE switches in accordance with the Security Technical Implementation Guides (STIG). It handles the full lifecycle of compliance: from discovering the current state of the network to evaluating security gaps and remediating vulnerabilities.
 
@@ -14,6 +14,7 @@ This repository provides an Ansible-based framework to automate the security har
 * [STIG Viewer](#stig-viewer)
 * [Repository Structure](#repository-structure)
 * [Requirements](#requirements)
+* [Usage](#usage)
 * [AAP Screenshots](#aap-screenshots)
 
 ---
@@ -27,7 +28,6 @@ A **Security Technical Implementation Guide (STIG)** is a cybersecurity methodol
 * **CAT III (Low):** Vulnerabilities that degrade measures to protect against loss of data.
 
 ---
-
 ## Roles Overview
 
 The project is divided into three primary roles, allowing for a phased approach to security management.
@@ -58,11 +58,9 @@ The **Evaluate** role performs a non-disruptive audit of the switches. It compar
 The **Remediate** role is the "Fix-it" engine. It takes the findings from the Evaluate role and pushes the necessary configuration commands to bring the device into 100% compliance.
 
 * **Key Functions:**
-* Enforces 802.1X (Dot1x) authentication on access ports.
-* Configures BPDU Guard, Portfast, and Storm Control.
-* Disables unneeded services (HTTP, Telnet, CDP on untrusted ports).
-* Ensures secure VTY line access and AAA configurations.
-* More function in progress
+* Template-Based Pushing: Uses Jinja2 templates to bundle interface changes into a single session, improving performance over standard Ansible loops.
+* Intelligent Thresholds: Automatically scales values (like Storm Control BPS) based on detected interface speed (Gigabit vs. TenGigabit).
+* VLAN Safety: Ensures "Safe" VLANs (e.g., VLAN 34) are created and named before moving violating ports.
 
 ## Stig Viewer
 
@@ -85,7 +83,7 @@ CKLB Generation: The tool uses the stig_viewer.j2 template to generate a .cklb f
 #This section is to enable the roles to provide CKLB formatted file for STIG Viewer
 # To enable or disable this functionality
 stig_viewer: true
-~~~~
+~~~
 
 ## Repository Structure
 
