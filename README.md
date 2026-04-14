@@ -1,13 +1,10 @@
 
 # STIG-CISCO-IOS-XE-L2S
-
 Automated STIG Compliance for Cisco IOS-XE Layer 2 Switches.
 
-DON'T USE - STill in Development
+Status: 🛠️ In Development - Functional for CAT II and CAT III Evaluation/Remediation.
 
-This repository provides an Ansible-based framework to automate the security hardening of Cisco IOS-XE switches in accordance with the **Security Technical Implementation Guides (STIG)**. It handles the full lifecycle of compliance: from discovering the current state of the network to evaluating security gaps and remediating vulnerabilities.
-
-## Table of Contents
+This repository provides an Ansible-based framework to automate the security hardening of Cisco IOS-XE switches in accordance with the Security Technical Implementation Guides (STIG). It handles the full lifecycle of compliance: from discovering the current state of the network to evaluating security gaps and remediating vulnerabilities.
 
 * [What is a STIG?](#what-is-a-stig)
 * [Roles Overview](#roles-overview)
@@ -50,10 +47,11 @@ The **Discovery** role is used to build a baseline of your current network envir
 The **Evaluate** role performs a non-disruptive audit of the switches. It compares the current "Running Configuration" against the "STIG Desired State."
 
 * **Key Functions:**
+* Resilient Parsing: Uses "Bulletproof" Jinja2 logic to handle Cisco CLI whitespace and column alignment variations, preventing "False Passes".
 * Uses `fact_diff` to highlight configuration drift.
 * Groups findings by STIG Category (CAT I, II, III).
 * **Optional Reporting:** Generates `.cklb` files that can be imported into the **STIG Viewer** desktop application for formal auditing and submission.
-* Creates host_vars for subsequent remediation.
+* Creates host_vars and scoped configurations for subsequent remediation.
 
 ### 3. Remediate
 
@@ -71,7 +69,7 @@ The **Remediate** role is the "Fix-it" engine. It takes the findings from the Ev
 🔍 The STIG Viewer: From Audit to Evidence **Optional**
 The STIG Viewer functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKLB) files as evidence to the Authorizing Official (AO).
 
-How it works:
+How it works: 
 Automated Inspection: The tool logs into each switch and executes show commands to inspect specific STIG rules (e.g., verifying if VTP is disabled or BPDU Guard is active).
 
 Logic-Based Evaluation: Using Jinja2 logic, the tool compares the live state against the STIG requirements.
