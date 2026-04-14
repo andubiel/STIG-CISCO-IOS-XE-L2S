@@ -1,8 +1,6 @@
 ---
 - name: 'Role: Remediate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015'
-  ansible.builtin.include_tasks: "{{ item }}"
-  loop: 
-   - cat1_remediate.yml
+  ansible.builtin.include_tasks: cat1_8021x_remediate.yml
   when:
       - SV_220649r863283
   tags:

@@ -2,6 +2,6 @@
 - name: 'Role: Remediate | STP Mode | SV-220664'
   cisco.ios.ios_config:
     src: 'templates/cat2/remediate_stp_mode.j2'
-  when: SV_220664r539671_remediate_mode | default(false) == true
+  when: SV_220664r539671_remediate_mode == true
 
 

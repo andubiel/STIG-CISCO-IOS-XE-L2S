@@ -188,11 +188,12 @@
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
     marker: "# {mark} NATIVE VLAN"
     block: |
+      native_vlan_exists: {{ native_vlan_exists | default(false) }}
       native_vlan_violators:
-      {% for port in native_vlan_violators %}
-        - name: {{ port.name }}
+      {% for trunk in native_vlan_violators | default([]) %}
+        - name: {{ trunk.name }}
+          current_native: {{ trunk.current_native }}
       {% endfor %}
-      native_vlan_exists_on_switch: {{ native_vlan_exists }}
     create: yes
   delegate_to: localhost
   listen: "cat2_cisc_l2_000260_Fail"
@@ -211,5 +212,42 @@
     create: yes
   delegate_to: localhost
   listen: "cat3_cisc_l2_000090_Fail"
+  
+- name: "Scoped | Add Storm Control Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} STORM CONTROL FOR USER PORTS"
+    block: |
+      storm_control_violators:
+      {% for port in storm_control_violators %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000160_Fail"
+
+- name: "Scoped | Add IGMP Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} IGMP SNOOPING"
+    block: |
+      igmp_global_disabled: {{ igmp_global_disabled | default(false) }}
+      igmp_vlan_violators: {{ igmp_vlan_violators | default([]) }}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000170_Fail"
+
+- name: "Scoped | Add Access Native Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} ACCESS NATIVE VLAN"
+    block: |
+      access_native_violators:
+      {% for port in access_native_violators | default([]) %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000270_Fail"
 
 

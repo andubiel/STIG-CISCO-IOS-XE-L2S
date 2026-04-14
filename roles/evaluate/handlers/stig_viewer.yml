@@ -281,7 +281,6 @@
       {{ missing_ipsg_voice }}
   listen: "cat2_cisc_l2_000140_voice_Fail"
 
-
 - name: |
     'Role: STIG-Viewer | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG ID: SRG-NET-000362-L2S-000027 |
      | DAI | SV_220661_status | '
@@ -443,6 +442,47 @@
       {{ root_guard_violators | map(attribute='name') | list | join(', ') }}.
   listen: "cat3_cisc_l2_000090_Fail"
 
+- name: "Handler | CAT3 | SV-220662 | Storm Control | Fail"
+  ansible.builtin.set_fact:
+    SV_220662_status: "open"
+    SV_220662_findings: >-
+      Storm control is not enabled for broadcast traffic on the following host-facing interfaces: 
+      {{ storm_control_violators | map(attribute='name') | list | join(', ') }}.
+  listen: "cat3_cisc_l2_000160_Fail"
+
+- name: "Handler | CAT3 | SV-220662 | Storm Control | Pass"
+  ansible.builtin.set_fact:
+    SV_220662_status: "not_a_finding"
+  listen: "cat3_cisc_l2_000160_Pass"  
+
+- name: "Handler | CAT3 | SV-220695 | IGMP Snooping | Fail"
+  ansible.builtin.set_fact:
+    SV_220693_status: "open"
+    SV_220693_findings: >-
+      IGMP Snooping issues found. 
+      Global Disabled: {{ igmp_global_disabled }}. 
+      VLANs Disabled: {{ igmp_vlan_violators | join(', ') if igmp_vlan_violators else 'None' }}.
+  listen: "cat3_cisc_l2_000170_Fail"
+
+- name: "Handler | CAT3 | SV-220695 | IGMP Snooping | Pass"
+  ansible.builtin.set_fact:
+    SV_220663_status: "not_a_finding"
+  listen: "cat3_cisc_l2_000170_Pass"
+
+- name: "Handler | CAT3 | SV-220673 | Access Native VLAN | Fail"
+  ansible.builtin.set_fact:
+    SV_220673_status: "open"
+    SV_220673_findings: >-
+      The following access ports are assigned to the Native VLAN (VLAN {{ iosstig_native_vlan | default('1') }}), 
+      increasing the risk of VLAN hopping: 
+      {{ access_native_violators | map(attribute='name') | list | join(', ') }}.
+  listen: "cat3_cisc_l2_000270_Fail"
+
+- name: "Handler | CAT3 | SV-220673 | Access Native VLAN | Pass"
+  ansible.builtin.set_fact:
+    SV_220673_status: "not_a_finding"
+  listen: "cat3_cisc_l2_000270_Pass"
+  
 # All STIG Viewer   
 - name: "Collect current timestamp"
   ansible.builtin.setup:
@@ -507,7 +547,12 @@
     - "cat2_cisc_l2_000260_Pass"
     - "cat3_cisc_l2_000090_Fail"
     - "cat3_cisc_l2_000090_Pass"
-
+    - "cat3_cisc_l2_000160_Fail"
+    - "cat3_cisc_l2_000160_Pass"
+    - "cat3_cisc_l2_000170_Fail"
+    - "cat3_cisc_l2_000170_Pass"
+    - "cat3_cisc_l2_000270_Fail"
+    - "cat3_cisc_l2_000270_Pass"
 
 - name: "Role: Evaluate | Create Timestamped CKLB file"
   ansible.builtin.template:
@@ -574,7 +619,12 @@
     - "cat2_cisc_l2_000260_Pass"
     - "cat3_cisc_l2_000090_Fail"
     - "cat3_cisc_l2_000090_Pass"
-
+    - "cat3_cisc_l2_000160_Fail"
+    - "cat3_cisc_l2_000160_Pass"
+    - "cat3_cisc_l2_000170_Fail"
+    - "cat3_cisc_l2_000170_Pass"
+    - "cat3_cisc_l2_000270_Fail"
+    - "cat3_cisc_l2_000270_Pass"
 
   vars:
     ansible_user: "{{ cklb_user }}"

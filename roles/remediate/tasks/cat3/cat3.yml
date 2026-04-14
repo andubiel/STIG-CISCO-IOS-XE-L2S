@@ -10,7 +10,36 @@
       - CAT2
       - V-220655
 
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220662 | Rule ID: SV-220662r648766 | STIG ID: CISC-L2-000160 | Storm Control'
+  ansible.builtin.include_tasks: cat3/cat3_storm_control_remediate.yml
+  when: SV_220662r648766
+  tags:
+      - SV_220655r917683
+      - CISC-L2-000160
+      - CAT2
+      - V-220662
+
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping'
+  ansible.builtin.include_tasks: cat3/cat3_igmp_snooping_remediate.yml
+  when: SV_220663r929005
+  tags:
+      - SV_220663r929005
+      - CISC-L2-000170
+      - CAT2
+      - V-220663
+
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN'
+  ansible.builtin.include_tasks: cat3/cat3_access_native_remediate.yml
+  when: SV_220673r991910
+  tags:
+      - SV_220673r991910 
+      - CISC-L2-000270
+      - CAT2
+      - V-220673
+
 - name: Save Cat3 Configs
   cisco.ios.ios_config:
     save_when: 'always'
+
+  
     

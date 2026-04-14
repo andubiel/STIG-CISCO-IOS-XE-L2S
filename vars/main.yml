@@ -42,11 +42,12 @@ SV_220672r991909: true #CISC-L2-000260 | trunk native VLAN
 
 # CAT 3 rules (Low)
 SV_220655r917683: true #CISC-L2-000090 | Root Guard
-SV_220662r648766: false #CISC-L2-000160 | Storm Control 
-SV_220663r929005: false #CISC-L2-000170 | IGMP or MLD Snooping
-SV_220673r991910: false #CISC-L2-000270 | Access Native Vlan
+SV_220662r648766: true #CISC-L2-000160 | Storm Control 
+SV_220663r929005: true #CISC-L2-000170 | IGMP or MLD Snooping
+SV_220673r991910: true #CISC-L2-000270 | Access Native Vlan
 
 # OPTIONAL STIG VIEWER
+
 # This section is to enable the roles to provide CKLB formatted file for STIG VIEWER
 # To enable or disable this functionality
 stig_viewer: true
@@ -68,6 +69,8 @@ cklb_user: tdubiel
 # Each file is saved with a timestamp 
 # cklb_password: changeme
 # The cklb_password should be defined in an Ansible VAULT or AAP credential
+
+# GIT
 
 # Git Repo URL
 # The token/password should be defined in an Ansible VAULT or AAP credential
@@ -136,20 +139,6 @@ ios_qos_standard: |
   class class-default
    bandwidth percent 25
 
-# CISC-L2-000180
-# SV_220664r539671 | CISC-L2-000180 | Rapid STP 
-# This rule may need to be set to false 
-# Manually set N/A to findings based on the following:
-# In cases where VLANs do not span multiple switches, it is a best practice to not implement STP. 
-# Avoiding the use of STP will provide the most deterministic and highly available network topology. 
-# If STP is required, then review the switch configuration to verify that Rapid STP has been implemented. 
-
-# CISC-L2-000160 Storm Control Variables
-# STIG range: 10,000,000 - 1,000,000,000 (10M to 1G)
-iosstig_storm_control_unicast_level: "bps 62000000"
-iosstig_storm_control_broadcast_level: "bps 20000000"
-
-
 # SV-220667r991904 | CISC-L2-000210 | unused VLAN
 # CISC-L2-000210
 # iosstig_blackhole_vlan is a vlan that directs inactive ports to a vlan that is inactive.
@@ -164,7 +153,6 @@ iosstig_blackhole_vlan_name: "BLACKHOLE"
 # CISC-L2-000220
 iosstig_vlan1_replacement: "100"
 
-
 # SV-220670r991907 | CISC-L2-000240 | default VLAN mgmt
 # CISC-L2-000240
 # iosstig_mgmt_vlan is the new management vlan that replaces vlan1 as the main vlan that Cisco 
@@ -178,8 +166,6 @@ iosstig_mgmt_ipaddress: "10.10.10.10"
 # iosstig_mgmt_ipaddress_subnet is the subnet for management ip address. 
 iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
 
-
-
 # SV-220670r991909 | CISC-L2-000260 | trunk native VLAN
 # CISC-L2-000260
 # iosstig_native_vlan is the new native vlan for trunk links that you set in 
@@ -192,7 +178,7 @@ iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
 iosstig_native_vlan: "33"
 iosstig_native_vlan_name: "NATIVE"
 
-# Cat 
+# Cat 3
 
 # SV-220655r917683 | CISC-L2-000090 | STP Root Guard Evaluation
 # CISC-L2-000090
@@ -204,21 +190,19 @@ iosstig_access_switch_links:
   - name: GigabitEthernet1/0/1
  #- name: GigabitEthernet1/0/50
 
-# SV-220662r648766 | CISC-L2-000160 | Storm Control
-# CISC-L2-000160 
-########## NEED TO DO ###########
-
-# SV-220663r929005 | CISC-L2-000170 | IGMP or MLD Snooping
-# CISC-L2-000170
-########## NEED TO DO ###########
+# CISC-L2-000160 Storm Control Variables
+# STIG range: 10,000,000 - 1,000,000,000 (10M to 1G)
+# One Gig Ports
+iosstig_storm_control_unicast_level_one: "62000000"
+iosstig_storm_control_broadcast_level_one: "20000000"
+# Ten Gig Ports
+iosstig_storm_control_unicast_level_ten: "620000000"
+iosstig_storm_control_broadcast_level_ten: "200000000"
 
 # SV-220673r991910 | CISC-L2-000270 | Access Native Vlan
 # CISC-L2-000270 
-########## NEED TO DO ###########
-
-# SV-220662r648766: false #CISC-L2-000160 | Storm Control 
-# CISC-L2-000160
-########## NEED TO DO ###########
+iosstig_not_native_vlan: "34"
+iosstig_not_native_vlan_name: "NOT_NATIVE"
 
 
 

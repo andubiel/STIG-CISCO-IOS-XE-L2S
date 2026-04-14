@@ -68,4 +68,11 @@
     - "cat2_cisc_l2_000260_Pass"
     - "cat3_cisc_l2_000090_Fail"
     - "cat3_cisc_l2_000090_Pass"
+    - "cat3_cisc_l2_000160_Fail"
+    - "cat3_cisc_l2_000160_Pass"
+    - "cat3_cisc_l2_000170_Fail"
+    - "cat3_cisc_l2_000170_Pass"
+    - "cat3_cisc_l2_000270_Fail"
+    - "cat3_cisc_l2_000270_Pass"
+    
 

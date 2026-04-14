@@ -1,0 +1,43 @@
+---
+# CISC-L2-000170 - IGMP Snooping
+- name:  'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping
+         | Initialize Lists'
+  ansible.builtin.set_fact:
+    igmp_global_disabled: false
+    igmp_vlan_violators: []
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping
+        | Get Running Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include igmp snooping
+  register: igmp_config_out
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping
+        | Check Global and VLAN State'
+  ansible.builtin.set_fact:
+    igmp_global_disabled: "{{ 'no ip igmp snooping' in igmp_config_out.stdout[0] and 'vlan' not in igmp_config_out.stdout[0] }}"
+    igmp_vlan_violators: >-
+      {%- set violators = [] -%}
+      {# Capture any 'no ip igmp snooping vlan X' lines #}
+      {%- set vlan_disables = igmp_config_out.stdout[0] | regex_findall('no ip igmp snooping vlan (\\d+)') -%}
+      {%- for vlan in vlan_disables -%}
+        {%- set _ = violators.append(vlan) -%}
+      {%- endfor -%}
+      {{ violators }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping
+        | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "IGMP Snooping is disabled. Global: {{ igmp_global_disabled }}, VLAN Violators: {{ igmp_vlan_violators }}"
+  when: igmp_global_disabled or (igmp_vlan_violators | length > 0)
+  changed_when: true
+  notify: "cat3_cisc_l2_000170_Fail"
+
+- name: 'Role: Evaluate | SV-220663 | IGMP Snooping | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "IGMP Snooping is enabled globally and for all VLANs. Rule ID: SV-220663 Passed."
+  when: not igmp_global_disabled and (igmp_vlan_violators | length == 0)
+  changed_when: true
+  notify: "cat3_cisc_l2_000170_Pass"
