@@ -124,7 +124,15 @@ perform a full check-and-fix for a switch:
 
 This repo is best designed to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
 
-### Step1: Clone Repo
+### Step1: Fork or Clone Repo
+The idea here is to ultimately access these files from a repo that you have read/write access to make changes from AAP and playbooks.
+
+#### Fork
+
+![fork](/images/workbench.png)
+
+
+
 ~~~
 git clone https://github.com/andubiel/STIG-CISCO-IOS-XE-L2S.git
 ~~~
