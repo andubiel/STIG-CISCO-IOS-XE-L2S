@@ -113,12 +113,14 @@ STIG-CISCO-IOS-XE-L2S/
 
 * **Ansible:** 2.10 or higher.
 * **Ansible Automation Platform:** 2.4 or higher
+* **Execution Environment** Default should work in most cases
 * **Collections:** 
   * `cisco.ios`
   * `ansible.utils`
-
+* **Inventory:**  A working inventory of the ios-xe switches in AAP
 * **Connectivity:** SSH access to switches with Enable/Privileged EXEC rights.
 * **STIG Version:** Designed against the Cisco IOS-XE L2S STIG.
+* **Option STIG Viewer application installed where CFLB files are stored
 
 ---
 
@@ -201,6 +203,11 @@ These variables represent the "Desired State" for specific STIG rules. The **Eva
 ---
 
 > **Implementation Note:** While the **Discovery** role automatically generates lists like `iosstig_access_ports`, the variables in the table above must be manually configured by the administrator in `vars/main.yml` to reflect the specific security policy of the organization. These values act as the benchmark for the "Logic-Based Evaluation" performed by the framework.
+
+### Step3: Setup a Project in AAP to `Your Git Repo` 
+Refer to Step 1 above
+
+
 
 ## AAP Screenshots
 ########## NEED TO DO ###########
