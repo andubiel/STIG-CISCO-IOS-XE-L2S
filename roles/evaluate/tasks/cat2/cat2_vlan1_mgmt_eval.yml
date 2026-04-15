@@ -1,7 +1,6 @@
 ---
 # CISC-L2-000240 - Management VLAN Evaluation
 # This task ensures the default VLAN (VLAN 1) is not used for in-band management traffic.
-
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220670 | Rule ID: SV-220670r991907 | STIG ID: CISC-L2-000240 |
     Management VLAN | Get Interface IPv4 Facts'
   cisco.ios.ios_command:

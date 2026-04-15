@@ -2,7 +2,6 @@
 ---
 # CISC-L2-000220 - VLAN 1 No Access Ports Evaluation
 # This task ensures no active access ports are assigned to the default VLAN.
-
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220668 | Rule ID: SV-220668r991905 | STIG ID: CISC-L2-000220 | SRG-NET-000512-L2S-000008 | VLAN 1 | Initialize Port Lists'
   ansible.builtin.set_fact:
     iosstig_default_ports_list: []

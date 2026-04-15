@@ -1,7 +1,6 @@
 ---
 # CISC-L2-000230 - VLAN 1 Trunk Pruning Evaluation
 # This task verifies that VLAN 1 is explicitly pruned from all 802.1Q trunking interfaces.
-
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | SRG-NET-000512-L2S-000009 |
     VLAN 1 Trunk Pruning | Get Running Config'
   cisco.ios.ios_command:

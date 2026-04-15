@@ -1,3 +1,5 @@
+---
+# CISC-L2-000040 Denial of Service Prevention 
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS
          QOS Audit | Get Running Configuration'
   cisco.ios.ios_command:
@@ -47,7 +49,6 @@
     Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No changes detected for | DOS | QoS |, notifying handler that Rule ID: SV-220651r1107171 Passed"
-  # Trigger this only if the previous task did NOT change
   when: not qos_diff_result.changed
   changed_when: true
   notify: "cat2_cisc_l2_000040_Pass"

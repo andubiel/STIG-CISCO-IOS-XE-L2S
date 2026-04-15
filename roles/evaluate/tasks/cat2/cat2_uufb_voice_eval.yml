@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000120 - Unknown Unicast Flood Blocking (UUFB) Evaluation
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-22065 | Rule ID:SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG-NET-000362-L2S-000024 
         | Voice UUFB | Itdentify Missing Configs'
   cisco.ios.ios_command:
@@ -33,7 +34,6 @@
     Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No compliance violation detected for | UUFB | Voice, notifying handler that Rule ID: SV-220658r856280  Passed"
-  # Trigger this only if the previous task did NOT change
   when: missing_uufb_voice | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000120_voice_Pass"

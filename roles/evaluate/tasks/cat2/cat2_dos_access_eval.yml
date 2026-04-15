@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000040 Denial of Service Prevention
 - name: >
    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220651 | Rule ID:SV-220651r1107171 | STIG ID: CISC-L2-000040 | SRG ID: SRG-NET-000193-L2S-000020 | DOS | Access
      show run interface'
@@ -35,7 +36,6 @@
     Trigger handler'
   debug:
     msg: "No compliance violation detected for | DOS | Access, notifying handler that Rule ID: SV-220651r1107171 Passed"
-  # Trigger this only if the previous task did NOT change
   when: missing_dos_interfaces | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000040_access_Pass"

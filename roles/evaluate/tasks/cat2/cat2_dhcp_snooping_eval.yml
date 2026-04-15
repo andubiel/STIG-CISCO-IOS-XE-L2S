@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000130 - DHCP Snooping Evaluation
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
     DHCP Snooping | show running-config'
   cisco.ios.ios_command:

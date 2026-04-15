@@ -1,6 +1,5 @@
 ---
 # CISC-L2-000200 - Static Trunks / DTP Evaluation
-
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | SV-220666 | DTP | Get Switchport Status'
   cisco.ios.ios_command:
     commands:

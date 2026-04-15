@@ -1,4 +1,5 @@
 ---
+
 - name: 'Role: Remediate | Management VLAN | SV-220670 | Move IP to Vlan {{ iosstig_mgmt_vlan_name }}'
   cisco.ios.ios_config:
     src: cat2_vlan1_mgmt.j2

@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000100 - BPDU Guard Evaluation
 - name: >
     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022 | Voice BPDU Guard
      show run interface'
@@ -35,7 +36,6 @@
     Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No compliance violation detected for | BPDU | Voice, notifying handler that Rule ID: SV-220656r856278 Passed"
-  # Trigger this only if the previous task did NOT change
   when: missing_bpdu_voice | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000100_voice_Pass"

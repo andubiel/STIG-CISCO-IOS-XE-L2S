@@ -1,6 +1,5 @@
 ---
 # CISC-L2-000160 - Storm Control Evaluation
-
 - name: 'Role: Evaluate | Severity: Low (Cat III) | SV-220662 | Storm Control | Initialize Lists'
   ansible.builtin.set_fact:
     storm_control_violators: []

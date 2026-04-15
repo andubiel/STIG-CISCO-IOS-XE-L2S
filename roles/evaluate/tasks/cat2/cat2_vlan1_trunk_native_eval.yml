@@ -1,7 +1,6 @@
 ---
 # CISC-L2-000260 - Native VLAN ID Evaluation
 # This task ensures the native VLAN on trunk links is not set to VLAN 1.
-
 - name: 'Role: Evaluate | SV-220672 | Native VLAN | Initialize Finding Lists'
   ansible.builtin.set_fact:
     native_vlan_violators: []

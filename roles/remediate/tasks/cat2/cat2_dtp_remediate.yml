@@ -1,3 +1,5 @@
+---
+# CISC-L2-000200 - Static Trunks / DTP Remediation
 - name: 'Role: Remediate | DTP | SV-220666 | Trunk Ports'
   cisco.ios.ios_config:
     src: 'templates/cat2/remediate_dtp_trunk.j2'

@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000110 - Spanning Tree Loop Guard Evaluation
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220657 | SV-220657r856279 | STIG ID: CISC-L2-000110 | SRG-NET-000362-L2S-000023 |
          STP Loop Guard | Get Running Configuration'
   cisco.ios.ios_command:

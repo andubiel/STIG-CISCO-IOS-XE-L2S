@@ -1,5 +1,5 @@
 ---
-# CISC-L2-000170 - IGMP Snooping
+# CISC-L2-000170 - IGMP Snooping Evaluation
 - name:  'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping
          | Initialize Lists'
   ansible.builtin.set_fact:

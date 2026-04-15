@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000190 - Unidirectional Link Detection (UDLD) Evaluation
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
     UDLD | show running-config'
   cisco.ios.ios_command:
@@ -9,7 +10,6 @@
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220665 | Rule ID: SV-220665r539671 | STIG ID: CISC-L2-000190 | SRG-NET-000512-L2S-000004 |
     UDLD | Identify missing configuration'
   ansible.builtin.set_fact:
-    # Logic: Pass if 'udld enable' or 'udld aggressive' is present globally
     missing_udld_config: >-
       {{ ['udld enable'] 
          if (udld_check.stdout[0] is not search('udld enable')) 

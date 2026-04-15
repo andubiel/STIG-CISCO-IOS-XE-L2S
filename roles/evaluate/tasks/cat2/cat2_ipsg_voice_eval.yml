@@ -1,4 +1,5 @@
 ---
+# CISC-L2-000140 -  IP Source Guard Evaluation
 - name: >
     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220660 | Rule ID:SV-220660r929001 | STIG ID: CISC-L2-000140 | SRG ID: SRG-NET-000362-L2S-000026 | Voice | IP Source Guard
      show run interface'
@@ -35,7 +36,6 @@
     Trigger handler if NO compliance violation occurred'
   debug:
     msg: "No compliance violation detected for | IPSG | Voice, notifying handler that Rule ID: SV-220660r929001  Passed"
-  # Trigger this only if the previous task did NOT change
   when: missing_ipsg_voice | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000140_voice_Pass"
