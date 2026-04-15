@@ -127,15 +127,18 @@ This repo is best designed to run the STIG roles as part of an Ansible Automatio
 ### Step1: Fork or Clone Repo
 The idea here is to ultimately access these files from a repo that you have read/write access to make changes from AAP and playbooks.
 
-#### Fork
+#### Option 1: Fork
 
-![fork](/images/workbench.png)
+![fork](/images/fork.png)
 
 
-
+#### Option 2: Clone
 ~~~
 git clone https://github.com/andubiel/STIG-CISCO-IOS-XE-L2S.git
 ~~~
+When cloning a directory it is necessary to delete the `.git` folder before copying files into your own repository
+~~~
+rm -rf STIG-CISCO-IOS-XE-L2S/.git
 
 ### Step2: Define the Global Variables `vars/main.yml
 # Variables Checklist: `vars/main.yml`
