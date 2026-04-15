@@ -1,4 +1,4 @@
-#STIG VIEWER
+# STIG VIEWER
 
 Key Benefits of the Stig Viewer - Checker:
 Eliminates Human Error: No more manual "copy-pasting" from a terminal to a spreadsheet.
