@@ -208,7 +208,7 @@ These variables represent the "Desired State" for specific STIG rules. The **Eva
 Refer to Step 1 above
 
 **Example Project**
-![project](/images/project.png)
+![project](/images/stig_project.png)
 
 
 ## AAP Screenshots
