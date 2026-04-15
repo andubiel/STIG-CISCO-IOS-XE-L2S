@@ -204,9 +204,11 @@ These variables represent the "Desired State" for specific STIG rules. The **Eva
 
 > **Implementation Note:** While the **Discovery** role automatically generates lists like `iosstig_access_ports`, the variables in the table above must be manually configured by the administrator in `vars/main.yml` to reflect the specific security policy of the organization. These values act as the benchmark for the "Logic-Based Evaluation" performed by the framework.
 
-### Step3: Setup a Project in AAP to `Your Git Repo` 
+### Step3: Setup a Project in AAP to `Your` Git Repo
 Refer to Step 1 above
 
+**Example Project**
+![project](/images/project.png)
 
 
 ## AAP Screenshots
