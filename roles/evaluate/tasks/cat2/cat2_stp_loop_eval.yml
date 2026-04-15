@@ -24,7 +24,7 @@
   changed_when: stp_loop_diff.diff_text | length > 0
   notify: "cat2_cisc_l2_000110_Fail"
 
-- name: 'Role: Evaluate | CAT II | SV-220631 | STP Loop Guard | Trigger Pass Handler'
+- name: 'Role: Evaluate | CAT II | SV-220657 | STP Loop Guard | Trigger Pass Handler'
   ansible.builtin.debug:
     msg: "STP Loop Guard is correctly enabled."
   when: not stp_loop_diff.changed

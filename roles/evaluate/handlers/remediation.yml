@@ -218,7 +218,7 @@
 - name: "Handler | CAT2 | SV-220657 | STP Loop Guard | Flag for Remediation"
   ansible.builtin.lineinfile:
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
-    line: "SV_220631r539671_remediate_loop: true"
+    line: "SV_220657r856279_remediate_loop: true"
     create: yes
   delegate_to: localhost
   listen: "cat2_cisc_l2_000110_Fail"
@@ -226,7 +226,7 @@
 - name: "Handler | CAT2 | SV-220657 | STP Loop Guard | Flag for Success"
   ansible.builtin.lineinfile:
     path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_remediate.yaml"
-    line: "SV_220631r539671_remediate_loop: false"
+    line: "SV_220657r856279_remediate_loop: false"
     create: yes
   delegate_to: localhost
   listen: "cat2_cisc_l2_000110_Pass"

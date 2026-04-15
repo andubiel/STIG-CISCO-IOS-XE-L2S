@@ -22,7 +22,7 @@
           map(attribute='show_item.name') | list 
           | unique }}
   delegate_to: localhost
-  changed_when: missing_dos_voice | length > 0
+  changed_when: missing_dos_trunk | length > 0
   notify: "cat2_cisc_l2_000040_trunk_Fail"
  
 - name: "STIG | Show findings | DOS | Trunk"

@@ -9,12 +9,12 @@
     group: "{{ cklb_user }}"
   run_once: true
   delegate_to: "{{ cklb_server }}"
+  become: true
   vars:
     ansible_connection: ssh
     ansible_user: "{{ cklb_user }}"
     ansible_password: "{{ cklb_password }}"
     ansible_become_pass: "{{ cklb_become_pass }}"
-    become: true
   when: stig_viewer == true
 
 - name: "Role: Evaluate | GIT Retrieve"

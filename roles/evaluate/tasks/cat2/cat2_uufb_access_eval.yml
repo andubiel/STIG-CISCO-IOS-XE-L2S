@@ -12,7 +12,7 @@
   when: iosstig_access_ports is defined
 
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220658 | Rule ID:SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG-NET-000362-L2S-000024 
-        | Access UUFB | Itdentify Missing Configs'
+        | Access UUFB | Identify Missing Configs'
   ansible.builtin.set_fact:
     missing_uufb_interfaces: >-
       {{ access_uufb_check.results | 

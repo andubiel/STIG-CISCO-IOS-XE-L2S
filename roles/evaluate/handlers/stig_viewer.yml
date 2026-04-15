@@ -93,7 +93,7 @@
    - "cat2_cisc_l2_000040_Fail" 
    - "cat2_cisc_l2_000040_access_Fail"
    - "cat2_cisc_l2_000040_voice_Fail"
-   - "cat2_cisc_l2_000040_tunk_Fail"
+   - "cat2_cisc_l2_000040_trunk_Fail"
    
 - name: "Handler | QOS Failures"
   ansible.builtin.set_fact:
