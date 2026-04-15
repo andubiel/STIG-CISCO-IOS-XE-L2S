@@ -79,6 +79,9 @@ If the configuration is missing/wrong: The status is set to Open.
 CKLB Generation: The tool uses the stig_viewer.j2 template to generate a .cklb file for every switch in the inventory.
 * This functionality can be enabled in the `vars/main.yml` file.
 
+**STIG VIEWER SETUP**
+[stigviewer](https://github.com/andubiel/STIG-CISCO-IOS-XE-L2S/blob/main/stigviewer.MD)
+
 ~~~
 #This section is to enable the roles to provide CKLB formatted file for STIG Viewer
 # To enable or disable this functionality
