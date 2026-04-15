@@ -210,9 +210,9 @@ Refer to Step 1 above
 **Example Project**
 ![project](/images/stig_project.png)
 
-## AAP Screenshots
-########## NEED TO DO ###########
 
 ### Step4: Configure and Run the Discover Job-Template
 Populates the source of truth for your switch interfaces
+
+
 
