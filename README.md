@@ -568,7 +568,7 @@ With AAP you can stitch together the aforementioned Job-Templates into a Workflo
 ![workflow](/images/workflow.png)
 
 ## Validated Content
-These `ROLES` are in process of being refactored into a validated content collection.
+This repository is in process of being refactored into a validated content collection.
 
 **contributers are welcome to add new network STIGS here**
 
