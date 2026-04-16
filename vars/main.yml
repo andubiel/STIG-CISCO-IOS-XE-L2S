@@ -166,6 +166,11 @@ iosstig_mgmt_ipaddress: "10.10.10.10"
 # iosstig_mgmt_ipaddress_subnet is the subnet for management ip address. 
 iosstig_mgmt_ipaddress_subnet: "255.255.255.0"
 
+# SV-220671r991908 | CISC-L2-000250 | Untrusred Ports
+# This list explicitly defines trunks to servers or switches but never to user or untrusted ports
+iosstig_trusted_trunk_links:
+  - name: GigabitEthernet1/0/1
+
 # SV-220670r991909 | CISC-L2-000260 | trunk native VLAN
 # CISC-L2-000260
 # iosstig_native_vlan is the new native vlan for trunk links that you set in 
