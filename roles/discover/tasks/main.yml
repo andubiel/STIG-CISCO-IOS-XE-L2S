@@ -16,16 +16,11 @@
 
 - name: |
    'Role: Discover | 
-    Delete host_vars files'
+    Delete host_vars'
   ansible.builtin.file:
-   path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/{{ item }}.yaml"
+   path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/"
    state: absent
   delegate_to: localhost
-  loop:
-   - iosstig_access_ports
-   - iosstig_voice_ports
-   - iosstig_trunk_ports
-   - iosstig_unused_ports
 
 - name: |
    'Role: Discover | Publish the changes'
@@ -48,6 +43,14 @@
   register: repository
   delegate_to: localhost
   no_log: true
+
+- name: |
+   'Role: Discover | 
+    Create host_vars'
+  ansible.builtin.file:
+   path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/"
+   state: directory
+  delegate_to: localhost
 
 - name: 'Role: Discover | Gather interfaces resources'
   cisco.ios.ios_facts:
