@@ -5,14 +5,33 @@
   ansible.builtin.set_fact:
     access_native_violators: []
 
-- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN | Identify Violations'
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN | Get Live Switchport State'
+  cisco.ios.ios_command:
+    commands:
+      - show interfaces switchport
+  register: switchport_out
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN | Identify Violations (Real-Time)'
   ansible.builtin.set_fact:
     access_native_violators: >-
       {%- set violators = [] -%}
-      {%- for port in iosstig_access_ports | default([]) -%}
-        {# Check if the access VLAN matches the defined Native VLAN #}
-        {%- if port.access.vlan | string == iosstig_native_vlan | string -%}
-          {%- set _ = violators.append({'name': port.name, 'vlan': port.access.vlan}) -%}
+      {# Parse the command output block by block #}
+      {%- set port_blocks = switchport_out.stdout[0].split('Name: ') -%}
+      {%- for block in port_blocks -%}
+        {%- if block.strip() -%}
+          {%- set lines = block.split('\n') -%}
+          {%- set p_name = lines[0].strip() -%}
+          
+          {# Extract Administrative Mode and Access VLAN using regex #}
+          {%- set admin_mode = block | regex_search('Administrative Mode: (.*)', '\\1') | first | default('') -%}
+          {%- set access_vlan = block | regex_search('Access Mode VLAN: (\\d+)', '\\1') | first | default('') -%}
+          
+          {# Only check ports that are operational 'static access' #}
+          {%- if 'static access' in admin_mode -%}
+            {%- if access_vlan | string == iosstig_native_vlan | string -%}
+              {%- set _ = violators.append({'name': p_name, 'vlan': access_vlan}) -%}
+            {%- endif -%}
+          {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
       {{ violators }}
