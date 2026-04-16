@@ -1,59 +1,48 @@
 ---
 # CISC-L2-000250 - User-Facing Port Configuration Evaluation
-# This task ensures all untrusted or undefined ports are forced to access mode.
-
-- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | SRG-NET-000512-L2S-000011 |
-    User-Facing Ports | Initialize Lists'
+# This task ensures all untrusted or undefined trunk ports are forced to access mode.
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | Untrusted Trunks | Initialize Lists'
   ansible.builtin.set_fact:
     untrusted_violators: []
-    all_defined_ports_standardized: >-
-      {%- set port_nums = [] -%}
-      {%- for p in (iosstig_access_ports | default([]) + iosstig_voice_ports | default([]) + iosstig_trunk_ports | default([])) -%}
-        {%- set p_name = p.name if p is mapping else p -%}
-        {%- set p_num = p_name | regex_replace('^[a-zA-Z]+', '') -%}
-        {%- set _ = port_nums.append(p_num) -%}
-      {%- endfor -%}
-      {{ port_nums | unique }}
 
-- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | SRG-NET-000512-L2S-000011 |
-    User-Facing Ports | Get Operational Mode'
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | Untrusted Trunks | Get Operational Trunks'
   cisco.ios.ios_command:
     commands:
-      - show interfaces switchport | include ^Name|Administrative Mode
-  register: sw_port_out
+      - show interfaces trunk
+  register: trunk_status_out
 
-- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | SRG-NET-000512-L2S-000011 |
-    User-Facing Ports | Identify Undefined Trunks'
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | Untrusted Trunks | Identify Untrusted Ports'
   ansible.builtin.set_fact:
     untrusted_violators: >-
       {%- set violators = [] -%}
-      {%- set raw_output = sw_port_out.stdout[0].split('Name: ') -%}
-      {%- for block in raw_output if block | trim -%}
-        {%- set full_name = block.split()[0] | trim -%}
-        {# Extract just the number from 'Gi1/0/1' -> '1/0/1' #}
-        {%- set port_num = full_name | regex_replace('^[a-zA-Z]+', '') -%}
-        {%- set mode = 'trunk' if 'trunk' in block else 'access' -%}
-        
-        {# Compare using standardized port numbers #}
-        {%- if port_num not in all_defined_ports_standardized and mode == 'trunk' -%}
-          {%- set _ = violators.append({'name': full_name}) -%}
+      {# Standardize trusted link names for matching #}
+      {%- set trusted_names = iosstig_trusted_trunk_links | map(attribute='name') | list -%}
+      
+      {%- set trunk_output = trunk_status_out.stdout[0].split('\n') -%}
+      {%- for line in trunk_output -%}
+        {%- set parts = line.split() -%}
+        {# Find lines identifying active trunks (Port, Mode, Encapsulation, Status, Native) #}
+        {%- if parts | length >= 4 and parts[3] == 'trunking' -%}
+          {%- set p_name = parts[0] -%}
+          {# If the active trunk is NOT in the trusted list, it is a violator/untrusted #}
+          {%- if p_name not in trusted_names -%}
+            {%- set _ = violators.append({'name': p_name, 'status': parts[3]}) -%}
+          {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
-      {{ violators | to_json | from_json }}
+      {{ violators }}
   delegate_to: localhost
 
-- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | SRG-NET-000512-L2S-000011 |
-    User-Facing Ports | Trigger Fail'
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | Untrusted Trunks | Trigger Fail'
   ansible.builtin.debug:
-    msg: "Untrusted/Undefined ports configured as trunks: {{ untrusted_violators }}. Rule ID: SV-220671r991908 Failed."
+    msg: "The following trunks are active but UNTRUSTED: {{ untrusted_violators }}"
   when: untrusted_violators | length > 0
   changed_when: true
   notify: "cat2_cisc_l2_000250_Fail"
 
-- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | SRG-NET-000512-L2S-000011 |
-    User-Facing Ports | Trigger Pass'
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220671 | Rule ID: SV-220671r991908 | STIG ID: CISC-L2-000250 | Untrusted Trunks | Trigger Pass'
   ansible.builtin.debug:
-    msg: "No compliance violation detected for | User-Facing Ports |, notifying handler that Rule ID: SV-220671r991908 Passed"
+    msg: "All active trunk links are verified as trusted. Rule ID: SV-220671 Passed."
   when: untrusted_violators | length == 0
   changed_when: true
   notify: "cat2_cisc_l2_000250_Pass"
