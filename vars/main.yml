@@ -158,7 +158,7 @@ iosstig_vlan1_replacement: "100"
 # iosstig_mgmt_vlan is the new management vlan that replaces vlan1 as the main vlan that Cisco 
 # used for switch management.  
 # Provided in host_vars 
-#iosstig_mgmt_vlan: "22"
+iosstig_mgmt_vlan: "22"
 # iosstig_mgmt_vlan_name is the name that will be assigned to the new management vlan. 
 iosstig_mgmt_vlan_name: "Management VLAN"
 # iosstig_mgmt_ipaddress is the management ip address. 
