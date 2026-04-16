@@ -52,7 +52,6 @@ The **Evaluate** role performs a non-disruptive audit of the switches. It compar
 * Groups findings by STIG Category (CAT I, II, III).
 * **Optional Reporting:** Generates `.cklb` files that can be imported into the **STIG Viewer** desktop application for formal auditing and submission.
 * Creates host_vars and scoped configurations for subsequent remediation.
-* Handlers
 
 ### 3. Remediate
 
@@ -88,6 +87,21 @@ CKLB Generation: The tool uses the stig_viewer.j2 template to generate a .cklb f
 # To enable or disable this functionality
 stig_viewer: true
 ~~~
+## Handlers
+1. Remediation Toggling (remediation.yml)
+Purpose: Sets a specific boolean flag (e.g., SV_220661_remediate: true) for each Rule ID.
+
+Function: This ensures that the Remediate role only attempts to fix rules that actually failed the audit, preventing unnecessary configuration overhead.
+
+2. Persistence of Violators (scoped.yml)
+Purpose: Writes the specific list of violating interfaces to the host_vars/iosstig_scoped.yaml file on the control node.
+
+Function: Because standard Ansible facts are lost between playbook runs, this handler "pins" the data. For example, if ports Gi1/0/2 and Gi1/0/4 are missing Portfast, this handler saves that list so the Remediation role knows exactly which ports to target later.
+
+3. STIG Viewer Reporting (stig_viewer.yml)
+Purpose: Dynamically updates the status (Open or Not a Finding) and provides a descriptive "Finding Details" string for the switch.
+
+Function: This data is fed into the stig_viewer.j2 template to generate the .cklb file used by security officers for formal compliance reporting.
 
 ## Repository Structure
 
@@ -221,6 +235,15 @@ Populates the source of truth for your switch interfaces.
 Launch STIG-CISCO-IOS-XE-L2S-Discover
 ![discover](/images/stig_discover.png)
 
+The following playbook and role tasks are used:
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree roles/discover/
+roles/discover/
+└── tasks
+    └── main.yml
+discover.yml
+~~~
+
 The following host_vars files are created:
 
 ~~~
@@ -258,5 +281,190 @@ iosstig_access_ports:
     mode: access
     name: GigabitEthernet1/0/8
 ~~~
+
+### Step5: Verification to move Forward
+
+1. Review all Global and STIG variables
+`vars/main.yml`
+
+2. Review `host_vars/`
+
+### Step6: Configure and Run the Evaluate Job-Template
+
+Launch STIG-CISCO-IOS-XE-L2S-Evaluate
+
+![evaluate](/images/stig_evaluate.png)
+
+The following playbook and role tasks are used:
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree roles/evaluate
+roles/evaluate
+├── handlers
+│   ├── git_finish.yml
+│   ├── git_start.yml
+│   ├── main.yml
+│   ├── remediation.yml
+│   ├── scoped.yml
+│   └── stig_viewer.yml
+└── tasks
+    ├── cat1
+    │   ├── cat1_step1_8021x_access_interfaces.yml
+    │   ├── cat1_step1_8021x_voice_interfaces.yml
+    │   ├── cat1_step2_8021x_auth.yml
+    │   └── cat1.yml
+    ├── cat2
+    │   ├── cat2_blackhole_eval.yml
+    │   ├── cat2_bpdu_access_eval.yml
+    │   ├── cat2_bpdu_voice_eval.yml
+    │   ├── cat2_dai_eval.yml
+    │   ├── cat2_dhcp_snooping_eval.yml
+    │   ├── cat2_dos_access_eval.yml
+    │   ├── cat2_dos_qos_eval.yml
+    │   ├── cat2_dos_trunk_eval.yml
+    │   ├── cat2_dos_voice_eval.yml
+    │   ├── cat2_dtp_eval.yml
+    │   ├── cat2_ipsg_access_eval.yml
+    │   ├── cat2_ipsg_voice_eval.yml
+    │   ├── cat2_stp_loop_eval.yml
+    │   ├── cat2_stp_mode_eval.yml
+    │   ├── cat2_udld_eval.yml
+    │   ├── cat2_user_port_eval.yml
+    │   ├── cat2_uufb_access_eval.yml
+    │   ├── cat2_uufb_voice_eval.yml
+    │   ├── cat2_vlan1_eval.yml
+    │   ├── cat2_vlan1_mgmt_eval.yml
+    │   ├── cat2_vlan1_trunk_eval.yml
+    │   ├── cat2_vlan1_trunk_native_eval.yml
+    │   ├── cat2_vtp_eval.yml
+    │   └── cat2.yml
+    ├── cat3
+    │   ├── cat3_access_native_eval.yml
+    │   ├── cat3_igmp_snooping_eval.yml
+    │   ├── cat3_root_guard_eval.yml
+    │   ├── cat3_storm_control_eval.yml
+    │   └── cat3.yml
+    └── main.yml
+evaluate.yml
+~~~
+
+Additional host_vars are created:
+* iosstig_remediate.yml sets `true` to rules that need to be remediated
+* iosstig_scoped.yml refines remediation to only the affected ports
+
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree host_vars/
+host_vars/
+└── clab-switch-leaf1
+    ├── iosstig_access_ports.yaml
+    ├── iosstig_remediate.yaml
+    ├── iosstig_scoped.yaml
+    ├── iosstig_trunk_ports.yaml
+    ├── iosstig_unused_ports.yaml
+    ├── iosstig_user_vlans.yaml
+    ├── iosstig_voice_ports.yaml
+    └── iosstig_voice_vlans.yaml
+~~~
+
+Example `iosstig_scoped.yml`
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ cat host_vars/clab-switch-leaf1/iosstig_scoped.yaml 
+# BEGIN 8021x ACCESS PORTS
+access_8021x:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/8
+# END 8021x ACCESS PORTS
+# BEGIN 8021x VOICE PORTS
+voice_8021x:
+  - name: GigabitEthernet1/0/8
+# END 8021x VOICE PORTS
+# BEGIN DOS ACCESS PORTS
+access_dos:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/4
+  - name: GigabitEthernet1/0/6
+  - name: GigabitEthernet1/0/8
+# END DOS ACCESS PORTS
+# BEGIN DOS VOICE PORTS
+voice_dos:
+  - name: GigabitEthernet1/0/8
+# END DOS VOICE PORTS
+# BEGIN DOS TRUNK PORTS
+trunk_dos:
+  - name: GigabitEthernet1/0/1
+# END DOS TRUNK PORTS
+# BEGIN BPDU ACCESS PORTS
+access_bpdu:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/4
+  - name: GigabitEthernet1/0/6
+  - name: GigabitEthernet1/0/8
+# END BPDU ACCESS PORTS
+# BEGIN BPDU VOICE PORTS
+voice_bpdu:
+  - name: GigabitEthernet1/0/8
+# END BPDU VOICE PORTS
+# BEGIN UUFB ACCESS PORTS
+access_uufb:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/4
+  - name: GigabitEthernet1/0/6
+  - name: GigabitEthernet1/0/8
+# END UUFB ACCESS PORTS
+# BEGIN UUFB VOICE PORTS
+voice_uufb:
+  - name: GigabitEthernet1/0/8
+# END UUFB VOICE PORTS
+# BEGIN IPSG ACCESS PORTS
+access_ipsg:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/4
+  - name: GigabitEthernet1/0/6
+  - name: GigabitEthernet1/0/8
+# END IPSG ACCESS PORTS
+# BEGIN IPSG VOICE PORTS
+voice_ipsg:
+  - name: GigabitEthernet1/0/8
+# END IPSG VOICE PORTS
+# BEGIN DTP TRUNK PORTS
+trunk_dtp:
+  - name: Gi1/0/3
+  - name: Gi1/0/5
+  - name: Gi1/0/7
+# END DTP TRUNK PORTS
+# BEGIN DEFAULT VLAN
+vlan1_violators_admin_up:
+    - name: Gi1/0/3
+# END DEFAULT VLAN
+# BEGIN NATIVE VLAN
+native_vlan_exists: False
+native_vlan_violators:
+  - name: Gi1/0/1
+    current_native: 1
+# END NATIVE VLAN
+# BEGIN ROOT GUARD FOR ACCESS SWITCH UPLINKS
+root_guard_violators:
+  - name: GigabitEthernet1/0/1
+# END ROOT GUARD FOR ACCESS SWITCH UPLINKS
+# BEGIN STORM CONTROL FOR USER PORTS
+storm_control_violators:
+  - name: GigabitEthernet1/0/2
+  - name: GigabitEthernet1/0/4
+  - name: GigabitEthernet1/0/6
+  - name: GigabitEthernet1/0/8
+# END STORM CONTROL FOR USER PORTS
+~~~
+
+### Step7: Optional - Check STIG VIEWER
+1. Open STIG VIEWER and find the latest `saved` CKLB file
+
+![stig_viewer1](/images/stig_viewer1.png)
+
+
+2. Review findings from the open `failed` rules
+
+![stig_viewer2](/images/stig_viewer2.png)
+
+
+
 
 
