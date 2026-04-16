@@ -52,6 +52,7 @@ The **Evaluate** role performs a non-disruptive audit of the switches. It compar
 * Groups findings by STIG Category (CAT I, II, III).
 * **Optional Reporting:** Generates `.cklb` files that can be imported into the **STIG Viewer** desktop application for formal auditing and submission.
 * Creates host_vars and scoped configurations for subsequent remediation.
+* Handlers
 
 ### 3. Remediate
 
@@ -212,7 +213,50 @@ Refer to Step 1 above
 
 
 ### Step4: Configure and Run the Discover Job-Template
-Populates the source of truth for your switch interfaces
+Populates the source of truth for your switch interfaces.
 
+* Creates host_vars for current access, voice, and trunk ports
+
+#### 
+Launch STIG-CISCO-IOS-XE-L2S-Discover
+![discover](/images/stig_discover.png)
+
+The following host_vars files are created:
+
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree host_vars/
+host_vars/
+└── clab-switch-leaf1
+    ├── iosstig_access_ports.yaml
+    ├── iosstig_trunk_ports.yaml
+    ├── iosstig_unused_ports.yaml
+    ├── iosstig_user_vlans.yaml
+    ├── iosstig_voice_ports.yaml
+    └── iosstig_voice_vlans.yaml
+~~~
+
+Example configuration:
+
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ cat host_vars/clab-switch-leaf1/iosstig_access_ports.yaml 
+---
+iosstig_access_ports:
+-   access:
+        vlan: 12
+    mode: access
+    name: GigabitEthernet1/0/2
+-   access:
+        vlan: 12
+    mode: access
+    name: GigabitEthernet1/0/4
+-   access:
+        vlan: 12
+    mode: access
+    name: GigabitEthernet1/0/6
+-   access:
+        vlan: 12
+    mode: access
+    name: GigabitEthernet1/0/8
+~~~
 
 
