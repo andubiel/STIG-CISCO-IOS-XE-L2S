@@ -465,6 +465,113 @@ storm_control_violators:
 ![stig_viewer2](/images/stig_viewer2.png)
 
 
+### Step8: Configure and Run the Remediate Job-Template
+
+Launch STIG-CISCO-IOS-XE-L2S-Remediate
+![stig_remediate](/images/stig_remediate.png)
+
+
+The following playbook, role tasks, and templates are used:
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree roles/remediate
+roles/remediate
+├── README.md
+└── tasks
+    ├── cat1
+    │   ├── cat1_8021x_remediate.yml
+    │   └── cat1.yml
+    ├── cat2
+    │   ├── cat2_blackhole_remediate.yml
+    │   ├── cat2_bpdu_remediate.yml
+    │   ├── cat2_dai_remediate.yml
+    │   ├── cat2_dhcp_snooping_remediate.yml
+    │   ├── cat2_dos_remediate.yml
+    │   ├── cat2_dtp_remediate.yml
+    │   ├── cat2_ipsg_remediate.yml
+    │   ├── cat2_stp_loop_remediate.yml
+    │   ├── cat2_stp_mode_remediate.yml
+    │   ├── cat2_udld_remediate.yml
+    │   ├── cat2_user_port_remediate.yml
+    │   ├── cat2_uufb_remediate.yml
+    │   ├── cat2_vlan1_mgmt_remediate.yml
+    │   ├── cat2_vlan1_remediate.yml
+    │   ├── cat2_vlan1_trunk_native_remediate.yml
+    │   ├── cat2_vlan1_trunk_remediate.yml
+    │   ├── cat2_vtp_remediate.yml
+    │   └── cat2.yml
+    ├── cat3
+    │   ├── cat3_access_native_remediate.yml
+    │   ├── cat3_igmp_snooping_remediate.yml
+    │   ├── cat3_root_guard_remediate.yml
+    │   ├── cat3_storm_control_remediate.yml
+    │   └── cat3.yml
+    └── main.yml
+remediate.yml
+~~~
+
+~~~
+[tdubiel@aap STIG-CISCO-IOS-XE-L2S]$ tree templates/
+templates/
+├── cat1
+│   ├── auth.j2
+│   ├── radius.j2
+│   ├── remediate_8021x_access_interfaces.j2
+│   ├── remediate_8021x_auth.j2
+│   ├── remediate_8021x_radius.j2
+│   └── remediate_8021x_voice_interfaces.j2
+├── cat2
+│   ├── remediate_blackhole.j2
+│   ├── remediate_bpdu_access_interfaces.j2
+│   ├── remediate_bpdu_voice_interfaces.j2
+│   ├── remediate_dai.j2
+│   ├── remediate_dhcp_snooping.j2
+│   ├── remediate_dos_access_interfaces.j2
+│   ├── remediate_dos_qos.j2
+│   ├── remediate_dos_trunk_interfaces.j2
+│   ├── remediate_dos_voice_interfaces.j2
+│   ├── remediate_dtp_trunk.j2
+│   ├── remediate_ipsg_access_interfaces.j2
+│   ├── remediate_ipsg_voice_interfaces.j2
+│   ├── remediate_stp_mode.j2
+│   ├── remediate_udld.j2
+│   ├── remediate_user_port.j2
+│   ├── remediate_uufb_access_interfaces.j2
+│   ├── remediate_uufb_voice_interfaces.j2
+│   ├── remediate_vlan1.j2
+│   ├── remediate_vlan1_mgmt.j2
+│   ├── remediate_vlan1_trunk.j2
+│   ├── remediate_vlan1_trunk_native.j2
+│   └── remediate_vtp.j2
+├── cat3
+│   ├── remediate_cat3_access_native.j2
+│   ├── remediate_igmp_snooping.j2
+│   ├── remediate_root_guard.j2
+│   └── remediate_storm_control.j2
+└── stig_viewer.j2
+~~~
+
+### Step9: Validate the Remediation
+
+At this point the STIG should be remediated.
+
+1. Run the Evaluation again and review handler output
+2. Check STIG VIEWER with updated CKLB file
+
+Example Completed STIG VIEWER
+
+![stig_viewer3](/images/stig_viewer3.png)
+
+
+## Recommended Improvements
+With AAP you can stitch together the aforementioned Job-Templates into a Workflow
+
+
+## Validated Content
+These `ROLES` are in process of being refactored into a validated content collection.
+
+**contributers are welcome to add new network STIGS here**
+
+Reference: [network.compliance](https://github.com/redhat-cop/network.compliance)
 
 
 
