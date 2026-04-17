@@ -1,0 +1,5 @@
+# CISC-L2-000230 - VLAN 1 Trunk Cleanup
+{% for interface in iosstig_trunk_ports | default([]) %}
+interface {{ interface.name }}
+ switchport trunk allowed vlan remove 1
+{% endfor %}

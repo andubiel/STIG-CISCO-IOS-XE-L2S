@@ -1,0 +1,6 @@
+# CISC-L2-000220 - VLAN 1 Cleanup
+# Any active ports found in VLAN 1 are moved to the replacement VLAN
+{% for interface in vlan1_violators_admin_up | default([]) %}
+interface {{ interface.name }}
+ switchport access vlan {{ iosstig_vlan1_replacement }}
+{% endfor %}

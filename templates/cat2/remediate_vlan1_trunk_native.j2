@@ -1,0 +1,9 @@
+# CISC-L2-000260- Native VLAN Remediation
+vlan {{ iosstig_native_vlan }}
+ name {{ iosstig_native_vlan_name }}
+
+{% for port in native_vlan_violators %}
+interface {{ port.name }}
+ switchport trunk native vlan {{ iosstig_native_vlan }}
+{% endfor %}
+
