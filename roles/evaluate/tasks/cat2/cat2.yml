@@ -177,7 +177,7 @@
      - SV_220669r991906
      - CISC-L2-000230
      - CAT2
-     - SRG-NET-000512-L2S-000009 |
+     - SRG-NET-000512-L2S-000009
      - V-220669
 
 - name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220670 | Rule ID: SV-220670r991907 | STIG ID: CISC-L2-000240 | SRG-NET-000512-L2S-000010 |
