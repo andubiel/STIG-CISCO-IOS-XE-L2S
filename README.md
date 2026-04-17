@@ -15,7 +15,8 @@ This repository provides an Ansible-based framework to automate the security har
 * [Repository Structure](#repository-structure)
 * [Requirements](#requirements)
 * [Usage](#usage)
-* [AAP Screenshots](#aap-screenshots)
+* [Validated Content](#validated-content)
+
 
 ---
 
