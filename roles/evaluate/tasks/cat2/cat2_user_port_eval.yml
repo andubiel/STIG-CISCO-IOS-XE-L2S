@@ -15,18 +15,26 @@
   ansible.builtin.set_fact:
     untrusted_violators: >-
       {%- set violators = [] -%}
-      {# Standardize trusted link names for matching #}
-      {%- set trusted_names = iosstig_trusted_trunk_links | map(attribute='name') | list -%}
+      {# Step 1: Create a clean list of trusted IDs (e.g., '1/0/1') #}
+      {%- set trusted_ids = [] -%}
+      {%- for trunk in iosstig_trusted_trunk_links | default([]) -%}
+        {%- set id = trunk.name | regex_search('(\d+/.*)') -%}
+        {%- if id -%}{%- set _ = trusted_ids.append(id | trim) -%}{%- endif -%}
+      {%- endfor -%}
       
-      {%- set trunk_output = trunk_status_out.stdout[0].split('\n') -%}
-      {%- for line in trunk_output -%}
+      {# Step 2: Parse 'show interfaces trunk' with extra cleaning #}
+      {%- set trunk_lines = trunk_status_out.stdout[0].split('\n') -%}
+      {%- for line in trunk_lines -%}
         {%- set parts = line.split() -%}
-        {# Find lines identifying active trunks (Port, Mode, Encapsulation, Status, Native) #}
-        {%- if parts | length >= 4 and parts[3] == 'trunking' -%}
-          {%- set p_name = parts[0] -%}
-          {# If the active trunk is NOT in the trusted list, it is a violator/untrusted #}
-          {%- if p_name not in trusted_names -%}
-            {%- set _ = violators.append({'name': p_name, 'status': parts[3]}) -%}
+        {# We look for the 'trunking' keyword #}
+        {%- if parts | length >= 4 and 'trunking' in parts -%}
+          {# Strip any hidden whitespace from the interface name #}
+          {%- set p_name = parts[0] | trim -%}
+          {%- set p_id = p_name | regex_search('(\d+/.*)') -%}
+          
+          {# Final Comparison: If the clean ID is not in our clean trusted list #}
+          {%- if p_id | trim not in trusted_ids -%}
+            {%- set _ = violators.append({'name': p_name, 'status': 'trunking'}) -%}
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
