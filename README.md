@@ -533,6 +533,7 @@ templates/
 │   ├── remediate_dtp_trunk.j2
 │   ├── remediate_ipsg_access_interfaces.j2
 │   ├── remediate_ipsg_voice_interfaces.j2
+|   ├── remediate_stp_loop.j2
 │   ├── remediate_stp_mode.j2
 │   ├── remediate_udld.j2
 │   ├── remediate_user_port.j2
