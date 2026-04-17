@@ -1,0 +1,44 @@
+---
+# CISC-L2-000230 - VLAN 1 Trunk Pruning Evaluation
+# This task verifies that VLAN 1 is explicitly pruned from all 802.1Q trunking interfaces.
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | SRG-NET-000512-L2S-000009 |
+    VLAN 1 Trunk Pruning | Get Running Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ^interface|^ switchport trunk allowed vlan
+  register: trunk_config_out
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | SRG-NET-000512-L2S-000009 |
+    VLAN 1 Trunk Pruning | Identify Violations'
+  ansible.builtin.set_fact:
+    vlan1_trunk_violators: >-
+      {%- set violators = [] -%}
+      {%- set running_config = trunk_config_out.stdout[0] -%}
+      {%- for trunk in iosstig_trunk_ports | default([]) -%}
+        {%- set pattern = 'interface ' ~ trunk.name -%}
+        {%- if pattern in running_config -%}
+           {%- set iface_block = running_config.split(pattern)[1].split('interface')[0] -%}
+           {%- if 'switchport trunk allowed vlan' not in iface_block or 
+                  (' 1,' in iface_block or ' 1-' in iface_block or iface_block.strip().endswith(' 1')) -%}
+             {%- set _ = violators.append({'name': trunk.name}) -%}
+           {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators }}
+  delegate_to: localhost
+  changed_when: vlan1_trunk_violators | length > 0 
+  notify: cat2_cisc_l2_000230_Fail
+
+- name: 'Role: Evaluate | VLAN 1 Trunk Pruning | Debug Violators'
+  ansible.builtin.debug:
+    msg: 
+      - "STIG Check: CISC-L2-000230 (VLAN 1 Pruning)"
+      - "Status: {{ 'FAIL' if vlan1_trunk_violators | length > 0 else 'PASS' }}"
+      - "Non-Compliant Trunks: {{ vlan1_trunk_violators | map(attribute='name') | list }}"
+
+- name: 'Role: Evaluate | VLAN 1 Trunk Pruning | Trigger Pass Handlers'
+  ansible.builtin.debug:
+    msg: "Notifying handlers for Rule ID: SV-220669r991906"
+  changed_when: true
+  when: vlan1_trunk_violators | length == 0
+  notify: cat2_cisc_l2_000230_Pass

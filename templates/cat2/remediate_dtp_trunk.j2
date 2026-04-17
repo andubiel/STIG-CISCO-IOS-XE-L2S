@@ -1,0 +1,9 @@
+# CISC-L2-000200 - Disable DTP (Static Configuration)
+{% for interface in trunk_dtp %}
+interface {{ interface.name }}
+{# Only change to access if it is not already a trunk #}
+{% if interface.mode | default('') != 'trunk' %}
+ switchport mode access
+{% endif %}
+ switchport nonegotiate
+{% endfor %}

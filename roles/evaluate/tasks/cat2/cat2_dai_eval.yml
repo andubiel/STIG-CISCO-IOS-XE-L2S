@@ -1,0 +1,42 @@
+---
+# CISC-L2-000150 - IP ARP Inspection Evaluation
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG-NET-000362-L2S-000027 |
+    DAI | show running-config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ip arp inspection vlan
+  register: dai_check
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG-NET-000362-L2S-000027 |
+    DAI | Identify missing configuration'
+  ansible.builtin.set_fact:
+     missing_dai_commands: >-
+      {%- set vlan_str = iosstig_user_vlans | join(',') -%}
+      {%- set vlan_range = iosstig_user_vlans[0] ~ '-' ~ iosstig_user_vlans[-1] -%}
+      {%- set running_config = dai_check.stdout[0] -%}
+      {%- set missing = [] -%}
+      
+      {# Note: DAI is enabled per VLAN, but we check for the command string existence #}
+      {%- if ('ip arp inspection vlan ' ~ vlan_str) not in running_config and 
+             ('ip arp inspection vlan ' ~ vlan_range) not in running_config -%}
+        {%- set _ = missing.append('ip arp inspection vlan ' ~ vlan_str) -%}
+      {%- endif -%}
+      
+      {{ missing }}
+  delegate_to: localhost
+  changed_when: missing_dai_commands | length > 0
+  notify: "cat2_cisc_l2_000150_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220661 | Rule ID: SV-220661r929003 | STIG ID: CISC-L2-000150 | SRG-NET-000362-L2S-000027 |
+    DAI | Display missing configuration'
+  ansible.builtin.debug:
+    msg: "missing: {{ missing_dai_commands }}"
+  when: missing_dai_commands | length > 0
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | DAI | Trigger Pass'
+  ansible.builtin.debug:
+    msg: " | DAI | Rule ID: SV-220661r929003 Passed"
+  when: missing_dai_commands | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000150_Pass"
