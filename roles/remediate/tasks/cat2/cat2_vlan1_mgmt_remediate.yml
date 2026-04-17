@@ -1,6 +1,0 @@
----
-# CISC-L2-000240 - Default VLAN mgmt - Remediation
-- name: 'Role: Remediate | Management VLAN | SV-220670 | Move IP to Vlan {{ iosstig_mgmt_vlan_name }}'
-  cisco.ios.ios_config:
-    src: templates/cat2/remediate_vlan1_mgmt.j2
-  when: SV_220670r991907_remediate_mgmnt == true
