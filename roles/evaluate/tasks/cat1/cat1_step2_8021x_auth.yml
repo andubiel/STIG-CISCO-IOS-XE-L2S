@@ -1,0 +1,54 @@
+---
+# CISC-L2-000020 - 802.1X Port-Based Authentication Evaluation
+# This task verifies that 802.1X authentication is configured on all host-facing access ports.
+
+- name: |
+   'Role: Evaluate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+    Step: 2 | Verify that 802.1x authentication is configured for the switch
+    show run interface'
+  cisco.ios.ios_command:
+   commands:
+    - 'show run'
+  register: auth8021x
+
+- name: |
+    'Role: Evaluate | Severity: High (Cat I) | Rule: SV-220649 |
+     Step: 2 | Verify 802.1x Global Auth | Create clean line list'
+  ansible.builtin.set_fact:
+    current_auth_lines: "{{ auth8021x.stdout[0].splitlines() | map('trim') | list }}"
+    required_auth_lines:
+      - "aaa group server radius {{ iosstig_radius_group_name }}"
+      - "server name {{ iosstig_radius_server_one_name }}"
+      - "server name {{ iosstig_radius_server_two_name }}"
+      - "aaa authentication dot1x default group {{ iosstig_radius_group_name }}"
+      - dot1x system-auth-control
+      - radius server {{ iosstig_radius_server_one_name }}
+      - address ipv4 {{ iosstig_radius_server_one_ip }} auth-port 1812 acct-port 1813
+      - key {{ iosstig_radius_server_one_key }} 
+      - radius server {{ iosstig_radius_server_two_name }} 
+      - address ipv4 {{ iosstig_radius_server_two_ip }} auth-port 1812 acct-port 1813
+      - key {{ iosstig_radius_server_two_key }}
+  delegate_to: localhost
+
+- name: |
+    'Role: Evaluate | Severity: High (Cat I) | Rule: SV-220649 |
+     Step: 2 | Verify 802.1x Global Auth | Identify missing commands'
+  ansible.builtin.set_fact:
+    missing_auth_commands: "{{ required_auth_lines | difference(current_auth_lines) }}"
+  delegate_to: localhost
+
+- name: |
+    'Role: Evaluate | Severity: High (Cat I) | Rule: SV-220649 |
+     Step: 2 | Verify 802.1x Global Auth | Set Results'
+  ansible.builtin.debug:
+    msg: "Missing commands: {{ missing_auth_commands }}"
+  register: auth_result
+  changed_when: missing_auth_commands | length > 0
+  notify: "cat1_cisc_l2_000020_auth_Fail"
+
+- name: 'Role: Evaluate | Step: 2 | Trigger Pass Handler'
+  ansible.builtin.debug:
+    msg: "All required global auth commands are present."
+  when: missing_auth_commands | length == 0
+  changed_when: true
+  notify: "cat1_cisc_l2_000020_auth_Pass"

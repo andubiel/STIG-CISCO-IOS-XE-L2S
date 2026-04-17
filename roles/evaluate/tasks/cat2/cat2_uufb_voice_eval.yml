@@ -1,0 +1,39 @@
+---
+# CISC-L2-000120 - Unknown Unicast Flood Blocking (UUFB) Evaluation
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-22065 | Rule ID:SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG-NET-000362-L2S-000024 
+        | Voice UUFB | Itdentify Missing Configs'
+  cisco.ios.ios_command:
+    commands:
+      - 'show run int {{ show_item.name }} | exclude Building configuration...|Current configuration'
+  loop: "{{ iosstig_voice_ports }}"
+  loop_control:
+    loop_var: show_item
+  register: voice_uufb_check
+  when: iosstig_voice_ports is defined
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-22065 | Rule ID:SV-220658r856280 | STIG ID: CISC-L2-000120 | SRG-NET-000362-L2S-000024 
+        | Voice UUFB | Itdentify Missing Configs'
+  ansible.builtin.set_fact:
+    missing_uufb_voice: >-
+      {{ voice_uufb_check.results | 
+         selectattr('stdout', 'defined') | 
+         rejectattr('stdout.0', 'search', 'switchport block unicast') | 
+         map(attribute='show_item.name') | list | unique }}
+  delegate_to: localhost
+  changed_when: missing_uufb_voice | length > 0
+  notify: "cat2_cisc_l2_000120_voice_Fail"
+
+- name: "STIG | Show findings | uufb | Voice "
+  ansible.builtin.debug:
+    msg: "The following interfaces are non-compliant: {{ missing_uufb_voice }}"
+  when: missing_uufb_voice | length > 0
+  delegate_to: localhost
+
+- name: >
+    'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-22065 | Rule ID:SV-220658r856280  | STIG ID: CISC-L2-000120 | SRG ID: SRG-NET-000362-L2S-000024 | Voice UUFB
+    Trigger handler if NO compliance violation occurred'
+  debug:
+    msg: "No compliance violation detected for | UUFB | Voice, notifying handler that Rule ID: SV-220658r856280  Passed"
+  when: missing_uufb_voice | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000120_voice_Pass"
