@@ -1,4 +1,4 @@
-! Rule ID: SV-220671r991908 - Force Untrusted Ports to Access Mode
+# CISC-L2-000250 - Force Untrusted Ports to Access Mode
 {% for port in untrusted_violators %}
 interface {{ port.name }}
  switchport mode access

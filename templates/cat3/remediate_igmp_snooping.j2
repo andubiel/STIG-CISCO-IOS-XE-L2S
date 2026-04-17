@@ -1,4 +1,4 @@
-! Rule ID: SV-220695 - IGMP Snooping Remediation
+# CISC-L2-000260 - IGMP Snooping Remediation
 {% if igmp_global_disabled | default(false) %}
 ip igmp snooping
 {% endif %}

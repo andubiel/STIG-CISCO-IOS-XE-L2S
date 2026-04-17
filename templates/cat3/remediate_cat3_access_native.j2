@@ -1,4 +1,4 @@
-! Rule ID: SV-220673r991910 - CISC-L2-000270 - Access Native VLAN Remediation
+# CISC-L2-000270 - Access Native VLAN Remediation
 ! Ensure the non-native/safe VLAN exists
 vlan {{ iosstig_not_native_vlan }}
  name {{ iosstig_not_native_vlan_name }}
@@ -6,6 +6,5 @@ vlan {{ iosstig_not_native_vlan }}
 {# Loop through the violators identified during the evaluation phase #}
 {% for port in access_native_violators | default([]) %}
 interface {{ port.name }}
- description REMEDIATED_SV_220673
  switchport access vlan {{ iosstig_not_native_vlan }}
 {% endfor %}

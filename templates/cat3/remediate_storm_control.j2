@@ -1,4 +1,4 @@
-! Rule ID: SV-220662r648766 - Storm Control Remediation
+# CISC-L2-000160 - Storm Control Remediation
 {% for port in storm_control_violators | default([]) %}
 interface {{ port.name }}
  {# Standard Gig Ports #}
