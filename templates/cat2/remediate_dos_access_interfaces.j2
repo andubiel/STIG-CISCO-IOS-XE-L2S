@@ -1,6 +1,0 @@
-# CISC-L2-000040 - Denial of Service (DOS) - Access - Remediation
-{% for port in access_dos %}
-interface {{ port.name }}
- service-policy output QOS_POLICY_SWITCHPORT
-end
-{% endfor %}

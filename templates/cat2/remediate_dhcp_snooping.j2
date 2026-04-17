@@ -1,7 +1,0 @@
-# CISC-L2-000140 - DHCP Snooping - Remediation
-ip dhcp snooping
-{% if iosstig_user_vlans is iterable and iosstig_user_vlans is not string %}
-ip dhcp snooping vlan {{ iosstig_user_vlans | join(',') }}
-{% else %}
-ip dhcp snooping vlan {{ iosstig_user_vlans }}
-{% endif %}

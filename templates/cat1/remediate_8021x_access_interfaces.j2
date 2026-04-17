@@ -1,7 +1,0 @@
-# CISC-L2-000020 - 802.1x - Access - Remediation
-{% for port in access_8021x %}
-interface {{ port.name }}
-{# Authentication & 802.1x #}
- authentication port-control auto
- dot1x pae authenticator
-{% endfor %}
