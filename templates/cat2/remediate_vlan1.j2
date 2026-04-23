@@ -1,0 +1,13 @@
+# CISC-L2-000220 - VLAN 1 Cleanup
+# Any active ports found in VLAN 1 are moved to the replacement VLAN
+{% for interface in vlan1_violators_admin_up | default([]) %}
+interface {{ interface.name }}
+ switchport access vlan {{ iosstig_vlan1_replacement }}
+ switchport block unicast
+ authentication port-control auto
+ dot1x pae authenticator
+ spanning-tree bpduguard enable
+ service-policy output QOS_POLICY_SWITCHPORT
+ ip verify source
+ storm-control broadcast level 20.0
+{% endfor %}

@@ -1,0 +1,42 @@
+---
+# CISC-L2-000030 - VTP Authentication Evaluation
+# This task verifies that VTP is either disabled or using a secure MD5 password for message validation.
+- name: >
+       'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+        The Cisco switch must authenticate all VLAN Trunk Protocol (VTP) messages with a hash function using the most secured cryptographic algorithm available. | Get VTP Mode'
+  cisco.ios.ios_command:
+    commands: 
+      - show vtp status | include Operating Mode
+      - show vtp password
+  register: vtp_info
+
+- name:  >
+        'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+        | VTP | Identify Finding'
+  ansible.builtin.set_fact:
+    vtp_finding: >-
+      {{ true if ("Off" not in vtp_info.stdout[0] and 
+                  "is not configured" in vtp_info.stdout[1]) 
+         else false }}
+  delegate_to: localhost
+
+- name: >
+     'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+     | VTP | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "VTP is active but password is MISSING. Rule ID: SV-220650r539671 Failed."
+  when: vtp_finding | bool
+  changed_when: true
+  notify: "cat2_cisc_l2_000030_Fail"
+
+- name: >
+      'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220650 | Rule ID: SV-220650r539671 | STIG ID: CISC-L2-000030 | SRG ID: SRG-NET-000168-L2S-000019
+      | VTP | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "VTP is Off or Password is configured. Rule ID: SV-220650r539671 Passed."
+  when: not vtp_finding | bool
+  changed_when: true
+  notify: "cat2_cisc_l2_000030_Pass"
+
+
+

@@ -1,0 +1,43 @@
+---
+# CISC-L2-000200 - Static Trunks / DTP Evaluation
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | SV-220666 | DTP | Get Switchport Status'
+  cisco.ios.ios_command:
+    commands:
+      - show interfaces switchport
+  register: sw_port_out
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | SV-220666 | DTP | Identify Non-Trunk Negotiating Ports'
+  ansible.builtin.set_fact:
+    dtp_violators: >-
+      {%- set violators = [] -%}
+      {# Split the output into blocks starting with 'Name:' #}
+      {%- set switchport_blocks = sw_port_out.stdout[0].split('Name: ') -%}
+      
+      {%- for block in switchport_blocks if block | trim -%}
+        {%- set lines = block.split('\n') -%}
+        {%- set name = lines[0] | trim -%}
+        
+        {# We only care about ports that are NOT 'Administrative Mode: trunk' #}
+        {%- set is_trunk = 'Administrative Mode: trunk' in block -%}
+        {%- set is_negotiating = 'Negotiation of Trunking: On' in block -%}
+        
+        {%- if is_negotiating and not is_trunk -%}
+          {%- set _ = violators.append(name) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | SV-220666 | DTP | Display Violators'
+  ansible.builtin.debug:
+    msg: "Non-trunk ports with DTP/Negotiation enabled: {{ dtp_violators }}"
+  when: dtp_violators | length > 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000200_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | SV-220666 | DTP | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "All non-trunk ports have DTP disabled. Rule ID: SV-220666 Passed."
+  when: dtp_violators | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000200_Pass"

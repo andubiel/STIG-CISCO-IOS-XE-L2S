@@ -1,0 +1,56 @@
+---
+# CISC-L2-000260 - Native VLAN ID Evaluation
+# This task ensures the native VLAN on trunk links is not set to VLAN 1.
+- name: 'Role: Evaluate | SV-220672 | Native VLAN | Initialize Finding Lists'
+  ansible.builtin.set_fact:
+    native_vlan_violators: []
+
+- name: 'Role: Evaluate | SV-220672 | Native VLAN | Get Full Trunk Status'
+  cisco.ios.ios_command:
+    commands:
+      - show interfaces trunk
+  register: trunk_status_out
+
+- name: 'Role: Evaluate | SV-220672 | Native VLAN | Identify Violating Trunks'
+  ansible.builtin.set_fact:
+    native_vlan_violators: >-
+      {%- set violators = [] -%}
+      {# Standardize our inventory trunk list for name-agnostic matching #}
+      {%- set inventory_trunks = [] -%}
+      {%- for t in iosstig_trunk_ports | default([]) -%}
+        {%- set _ = inventory_trunks.append(t.name | regex_replace('^[a-zA-Z-]+', '')) -%}
+      {%- endfor -%}
+
+      {# Focus on the first section of the output: Port, Mode, Encapsulation, Status, Native vlan #}
+      {%- set trunk_lines = trunk_status_out.stdout[0].split('\n') -%}
+      {%- for line in trunk_lines -%}
+        {# Match lines that look like interface data (e.g., Gi1/0/1 on 802.1q trunking 1) #}
+        {%- set parts = line.split() -%}
+        {%- if parts | length >= 5 and parts[3] == 'trunking' -%}
+          {%- set p_name = parts[0] -%}
+          {%- set p_num = p_name | regex_replace('^[a-zA-Z-]+', '') -%}
+          {%- set p_native = parts[4] | trim -%}
+
+          {# FAIL if: Port is in inventory AND (Native is 1 OR Native is not our target VLAN) #}
+          {%- if p_num in inventory_trunks and (p_native == '1' or p_native != iosstig_native_vlan | string) -%}
+            {%- set _ = violators.append({'name': p_name, 'current_native': p_native}) -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators | to_json | from_json }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | SV-220672 | Native VLAN | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "Trunk ports with incorrect Native VLAN: {{ native_vlan_violators }}. Rule ID: SV-220672r991909 Failed."
+  when: (native_vlan_violators | length > 0)
+  changed_when: true
+  notify: "cat2_cisc_l2_000260_Fail"
+  
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220672 | Rule ID: SV-220672r991909 | STIG ID: CISC-L2-000260 | SRG-NET-000512-L2S-000012 |
+    Native VLAN | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "All trunks using VLAN {{ iosstig_native_vlan }}. Rule ID: SV-220672r991909 Passed."
+  when: (native_vlan_violators | length == 0) 
+  changed_when: true
+  notify: "cat2_cisc_l2_000260_Pass"

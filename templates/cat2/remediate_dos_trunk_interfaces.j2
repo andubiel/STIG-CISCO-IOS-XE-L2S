@@ -1,0 +1,6 @@
+# CISC-L2-000040 - Denial of Service (DOS) - Trunk - Remediation
+{% for port in trunk_dos %}
+interface {{ port.name }}
+ service-policy output QOS_POLICY_SWITCHPORT
+end
+{% endfor %}

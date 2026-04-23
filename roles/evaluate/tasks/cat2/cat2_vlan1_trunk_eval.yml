@@ -1,0 +1,69 @@
+---
+# CISC-L2-000230 - VLAN 1 Trunk Pruning Evaluation
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Discover Active Trunks'
+  cisco.ios.ios_command:
+    commands:
+      - show interfaces trunk
+  register: trunk_discovery
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Get Running Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | section interface
+  register: trunk_config_out
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Parse Operational Trunks'
+  ansible.builtin.set_fact:
+    discovered_trunks: >-
+      {%- set trunks = [] -%}
+      {%- for line in trunk_discovery.stdout[0].split('\n') -%}
+        {%- set parts = line.split() -%}
+        {%- if parts | length >= 4 and parts[3] == 'trunking' -%}
+          {%- set _ = trunks.append(parts[0] | trim) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ trunks }}
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Identify Violations'
+  ansible.builtin.set_fact:
+    vlan1_trunk_violators: >-
+      {%- set violators = [] -%}
+      {%- set running_config = trunk_config_out.stdout[0] -%}
+      
+      {%- for t_name in discovered_trunks -%}
+        {%- set t_id = t_name | regex_search('(\d+/.*)') -%}
+        {%- set pattern = 'interface .*' ~ t_id ~ '\n(?: .*\n)*' -%}
+        {%- set match = running_config | regex_search(pattern) -%}
+        
+        {%- if match -%}
+           {%- if 'switchport trunk allowed vlan' not in match -%}
+             {%- set _ = violators.append({'name': t_name, 'reason': 'Implicitly allowed'}) -%}
+           {%- elif match | regex_search('switchport trunk allowed vlan.*(\s|,|-)1(\s|,|$)') -%}
+             {%- set _ = violators.append({'name': t_name, 'reason': 'Explicitly allowed'}) -%}
+           {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Debug Results'
+  ansible.builtin.debug:
+    msg: 
+      - "Status: {{ 'FAIL' if vlan1_trunk_violators | length > 0 else 'PASS' }}"
+      - "Trunks found on switch: {{ discovered_trunks }}"
+      - "Violating Interfaces: {{ vlan1_trunk_violators }}"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "VLAN 1 Pruning violation detected. Notifying handlers."
+  when: vlan1_trunk_violators | length > 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000230_Fail"
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "VLAN 1 is correctly pruned from all trunks. Rule ID: SV-220669r991906 Passed."
+  when: vlan1_trunk_violators | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000230_Pass"

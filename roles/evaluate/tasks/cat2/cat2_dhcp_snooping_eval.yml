@@ -1,0 +1,62 @@
+---
+# CISC-L2-000130 - DHCP Snooping Evaluation
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
+    DHCP Snooping | show running-config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ip dhcp snooping vlan
+  register: snoop_vlan_out
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
+    DHCP Snooping | Logical Comparison'
+  ansible.builtin.set_fact:
+    snoop_vlan_finding: >-
+      {%- set missing_vlans = [] -%}
+      {# 1. Get the list of VLAN IDs that SHOULD be snooped from your discovered/defined list #}
+      {%- set target_vlans = iosstig_user_vlans | map('int') | list -%}
+      
+      {# 2. Parse the Switch Output (handling ranges like 20-22) #}
+      {%- set active_vlans = [] -%}
+      {%- if snoop_vlan_out.stdout[0] -%}
+        {%- set raw_line = snoop_vlan_out.stdout[0] | regex_replace('ip dhcp snooping vlan ', '') | trim -%}
+        {%- for part in raw_line.split(',') -%}
+          {%- if '-' in part -%}
+            {%- set range_parts = part.split('-') -%}
+            {%- for i in range(range_parts[0]|int, range_parts[1]|int + 1) -%}
+              {%- set _ = active_vlans.append(i) -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- set _ = active_vlans.append(part|int) -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {# 3. Identify any target VLAN not found in the active list #}
+      {%- for vlan in target_vlans -%}
+        {%- if vlan not in active_vlans -%}
+          {%- set _ = missing_vlans.append(vlan) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ missing_vlans }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | DHCP Snooping | Debug Logical Result'
+  ansible.builtin.debug:
+    msg: 
+      - "Target VLANs: {{ iosstig_user_vlans | map('int') | list }}"
+      - "Missing from Switch: {{ snoop_vlan_finding }}"
+
+- name: 'Role: Evaluate | DHCP Snooping | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "Finding: DHCP Snooping is missing for VLANs: {{ snoop_vlan_finding }}"
+  when: snoop_vlan_finding | length > 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000130_Fail"
+
+- name: 'Role: Evaluate | DHCP Snooping | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "Rule ID: SV-220659r928999 | DHCP Snooping | Passed"
+  when: snoop_vlan_finding | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000130_Pass"
