@@ -1,0 +1,25 @@
+---
+# CISC-L2-000020 - 802.1X Port-Based Authentication Remediation
+- name: 'Role: Remediate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+         8021x Auth | Tasks to remediate STIG configuration'
+  cisco.ios.ios_config:
+    src: 'templates/cat1/{{ item_radius }}.j2'
+  loop:
+    - "remediate_8021x_auth"
+    - "remediate_8021x_radius"
+  loop_control:
+    loop_var: item_radius
+  when: SV_220649r863283_remediate_auth == true
+
+- name: 'Role: Remediate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+         8021x Access | Tasks to remediate STIG configuration'
+  cisco.ios.ios_config:
+    src: 'templates/cat1/remediate_8021x_access_interfaces.j2'
+  when: SV_220649r863283_remediate_access == true
+
+- name: 'Role: Remediate | Severity: High (Cat I) | Group ID: V-220649 | Rule ID: SV-220649r863283 | STIG ID: CISC-L2-000020 | SRG ID: SRG-NET-000148-L2S-000015
+         8021x Voice | Tasks to remediate STIG configuration'
+  cisco.ios.ios_config:
+    src: 'templates/cat1/remediate_8021x_voice_interfaces.j2'
+  when: SV_220649r863283_remediate_voice == true
+

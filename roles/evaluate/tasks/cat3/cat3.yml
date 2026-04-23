@@ -1,0 +1,38 @@
+---
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 |
+         Root Guard | Apply spanning-tree guard root'
+  ansible.builtin.include_tasks: cat3_root_guard_eval.yml
+  when: SV_220655r917683
+  tags:
+      - SV_220655r917683
+      - CISC-L2-000090
+      - CAT3
+      - V-220655
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220662 | Rule ID: SV-220662r648766 | STIG ID: CISC-L2-000160 | Storm Control'
+  ansible.builtin.include_tasks: cat3_storm_control_eval.yml
+  when: SV_220662r648766
+  tags:
+      - CISC-L2-000160
+      - CAT3
+      - SV_220655r917683
+      - V-220662
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170 | IGMP Snooping'
+  ansible.builtin.include_tasks: cat3_igmp_snooping_eval.yml
+  when: SV_220663r929005
+  tags:
+      - CAT3
+      - SV_220663r929005
+      - CISC-L2-000170
+      - V-220663
+
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN'
+  ansible.builtin.include_tasks: cat3_access_native_eval.yml
+  when: SV_220673r991910
+  tags:
+      - SV_220673r991910 
+      - CISC-L2-000270
+      - CAT3
+      - V-220673
+    

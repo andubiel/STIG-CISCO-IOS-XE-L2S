@@ -1,0 +1,6 @@
+---
+# CISC-L2-000270 - Native VLAN Tagging Remediation
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220673 | Rule ID: SV-220673r991910 | STIG ID: CISC-L2-000270 | Access Native VLAN | Apply Correct VLAN'
+  cisco.ios.ios_config:
+    src: templates/cat3/remediate_cat3_access_native.j2
+  when: SV_220673r991910_remediate_access_native == true

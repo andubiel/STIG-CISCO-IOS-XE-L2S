@@ -1,0 +1,54 @@
+---
+# CISC-L2-000090 - STP Root Guard Evaluation
+# This task ensures Root Guard is enabled on ports connecting to access switches.
+# This uses the manually defined 'iosstig_access_switch_links' variable for STIG compliance.
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 | SRG-NET-000362-L2S-000021 |
+    Root Guard | Initialize Finding List'
+  ansible.builtin.set_fact:
+    root_guard_violators: []
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 | SRG-NET-000362-L2S-000021 |
+    Root Guard | Get Interface Spanning-Tree Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | section ^interface|spanning-tree guard root
+  register: stp_config_out
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 | SRG-NET-000362-L2S-000021 |
+    Root Guard | Identify Missing Root Guard'
+  ansible.builtin.set_fact:
+    root_guard_violators: >-
+      {%- set violators = [] -%}
+      {%- set raw_config = stp_config_out.stdout[0] -%}
+      
+      {# Iterate through the manually provided access switch links #}
+      {%- for port in (iosstig_access_switch_links | default([])) -%}
+        {%- set p_name = port.name if port is mapping else port -%}
+        
+        {# Use regex to extract the specific configuration block for this interface #}
+        {%- set port_block = raw_config | regex_search('^interface ' ~ p_name ~ '\s+([\s\S]*?)(?=^interface|\Z)', multiline=True) -%}
+        
+        {# If the interface exists but is missing the 'guard root' command, it is a finding #}
+        {%- if port_block and 'spanning-tree guard root' not in port_block -%}
+          {%- set _ = violators.append({'name': p_name}) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators | to_json | from_json }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 | SRG-NET-000362-L2S-000021 |
+    Root Guard | Trigger Fail'
+  ansible.builtin.debug:
+    msg: "Root Guard is missing on the following switch-to-switch links: {{ root_guard_violators }}"
+  when: root_guard_violators | length > 0
+  changed_when: true
+  notify: "cat3_cisc_l2_000090_Fail"
+
+- name: 'Role: Evaluate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 | SRG-NET-000362-L2S-000021 |
+    Root Guard | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "No compliance violation detected for | Root Guard |, notifying handler that Rule ID: SV-220655r917683 Passed"
+  when: root_guard_violators | length == 0
+  changed_when: true
+  notify: "cat3_cisc_l2_000090_Pass"
