@@ -1,7 +1,0 @@
----
-# CISC-L2-000130 - DHCP Snooping Remediation
-- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220659 | Rule ID: SV-220659r928999 | STIG ID: CISC-L2-000130 | SRG-NET-000362-L2S-000025 |
-    DHCP Snooping'
-  cisco.ios.ios_config:
-    src: 'templates/cat2/remediate_dhcp_snooping.j2'
-  when: SV_220659r928999_remediate_dhcp  == true 

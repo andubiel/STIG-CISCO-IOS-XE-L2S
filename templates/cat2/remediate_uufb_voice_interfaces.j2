@@ -1,5 +1,0 @@
-# CISC-L2-000120 - Universal Unified Flood Broadcast (UUFB) - Voice - Remediation
-{% for port in voice_uufb %}
-interface {{ port.name }}
- switchport block unicast
-{% endfor %}

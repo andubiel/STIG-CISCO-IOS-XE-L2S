@@ -1,6 +1,0 @@
-# CISC-L2-000100 - BPDU Guard - Voice - Remediation
-{% for port in voice_bpdu %}
-interface {{ port.name }}
- spanning-tree bpduguard enable
-end
-{% endfor %}
