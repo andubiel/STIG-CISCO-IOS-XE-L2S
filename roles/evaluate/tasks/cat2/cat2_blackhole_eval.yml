@@ -1,0 +1,47 @@
+---
+# CISC-L2-000210 - Unused Port Blackhole Evaluation
+# This task identifies inactive ports and verifies they are assigned to an isolated (non-default) VLAN.
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220667 | Rule ID: SV-220667r991904 | STIG ID: CISC-L2-000210 | SRG-NET-000512-L2S-000007 |
+    Blackhole VLAN | Get Interface Status and Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | include ^interface|^ shutdown|^ switchport access vlan|^ switchport trunk allowed vlan
+  register: interface_configs
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220667 | Rule ID: SV-220667r991904 | STIG ID: CISC-L2-000210 | SRG-NET-000512-L2S-000007 |
+    Blackhole VLAN | Identify Non-Compliant Ports'
+  ansible.builtin.set_fact:
+    non_compliant_blackhole_ports: >-
+      {%- set findings = [] -%}
+      {%- set running_config = interface_configs.stdout[0] -%}
+      {%- for block in running_config.split('interface ') -%}
+        {%- if ' shutdown' in block and 'switchport access vlan ' ~ iosstig_blackhole_vlan not in block -%}
+          {%- set iface = block.split('\n')[0] | trim -%}
+          {%- if iface and 'Vlan' not in iface and 'App' not in iface -%}
+            {%- set _ = findings.append(iface) -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- if 'switchport mode trunk' in block and 'allowed vlan' in block -%}
+           {%- if iosstig_blackhole_vlan in block -%}
+             {%- set iface = block.split('\n')[0] | trim -%}
+             {%- set _ = findings.append(iface ~ " (Trunk allowing Blackhole)") -%}
+           {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ findings }}
+  delegate_to: localhost
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220667 | Rule ID: SV-220667r991904 | STIG ID: CISC-L2-000210 | SRG-NET-000512-L2S-000007 |
+    Blackhole VLAN | Display findings'
+  ansible.builtin.debug:
+    msg: "Non-compliant ports found: {{ non_compliant_blackhole_ports }}"
+  changed_when: non_compliant_blackhole_ports | length > 0
+  notify: "cat2_cisc_l2_000210_Fail"
+
+- name: 'Role: Evaluate | Blackhole VLAN | Trigger Pass'
+  ansible.builtin.debug:
+    msg: "Rule ID: SV-220667r991904 Passed | Blackhole VLAN |"
+  when: non_compliant_blackhole_ports | length == 0
+  changed_when: true
+  notify: "cat2_cisc_l2_000210_Pass"

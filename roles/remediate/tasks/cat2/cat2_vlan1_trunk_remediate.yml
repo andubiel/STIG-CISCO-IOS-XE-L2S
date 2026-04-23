@@ -1,0 +1,7 @@
+---
+# CISC-L2-000230 - VLAN 1 Trunk Pruning Remediation
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | SRG-NET-000512-L2S-000009 |
+         VLAN 1 Trunk Pruning | SV-220669'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_vlan1_trunk.j2'
+  when: SV_220669r991906_remediate_vlan1_trunk == true

@@ -1,0 +1,64 @@
+---
+# CISC-L2-000230 - VLAN 1 Trunk Pruning Evaluation
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Discover Active Trunks'
+  cisco.ios.ios_command:
+    commands:
+      - show interfaces trunk
+  register: trunk_discovery
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Get Running Config'
+  cisco.ios.ios_command:
+    commands:
+      - show running-config | section interface
+  register: trunk_config_out
+
+- name: 'Role: Evaluate | Severity: Medium (Cat II) | Group ID: V-220669 | Rule ID: SV-220669r991906 | STIG ID: CISC-L2-000230 | VLAN 1 Trunk Pruning | Identify Violations'
+  ansible.builtin.set_fact:
+    vlan1_trunk_violators: >-
+      {%- set violators = [] -%}
+      {%- set running_config = trunk_config_out.stdout[0] -%}
+      
+      {# Step 1: Parse the operational trunks from the switch output #}
+      {%- set discovered_trunks = [] -%}
+      {%- set lines = trunk_discovery.stdout[0].split('\n') -%}
+      {%- for line in lines -%}
+        {%- set parts = line.split() -%}
+        {%- if parts | length >= 4 and parts[3] == 'trunking' -%}
+          {%- set _ = discovered_trunks.append(parts[0]) -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {# Step 2: Check each discovered trunk for VLAN 1 pruning #}
+      {%- for t_name in discovered_trunks -%}
+        {# Use regex to find the interface block exactly #}
+        {%- set pattern = 'interface ' ~ t_name ~ '\n(?: .*\n)*' -%}
+        {%- set match = running_config | regex_search(pattern) -%}
+        
+        {%- if match -%}
+           {# Logic: It is a violation if 'allowed vlan' is missing (meaning all are allowed) #}
+           {# OR if 'allowed vlan' exists but includes VLAN 1 #}
+           {%- if 'switchport trunk allowed vlan' not in match or 
+                  (match | regex_search('switchport trunk allowed vlan.*(\s|,|-)1(\s|,|$)')) -%}
+             {%- set _ = violators.append({'name': t_name}) -%}
+           {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ violators }}
+  delegate_to: localhost
+  changed_when: vlan1_trunk_violators | length > 0 
+  notify: cat2_cisc_l2_000230_Fail
+
+- name: 'Role: Evaluate | VLAN 1 Trunk Pruning | Debug Violators'
+  ansible.builtin.debug:
+    msg: 
+      - "STIG Check: CISC-L2-000230 (VLAN 1 Pruning)"
+      - "Status: {{ 'FAIL' if vlan1_trunk_violators | length > 0 else 'PASS' }}"
+      - "Active Trunks Checked: {{ discovered_trunks | default([]) }}"
+      - "Non-Compliant Trunks: {{ vlan1_trunk_violators | map(attribute='name') | list }}"
+
+- name: 'Role: Evaluate | VLAN 1 Trunk Pruning | Trigger Pass Handlers'
+  ansible.builtin.debug:
+    msg: "Notifying handlers for Rule ID: SV-220669r991906"
+  changed_when: true
+  when: vlan1_trunk_violators | length == 0
+  notify: cat2_cisc_l2_000230_Pass
