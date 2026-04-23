@@ -72,6 +72,7 @@
     content: |
       ---
       iosstig_user_vlans:
+      - {{ iosstig_vlan1_replacement }}
       {{ all_l2_ports 
          | selectattr('access.vlan', 'defined') 
          | map(attribute='access.vlan') 
