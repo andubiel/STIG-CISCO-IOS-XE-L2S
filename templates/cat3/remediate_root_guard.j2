@@ -1,5 +1,0 @@
-# CISC-L2-000090 - STP Root Guard Remediation
-{% for port in root_guard_violators %}
-interface {{ port.name }}
- spanning-tree guard root
-{% endfor %}

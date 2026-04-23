@@ -1,7 +1,0 @@
----
-# CISC-L2-000170 - IGMP Snooping Remediation
-- name: 'Role: Remediate | SV-220663 | Severity: Low (Cat III) | Group ID: V-220663 | Rule ID: SV-220663r929005 | STIG ID: CISC-L2-000170
-         | IGMP Snooping | Apply Corrective Config'
-  cisco.ios.ios_config:
-    src: templates/cat3/remediate_igmp_snooping.j2
-  when: SV_220663r929005_remediate_igmp == true
