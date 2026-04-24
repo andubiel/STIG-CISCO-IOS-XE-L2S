@@ -95,12 +95,12 @@
     content: |
       ---
       # Operational User VLANs discovered on {{ inventory_hostname }}
-      # (Excluding default VLANs: 1, 1002-1005)
+      # (Excluding default, Blackhole, and Native VLAN)
       iosstig_user_vlans:
       {{ gathered_vlans.gathered 
          | map(attribute='vlan_id') 
-         | select('integer')
-         | reject('in', [1, 1002, 1003, 1004, 1005]) 
+         | map('int')
+         | reject('in', [1, 1002, 1003, 1004, 1005, iosstig_blackhole_vlan | int, iosstig_native_vlan | int]) 
          | unique | sort | list | to_nice_yaml }}
     dest: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_user_vlans.yaml"
   delegate_to: localhost
