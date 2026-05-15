@@ -1,0 +1,7 @@
+---
+# CISC-L2-000090 - STP Root Guard Remediation
+- name: 'Role: Remediate | Severity: Low (Cat III) | Group ID: V-220655 | Rule ID: SV-220655r917683 | STIG ID: CISC-L2-000090 |
+    Root Guard | Apply spanning-tree guard root'
+  cisco.ios.ios_config:
+    src: templates/cat3/remediate_root_guard.j2
+  when: SV_220655r917683_remediate_root == true

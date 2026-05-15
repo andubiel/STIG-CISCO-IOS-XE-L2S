@@ -1,0 +1,15 @@
+---
+# CISC-L2-000100 - BPDU Guard Remediation
+- name: >
+      'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-000022
+       | BPDU Access'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_bpdu_access_interfaces.j2'
+  when: SV_220656r856278_remediate_access == true
+
+- name: >
+      'Role: Remediate | Severity: Medium (Cat II) | Severity: Medium (Cat II) | Group ID: V-220656 | Rule ID:SV-220656r856278 | STIG ID: CISC-L2-000100 | SRG ID: SRG-NET-000362-L2S-00002
+       | BPDU Voice'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_bpdu_voice_interfaces.j2'
+  when: SV_220656r856278_remediate_voice == true

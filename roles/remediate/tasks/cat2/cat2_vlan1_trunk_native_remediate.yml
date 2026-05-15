@@ -1,0 +1,9 @@
+---
+# CISC-L2-000260 - Native VLAN ID Remediation
+- name: 'Role: Remediate | Severity: Medium (Cat II) | Group ID: V-220672 | Rule ID: SV-220672r991909 | STIG ID: CISC-L2-000260 |
+    Native VLAN | Apply Correct Native VLAN'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_vlan1_trunk_native.j2'
+  when: 
+   - SV_220672r991909_remediate_native == true
+   

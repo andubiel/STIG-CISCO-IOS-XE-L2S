@@ -1,0 +1,7 @@
+---
+# CISC-L2-000250 - User-Facing Port Configuration Remediation
+# This task disables trunking on all ports not explicitly defined in the inventory.
+- name: 'Remediate | CAT2 | SV-220671 | Disable Trunking on Untrusted Ports'
+  cisco.ios.ios_config:
+    src: 'templates/cat2/remediate_user_port.j2'
+  when: SV_220671r991908_remediate_user == true

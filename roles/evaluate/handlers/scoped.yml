@@ -1,0 +1,253 @@
+---
+
+- name: "Scoped | Add 8021x Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} 8021x ACCESS PORTS"
+    block: |
+      access_8021x:
+      {% for iface in missing_8021x_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat1_cisc_l2_000020_access_Fail"
+
+- name: "Scoped | Add 8021x Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} 8021x VOICE PORTS"
+    block: |
+      voice_8021x:
+      {% for iface in missing_8021x_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat1_cisc_l2_000020_voice_Fail"
+
+- name: "Scoped | Add Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} DOS ACCESS PORTS"
+    block: |
+      access_dos:
+      {% for iface in missing_dos_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000040_access_Fail"
+
+- name: "Scoped | Add DOS Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} DOS VOICE PORTS"
+    block: |
+      voice_dos:
+      {% for iface in missing_dos_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000040_voice_Fail"
+
+- name: "Scoped | Add DOS Trunk interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} DOS TRUNK PORTS"
+    block: |
+      trunk_dos:
+      {% for iface in missing_dos_trunk | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000040_trunk_Fail"
+
+- name: "Scoped | Add bpdu Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} BPDU ACCESS PORTS"
+    block: |
+      access_bpdu:
+      {% for iface in missing_bpdu_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000100_access_Fail"
+
+- name: "Scoped | Add bpdu Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} BPDU VOICE PORTS"
+    block: |
+      voice_bpdu:
+      {% for iface in missing_bpdu_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000100_voice_Fail"
+
+- name: "Scoped | Add UUFB Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} UUFB ACCESS PORTS"
+    block: |
+      access_uufb:
+      {% for iface in missing_uufb_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_access_Fail"
+
+- name: "Scoped | Add UUFB Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} UUFB VOICE PORTS"
+    block: |
+      voice_uufb:
+      {% for iface in missing_uufb_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000120_voice_Fail"
+
+- name: "Scoped | Add IPSG Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} IPSG ACCESS PORTS"
+    block: |
+      access_ipsg:
+      {% for iface in missing_ipsg_interfaces | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_access_Fail"
+
+- name: "Scoped | Add IPSG Voice interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes  # Creates the file if it doesn't exist
+    marker: "# {mark} IPSG VOICE PORTS"
+    block: |
+      voice_ipsg:
+      {% for iface in missing_ipsg_voice | default([]) %}
+        - name: {{ iface }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000140_voice_Fail"
+
+- name: "Scoped | Add DTP interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    create: yes
+    marker: "# {mark} DTP TRUNK PORTS"
+    block: |
+      trunk_dtp:
+      {% for port in dtp_violators | default([]) %}
+        - name: {{ port }}
+      {% endfor %}
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000200_Fail"
+
+- name: "Scoped | Add Default VLAN 1 Access interfaces to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} DEFAULT VLAN"
+    block: |
+      vlan1_violators_admin_up:
+      {% for port in vlan1_violators_admin_up %}
+        {# Check if port is a dictionary with 'name' or just a string #}
+        - name: {{ port.name if port is mapping else port }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000220_Fail"
+
+- name: "Scoped | Add Untrusted ports to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} UNTRUSTED PORTS"
+    block: |
+      untrusted_violators:
+      {% for port in untrusted_violators %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000250_Fail"
+
+- name: "Scoped | Add Native VLAN Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} NATIVE VLAN"
+    block: |
+      native_vlan_exists: {{ native_vlan_exists | default(false) }}
+      native_vlan_violators:
+      {% for trunk in native_vlan_violators | default([]) %}
+        - name: {{ trunk.name }}
+          current_native: {{ trunk.current_native }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat2_cisc_l2_000260_Fail"
+
+  # Cat 3
+
+- name: "Scoped | Add Root Guard Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} ROOT GUARD FOR ACCESS SWITCH UPLINKS"
+    block: |
+      root_guard_violators:
+      {% for port in root_guard_violators %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000090_Fail"
+  
+- name: "Scoped | Add Storm Control Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} STORM CONTROL FOR USER PORTS"
+    block: |
+      storm_control_violators:
+      {% for port in storm_control_violators %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000160_Fail"
+
+- name: "Scoped | Add IGMP Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} IGMP SNOOPING"
+    block: |
+      igmp_global_disabled: {{ igmp_global_disabled | default(false) }}
+      igmp_vlan_violators: {{ igmp_vlan_violators | default([]) }}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000170_Fail"
+
+- name: "Scoped | Add Access Native Violators to host_vars"
+  ansible.builtin.blockinfile:
+    path: "{{ repository['path'] }}/host_vars/{{ inventory_hostname }}/iosstig_scoped.yaml"
+    marker: "# {mark} ACCESS NATIVE VLAN"
+    block: |
+      access_native_violators:
+      {% for port in access_native_violators | default([]) %}
+        - name: {{ port.name }}
+      {% endfor %}
+    create: yes
+  delegate_to: localhost
+  listen: "cat3_cisc_l2_000270_Fail"
+
+

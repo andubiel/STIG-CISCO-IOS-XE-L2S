@@ -1,0 +1,16 @@
+---
+- name: Import GIT Start handlers
+  ansible.builtin.import_tasks: git_start.yml
+
+- name: Import Stig Viewer handlers
+  ansible.builtin.import_tasks: stig_viewer.yml
+  when: stig_viewer == true
+
+- name: Import Remediation handlers
+  ansible.builtin.import_tasks: remediation.yml
+
+- name: Import Scoped handlers
+  ansible.builtin.import_tasks: scoped.yml
+
+- name: Import GIT Finish handlers
+  ansible.builtin.import_tasks: git_finish.yml
