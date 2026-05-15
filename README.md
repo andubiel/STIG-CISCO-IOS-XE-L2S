@@ -68,7 +68,7 @@ The **Remediate** role is the "Fix-it" engine. It takes the findings from the Ev
 ## Stig Viewer
 
 🔍 The STIG Viewer: From Audit to Evidence **Optional**
-The STIG Viewer functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKLB) files as evidence to the Authorizing Official (AO).
+The STIG Viewer functionality (integrated into the evaluate role) is designed to automate the manual, labor-intensive process of security auditing. In high-security environments, simply being compliant isn't enough; you must provide Checklist (CKL) or (CKLB) files as evidence to the Authorizing Official (AO).
 
 How it works: 
 Automated Inspection: The tool logs into each switch and executes show commands to inspect specific STIG rules (e.g., verifying if VTP is disabled or BPDU Guard is active).
@@ -79,7 +79,7 @@ If the configuration matches: The status is set to Open (Manual review needed) o
 
 If the configuration is missing/wrong: The status is set to Open.
 
-CKLB Generation: The tool uses the stig_viewer.j2 template to generate a .cklb file for every switch in the inventory.
+Sig Viewer Generation: The tool uses the stig_viewer_<>.j2 template to generate a `.ckl` and `.cklb` file for every switch in the inventory.
 * This functionality can be enabled in the `vars/main.yml` file.
 
 **STIG VIEWER SETUP**
@@ -104,8 +104,7 @@ Function: Because standard Ansible facts are lost between playbook runs, this ha
 3. STIG Viewer Reporting (stig_viewer.yml)
 Purpose: Dynamically updates the status (Open or Not a Finding) and provides a descriptive "Finding Details" string for the switch.
 
-Function: This data is fed into the stig_viewer.j2 template to generate the .cklb file used by security officers for formal compliance reporting.
-
+Function: This data is fed into the stig_viewer_<>.j2 template to generate the .ckl and .cklb file used by security officers for formal compliance reporting.
 ## Repository Structure
 
 ```text

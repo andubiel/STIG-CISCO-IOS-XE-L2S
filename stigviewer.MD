@@ -13,7 +13,7 @@ Workflow:
 This repo is designed to run the STIG roles as part of an Ansible Automation Platform `Job-Template` or `Workflow`. 
 * `evaluate.yml`
 
-Retrieve Results: Files are saved to your defined cklb_path (e.g., /tmp/inventory_hostname.cklb).
+Retrieve Results: Files are saved to your defined formatted_path (e.g., /tmp/inventory_hostname.cklb).
 
 Review: Open the generated file in STIG Viewer to see a rule-by-rule breakdown of your switch’s security posture.
 
@@ -32,7 +32,7 @@ Run the Evaluate role in this repository to generate .cklb files.
 
 Open the STIG Viewer application.
 
-Go to File -> Import Checklist and select the files generated in your cklb_path.
+Go to File -> Import Checklist and select the files generated in your formatted_path.
 
 All automated "Not a Finding" or "Open" statuses will be pre-populated based on the Ansible audit.
 
