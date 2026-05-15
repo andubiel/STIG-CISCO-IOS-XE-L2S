@@ -1,6 +1,0 @@
----
-# CISC-L2-000190 - Unidirectional Link Detection (UDLD) Remediation
-- name: 'Role: Remediate | UDLD | SV-220665'
-  cisco.ios.ios_config:
-    src: 'templates/cat2/remediate_udld.j2'
-  when: SV_220665r539671_remediate_udld == true
