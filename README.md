@@ -175,17 +175,17 @@ The following variables must be defined in `vars/main.yml` to ensure the **Evalu
 | Variable Name | Purpose | Example Value |
 | :--- | :--- | :--- |
 | `stig_viewer` | Enables or disables the generation of CKLB files for the DISA STIG Viewer. | `true` |
-| `cklb_server` | Remote server/pc to save cklb files - colocated with Stig Viewer install | `laptop` |
-| `cklb_user` | User Account to access `cklb_server` | `laptop` |
-| `cklb_path` | The directory where generated CKLB audit files are saved. | `/home/{{ cklb_user }}/cklb` |
+| `formatted_server` | Remote server/pc to save formatted files - colocated with Stig Viewer install | `laptop` |
+| `formatted_user` | User Account to access `formatted_server` | `laptop` |
+| `formatted_path` | The directory where generated CKLB audit files are saved. | `/home/{{ formatted_user }}/formatted` |
 | `git_url` | The base path to the project directory used by handlers to write findings. | `"http://gitea:{{password}}@aap:3000/gitea/STIG-CISCO-IOS-XE-L2S.git" ` |
 
 ## Secure Variables
 The following variables are defined as custom credential types or vaulted.
 | Variable Name | Purpose | Example Value |
 | :--- | :--- | :--- |
-| `cklb_password` | Password to access `cklb_server`. | `changeme` |
-| `cklb_become_password` | Password to escalate privilege | `changeme` |
+| `formatted_password` | Password to access `formatted_server`. | `changeme` |
+| `formatted_become_password` | Password to escalate privilege | `changeme` |
 | `iosstig_radius_server_one_key` | Radius key | `keyme` |
 | `iosstig_radius_server_two_key` | Radius key | `keyme` |
 | `iosstig_vtp_user_password` | VTP Password | `changeme` |
