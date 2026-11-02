@@ -79,7 +79,7 @@ If the configuration matches: The status is set to Open (Manual review needed) o
 
 If the configuration is missing/wrong: The status is set to Open.
 
-Sig Viewer Generation: The tool uses the stig_viewer_<>.j2 template to generate a `.ckl` and `.cklb` file for every switch in the inventory.
+Sig Viewer Generation: The tool uses the `stig_viewer_cklb.j2` and `stig_viewer_ckl.j2` templates to generate a `.cklb` and `.ckl` file for every switch in the inventory.
 * This functionality can be enabled in the `vars/main.yml` file.
 
 **STIG VIEWER SETUP**
@@ -104,7 +104,7 @@ Function: Because standard Ansible facts are lost between playbook runs, this ha
 3. STIG Viewer Reporting (stig_viewer.yml)
 Purpose: Dynamically updates the status (Open or Not a Finding) and provides a descriptive "Finding Details" string for the switch.
 
-Function: This data is fed into the stig_viewer_<>.j2 template to generate the .ckl and .cklb file used by security officers for formal compliance reporting.
+Function: This data is fed into the `stig_viewer_cklb.j2` and `stig_viewer_ckl.j2` templates to generate the .cklb and .ckl files used by security officers for formal compliance reporting.
 ## Repository Structure
 
 ```text
@@ -114,7 +114,8 @@ STIG-CISCO-IOS-XE-L2S/
 │   ├── evaluate/       # Tasks for auditing and diffing config
 │   └── remediate/      # Tasks for pushing hardening commands
 ├── templates/          # Jinja2 templates for STIG-compliant configs
-│   ├── stig_viewer.j2  # Template for generating CKLB audit files
+│   ├── stig_viewer_cklb.j2  # Template for generating CKLB audit files (STIG Viewer 3.x)
+│   ├── stig_viewer_ckl.j2   # Template for generating CKL audit files (STIG Viewer 2.x)
 │   ├── cat1/           # High-severity rule templates
 │   └── cat2/           # Medium-severity rule templates
 |   └── cat3/           # Low-severity rule templates
@@ -550,7 +551,8 @@ templates/
 │   ├── remediate_igmp_snooping.j2
 │   ├── remediate_root_guard.j2
 │   └── remediate_storm_control.j2
-└── stig_viewer.j2
+├── stig_viewer_ckl.j2
+└── stig_viewer_cklb.j2
 ~~~
 
 ### Step9: Validate the Remediation

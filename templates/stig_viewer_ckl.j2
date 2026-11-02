@@ -1,0 +1,81 @@
+{#- STIG Viewer 2.x checklist (CKL / XML).
+    Built from stig_viewer_cklb.j2 so rule text, statuses and finding details live in one place. -#}
+{%- set cklb = lookup('ansible.builtin.template', 'stig_viewer_cklb.j2') | from_json -%}
+{%- set status_map = {'open': 'Open', 'not_a_finding': 'NotAFinding', 'not_applicable': 'Not_Applicable', 'not_reviewed': 'Not_Reviewed'} -%}
+<?xml version="1.0" encoding="UTF-8"?>
+<!--DISA STIG Viewer :: 2.x-->
+<CHECKLIST>
+	<ASSET>
+		<ROLE>None</ROLE>
+		<ASSET_TYPE>Computing</ASSET_TYPE>
+		<MARKING>CUI</MARKING>
+		<HOST_NAME>{{ inventory_hostname | e }}</HOST_NAME>
+		<HOST_IP>{{ ansible_host | default('') | e }}</HOST_IP>
+		<HOST_MAC></HOST_MAC>
+		<HOST_FQDN></HOST_FQDN>
+		<TARGET_COMMENT></TARGET_COMMENT>
+		<TECH_AREA>Internal Network</TECH_AREA>
+		<TARGET_KEY></TARGET_KEY>
+		<WEB_OR_DATABASE>false</WEB_OR_DATABASE>
+		<WEB_DB_SITE></WEB_DB_SITE>
+		<WEB_DB_INSTANCE></WEB_DB_INSTANCE>
+	</ASSET>
+	<STIGS>
+{% for stig in cklb.stigs %}
+		<iSTIG>
+			<STIG_INFO>
+				<SI_DATA><SID_NAME>version</SID_NAME><SID_DATA>{{ stig.version | e }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>classification</SID_NAME><SID_DATA>UNCLASSIFIED</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>stigid</SID_NAME><SID_DATA>{{ stig.stig_id | e }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>description</SID_NAME><SID_DATA>{{ stig.stig_name | e }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>filename</SID_NAME><SID_DATA>U_{{ stig.stig_id | e }}_V{{ stig.version | e }}_Manual-xccdf.xml</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>releaseinfo</SID_NAME><SID_DATA>{{ stig.release_info | e }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>title</SID_NAME><SID_DATA>{{ stig.stig_name | e }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>uuid</SID_NAME><SID_DATA>{{ stig.uuid | default('', true) or (inventory_hostname ~ stig.stig_id) | to_uuid }}</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>notice</SID_NAME><SID_DATA>terms-of-use</SID_DATA></SI_DATA>
+				<SI_DATA><SID_NAME>source</SID_NAME><SID_DATA>STIG.DOD.MIL</SID_DATA></SI_DATA>
+			</STIG_INFO>
+{% for r in stig.rules %}
+			<VULN>
+				<STIG_DATA><VULN_ATTRIBUTE>Vuln_Num</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.group_id | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Severity</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.severity | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Group_Title</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.srg_id | default(r.group_title | default('')) | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Rule_ID</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.rule_id_src | default(r.rule_id ~ '_rule') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Rule_Ver</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.rule_version | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Rule_Title</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.rule_title | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Vuln_Discuss</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.discussion | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>IA_Controls</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Check_Content</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.check_content | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Fix_Text</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.fix_text | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>False_Positives</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>False_Negatives</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Documentable</VULN_ATTRIBUTE><ATTRIBUTE_DATA>false</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Mitigations</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Potential_Impact</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Third_Party_Tools</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Mitigation_Control</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Responsibility</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Security_Override_Guidance</VULN_ATTRIBUTE><ATTRIBUTE_DATA></ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Check_Content_Ref</VULN_ATTRIBUTE><ATTRIBUTE_DATA>M</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Weight</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.weight | default('10.0') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>Class</VULN_ATTRIBUTE><ATTRIBUTE_DATA>Unclass</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>STIGRef</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ stig.stig_name | e }} :: Version {{ stig.version | e }}, {{ stig.release_info | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>TargetKey</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ stig.reference_identifier | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+				<STIG_DATA><VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ r.stig_uuid | default('') | e }}</ATTRIBUTE_DATA></STIG_DATA>
+{% for legacy in r.legacy_ids | default([]) %}
+				<STIG_DATA><VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ legacy | e }}</ATTRIBUTE_DATA></STIG_DATA>
+{% endfor %}
+{% for cci in r.ccis | default([]) %}
+				<STIG_DATA><VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE><ATTRIBUTE_DATA>{{ cci | e }}</ATTRIBUTE_DATA></STIG_DATA>
+{% endfor %}
+				<STATUS>{{ status_map.get(r.status | default('not_reviewed'), 'Not_Reviewed') }}</STATUS>
+				<FINDING_DETAILS>{{ r.finding_details | default('') | e }}</FINDING_DETAILS>
+				<COMMENTS>{{ r.comments | default('') | e }}</COMMENTS>
+				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
+				<SEVERITY_JUSTIFICATION></SEVERITY_JUSTIFICATION>
+			</VULN>
+{% endfor %}
+		</iSTIG>
+{% endfor %}
+	</STIGS>
+</CHECKLIST>

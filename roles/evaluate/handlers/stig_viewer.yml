@@ -705,7 +705,6 @@
     - "cat3_cisc_l2_000270_Pass"
 
   vars:
-    stigs: "{{ lookup('template', 'stig_viewer_cklb.j2').stigs }}"
     ansible_user: "{{ formatted_user }}"
     ansible_password: "{{ formatted_password }}"
     ansible_become_pass: "{{ formatted_become_pass }}"

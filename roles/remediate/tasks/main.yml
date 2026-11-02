@@ -1,21 +1,21 @@
 ---
 - name: Include CAT 1 remediate
   import_tasks: cat1/cat1.yml
-  when: iosl2sstig_cat1_remediate
+  when: iosl2sstig_cat1_remediate | bool
   tags:
       - CAT1
       - high
 
 - name: Include CAT 2 remediate
   import_tasks: cat2/cat2.yml
-  when: iosl2sstig_cat2_remediate
+  when: iosl2sstig_cat2_remediate | bool
   tags:
       - CAT2
       - medium
 
 - name: Include CAT 3 remediate
   import_tasks: cat3/cat3.yml
-  when: iosl2sstig_cat3_remediate
+  when: iosl2sstig_cat3_remediate | bool
   tags:
       - CAT3
       - low

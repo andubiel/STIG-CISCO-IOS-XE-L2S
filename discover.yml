@@ -11,3 +11,5 @@
   - name: Run Compliance Roles
     ansible.builtin.include_role:
       name: "roles/discover"
+    tags:
+      - always

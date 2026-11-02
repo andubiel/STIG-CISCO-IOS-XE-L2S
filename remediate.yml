@@ -11,6 +11,8 @@
   - name: Run Compliance Roles
     ansible.builtin.include_role:
       name: "roles/remediate"
+    tags:
+      - always
 
  
         
